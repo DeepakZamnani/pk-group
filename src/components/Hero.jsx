@@ -46,6 +46,7 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
     let rafId = null, rafTarget = 0
     const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
 
+    const createdSTs = []
     const tl = gsap.timeline({ paused: true })
 
     // ── Timeline ──────────────────────────────────────────────────────────
@@ -73,7 +74,7 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
       .to(video, { filter: 'brightness(1)', duration: 0.08, ease: 'power2.in' }, 0.92)
 
     // ── ScrollTrigger (CSS sticky handles pin) ────────────────────────────
-    ScrollTrigger.create({
+    createdSTs.push(ScrollTrigger.create({
       trigger: wrap,
       start: 'top top',
       end: 'bottom bottom',
@@ -87,21 +88,21 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
       },
       onLeave()      { if (onHeroComplete) onHeroComplete(true)  },
       onEnterBack()  { if (onHeroComplete) onHeroComplete(false) },
-    })
+    }))
 
     gsap.to(hint, { opacity: 1, delay: 1.4, duration: 1.2 })
-    ScrollTrigger.create({
+    createdSTs.push(ScrollTrigger.create({
       trigger: wrap,
       start: 'top+=1px top',
       onEnter: () => gsap.to(hint, { opacity: 0, duration: 0.5 }),
-    })
+    }))
 
     return () => {
       clearTimeout(readyTimer)
       video.removeEventListener('loadeddata',     onData)
       video.removeEventListener('canplaythrough', onData)
       if (rafId) cancelAnimationFrame(rafId)
-      ScrollTrigger.getAll().forEach(st => st.kill())
+      createdSTs.forEach(st => st.kill())
     }
   }, [onHeroComplete, onVideoReady])
 

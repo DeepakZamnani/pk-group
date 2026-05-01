@@ -237,3 +237,211 @@
   transform-origin: left;
   transform: scaleX(0);
 }
+
+/* ── Transition Section ─────────────────────────────────────────────── */
+.transition-wrapper {
+  height: 500vh;
+}
+
+/* ── Project Section ────────────────────────────────────────────────── */
+.project-wrapper {
+  height: 300vh;
+}
+
+.project-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.project-section {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #0a0a0a;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  gap: 0;
+  padding: 0 80px 80px;
+  box-sizing: border-box;
+  will-change: clip-path;
+}
+
+.project-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0) scale(1.2);
+}
+
+.project-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.1) 0%,
+    rgba(0,0,0,0) 40%,
+    rgba(0,0,0,0.65) 100%
+  );
+  z-index: 1;
+}
+
+/* Left — copy */
+.project-copy {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-right: 60px;
+  padding-bottom: 8px;
+}
+
+.project-eyebrow {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 40px;
+}
+
+.project-head-wrap {
+  margin-bottom: 32px;
+}
+
+.project-name {
+  font-family: 'Georgia', serif;
+  font-size: clamp(40px, 5.5vw, 80px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: 0.02em;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.project-location {
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.55);
+  margin: 0;
+}
+
+.project-body-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.project-desc {
+  font-family: 'Georgia', serif;
+  font-size: clamp(15px, 1.4vw, 18px);
+  line-height: 1.8;
+  color: rgba(255,255,255,0.7);
+  margin: 0;
+  max-width: 420px;
+}
+
+.project-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: #fff;
+  text-decoration: none;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--gold);
+  width: fit-content;
+  transition: opacity 0.2s, gap 0.25s;
+}
+
+.project-cta:hover {
+  opacity: 0.7;
+  gap: 16px;
+}
+
+/* Right — stats */
+.project-right {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 48px;
+  padding-bottom: 8px;
+}
+
+.project-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px 24px;
+  padding-top: 8px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.stat-num {
+  font-family: 'Georgia', serif;
+  font-size: clamp(32px, 3.5vw, 52px);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: #fff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+}
+
+
+/* ── Project Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .project-section {
+    grid-template-columns: 1fr;
+    padding: 80px 24px 60px;
+    gap: 56px;
+    overflow-y: auto;
+  }
+
+  .project-sticky {
+    height: auto;
+    position: relative;
+  }
+
+  .project-wrapper {
+    height: auto;
+  }
+
+  .project-copy {
+    padding-right: 0;
+  }
+
+  .project-gallery {
+    grid-template-rows: 180px 120px;
+  }
+
+  .project-name {
+    font-size: clamp(36px, 10vw, 56px);
+  }
+}
