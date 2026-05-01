@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -11,7 +11,12 @@ const STATS = [
   { num: '2026',  label: 'Completion' },
 ]
 
+const isMobile = () => window.matchMedia('(max-width: 768px)').matches
+
 export default function Project() {
+  const [videoSrc] = useState(() =>
+    isMobile() ? '/drone-mobile.mp4' : '/drone-start.mp4'
+  )
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
   const videoRef   = useRef(null)
@@ -79,7 +84,7 @@ export default function Project() {
           <video
             ref={videoRef}
             className="project-video"
-            src="/drone-start.mp4"
+            src={videoSrc}
             muted
             playsInline
             preload="auto"
