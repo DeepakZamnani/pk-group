@@ -1,0 +1,196 @@
+/* Navbar — hidden until hero animation completes */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 48px;
+  height: 72px;
+  background: rgba(250, 248, 244, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border-light);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+  pointer-events: none;
+}
+
+.navbar.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.navbar-logo {
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  color: var(--charcoal);
+  text-transform: uppercase;
+}
+
+.navbar-links {
+  display: flex;
+  gap: 36px;
+  list-style: none;
+}
+
+.navbar-links a {
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--charcoal);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.navbar-links a:hover {
+  opacity: 1;
+}
+
+/* Hero — GSAP pin manages positioning; this is just sizing */
+.hero-sticky {
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  background: #0a0a0a;
+  position: relative;
+}
+
+.hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: translateZ(0); /* GPU compositor layer for smooth seeking */
+}
+
+/* Overlay gradient over video */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.15) 0%,
+    rgba(0,0,0,0) 40%,
+    rgba(0,0,0,0.4) 100%
+  );
+  z-index: 2;
+}
+
+/* Big center title — GSAP owns the transform, no CSS transform here */
+.hero-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  text-align: center;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-title-pk {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(72px, 14vw, 160px);
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  color: #fff;
+  text-transform: uppercase;
+  line-height: 1;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+.hero-title-group {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(14px, 2.5vw, 28px);
+  font-weight: 400;
+  letter-spacing: 0.55em;
+  color: rgba(255,255,255,0.75);
+  text-transform: uppercase;
+  margin-top: 12px;
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* ── Mobile ─────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0 20px;
+    height: 60px;
+  }
+
+  .navbar-links {
+    display: none;
+  }
+
+  .hero-title-pk {
+    font-size: clamp(52px, 18vw, 80px);
+    letter-spacing: 0.12em;
+  }
+
+  .hero-title-group {
+    font-size: clamp(10px, 3.5vw, 14px);
+    letter-spacing: 0.4em;
+  }
+
+  .scroll-hint {
+    bottom: 24px;
+  }
+}
+
+/* Scroll hint */
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0;
+}
+
+.scroll-hint span {
+  font-family: 'Georgia', serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.6);
+}
+
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.6), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.4; transform: scaleY(1); }
+  50% { opacity: 1; transform: scaleY(1.2); }
+}
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--gold);
+  z-index: 200;
+  transform-origin: left;
+  transform: scaleX(0);
+}
