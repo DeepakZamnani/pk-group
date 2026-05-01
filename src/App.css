@@ -129,7 +129,7 @@
   z-index: 2;
 }
 
-/* Big center title — GSAP owns the transform, no CSS transform here */
+/* Hero title */
 .hero-title {
   position: absolute;
   top: 50%;
@@ -137,7 +137,11 @@
   z-index: 10;
   text-align: center;
   pointer-events: none;
-  will-change: transform;
+}
+
+/* overflow:hidden clips each line — this is what makes the wipe work */
+.line-mask {
+  overflow: hidden;
 }
 
 .hero-title-pk {
@@ -149,8 +153,6 @@
   color: #fff;
   text-transform: uppercase;
   line-height: 1;
-  opacity: 0;
-  will-change: opacity, transform;
 }
 
 .hero-title-group {
@@ -159,11 +161,9 @@
   font-size: clamp(14px, 2.5vw, 28px);
   font-weight: 400;
   letter-spacing: 0.55em;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255,255,255,0.8);
   text-transform: uppercase;
-  margin-top: 12px;
-  opacity: 0;
-  will-change: opacity, transform;
+  padding-top: 10px;
 }
 
 /* ── Mobile ─────────────────────────────────────────────────────────── */

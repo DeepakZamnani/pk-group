@@ -10,14 +10,14 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
   const [videoSrc] = useState(() =>
     isMobile() ? '/HeroVideo-mobile.mp4' : '/HeroVideo.mp4'
   )
-  const wrapRef      = useRef(null)   // outer scroll-height div
-  const stickyRef    = useRef(null)   // inner CSS-sticky viewport div
-  const videoRef     = useRef(null)
-  const titleRef     = useRef(null)
-  const pkRef        = useRef(null)
-  const groupRef     = useRef(null)
+  const wrapRef       = useRef(null)
+  const stickyRef     = useRef(null)
+  const videoRef      = useRef(null)
+  const titleRef      = useRef(null)
+  const pkRef         = useRef(null)
+  const groupRef      = useRef(null)
   const scrollHintRef = useRef(null)
-  const progressRef  = useRef(null)
+  const progressRef   = useRef(null)
 
   useEffect(() => {
     const wrap  = wrapRef.current
@@ -28,58 +28,51 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
     const hint  = scrollHintRef.current
     const bar   = progressRef.current
 
-    // GSAP owns all transforms — no CSS transform conflict
+    // Text starts hidden below each line's overflow:hidden mask
     gsap.set(title, { xPercent: -50, yPercent: -50 })
-    gsap.set(pk,    { opacity: 0, y: 50 })
-    gsap.set(grp,   { opacity: 0, y: 25 })
+    gsap.set(pk,  { yPercent: 105 })
+    gsap.set(grp, { yPercent: 105 })
 
-    // Video ready signal — fires preloader exit
+    // Video ready → preloader exit
     const signalReady = () => { if (onVideoReady) onVideoReady() }
-    const readyTimer  = setTimeout(signalReady, 6000) // hard fallback
+    const readyTimer  = setTimeout(signalReady, 6000)
     const onData = () => { clearTimeout(readyTimer); signalReady() }
     video.addEventListener('loadeddata',     onData, { once: true })
     video.addEventListener('canplaythrough', onData, { once: true })
     if (video.readyState >= 2) { clearTimeout(readyTimer); signalReady() }
-    video.load() // force iOS to start fetching
+    video.load()
 
-    // rAF throttle — video.currentTime is only written once per paint frame
-    let rafId     = null
-    let rafTarget = 0
+    // rAF-throttled video scrub
+    let rafId = null, rafTarget = 0
     const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
-
-    const vw        = window.innerWidth
-    const vh        = window.innerHeight
-    const mobile    = vw <= 768
-    const navPad    = mobile ? 20 : 48   // matches CSS padding
-    const navHeight = mobile ? 60 : 72   // matches CSS height
-
-    const heroSize = parseFloat(getComputedStyle(pk).fontSize)
-    const navScale = 18 / heroSize
-    const xToNav   = navPad - vw * 0.5
-    const yToNav   = (navHeight / 2) - vh * 0.5
 
     const tl = gsap.timeline({ paused: true })
 
+    // ── Timeline ──────────────────────────────────────────────────────────
+    // 0.00–0.50  video scrubs
+    // 0.48       overlay dims slightly for text legibility
+    // 0.50–0.60  "PK" wipes up into view (line mask)
+    // 0.55–0.64  "Group" wipes up into view (staggered)
+    // 0.64–0.78  text holds — clean read
+    // 0.78–0.86  "Group" wipes back up out of frame
+    // 0.82–0.92  "PK" wipes back up out of frame (reverse stagger)
+    // 0.92       overlay clears
+
     tl.to({}, { duration: 0.5 })
 
-      .to(video, { filter: 'blur(12px) brightness(0.7)', ease: 'power2.out', duration: 0.12 }, 0.48)
+      .to(video, { filter: 'brightness(0.65)', duration: 0.10, ease: 'power2.out' }, 0.48)
 
-      .to(pk,  { opacity: 1, y: 0, ease: 'power2.out', duration: 0.10 }, 0.50)
-      .to(grp, { opacity: 1, y: 0, ease: 'power2.out', duration: 0.09 }, 0.57)
+      // enter — slide up from mask
+      .to(pk,  { yPercent: 0, ease: 'power4.out', duration: 0.12 }, 0.50)
+      .to(grp, { yPercent: 0, ease: 'power4.out', duration: 0.11 }, 0.55)
 
-      .to(title, {
-        x: xToNav, y: yToNav,
-        xPercent: 0, yPercent: 0,
-        scale: navScale,
-        transformOrigin: 'left center',
-        ease: 'power3.inOut',
-        duration: 0.22,
-      }, 0.68)
-      .to(video, { filter: 'blur(0px) brightness(1)', ease: 'power2.in', duration: 0.20 }, 0.68)
-      .to(grp, { opacity: 0, duration: 0.08 }, 0.68)
-      .to(pk,  { opacity: 0, duration: 0.10, ease: 'power2.in' }, 0.90)
+      // exit — slide back up out of mask (reverse stagger: grp first)
+      .to(grp, { yPercent: -105, ease: 'power4.in', duration: 0.10 }, 0.78)
+      .to(pk,  { yPercent: -105, ease: 'power4.in', duration: 0.12 }, 0.82)
 
-    // CSS sticky handles the pin — no GSAP pin needed (iOS Safari safe)
+      .to(video, { filter: 'brightness(1)', duration: 0.08, ease: 'power2.in' }, 0.92)
+
+    // ── ScrollTrigger (CSS sticky handles pin) ────────────────────────────
     ScrollTrigger.create({
       trigger: wrap,
       start: 'top top',
@@ -92,15 +85,10 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
         gsap.set(bar, { scaleX: self.progress })
       },
-      onLeave() {
-        if (onHeroComplete) onHeroComplete(true)
-      },
-      onEnterBack() {
-        if (onHeroComplete) onHeroComplete(false)
-      },
+      onLeave()      { if (onHeroComplete) onHeroComplete(true)  },
+      onEnterBack()  { if (onHeroComplete) onHeroComplete(false) },
     })
 
-    // scroll hint
     gsap.to(hint, { opacity: 1, delay: 1.4, duration: 1.2 })
     ScrollTrigger.create({
       trigger: wrap,
@@ -115,7 +103,7 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
       if (rafId) cancelAnimationFrame(rafId)
       ScrollTrigger.getAll().forEach(st => st.kill())
     }
-  }, [onHeroComplete])
+  }, [onHeroComplete, onVideoReady])
 
   return (
     <>
@@ -134,8 +122,13 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
           <div className="hero-overlay" />
 
           <div ref={titleRef} className="hero-title">
-            <span ref={pkRef}    className="hero-title-pk">PK</span>
-            <span ref={groupRef} className="hero-title-group">Group</span>
+            {/* Each line-mask clips the text — creates the wipe effect */}
+            <div className="line-mask">
+              <span ref={pkRef} className="hero-title-pk">PK</span>
+            </div>
+            <div className="line-mask">
+              <span ref={groupRef} className="hero-title-group">Group</span>
+            </div>
           </div>
 
           <div ref={scrollHintRef} className="scroll-hint">
