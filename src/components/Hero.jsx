@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
-export default function Hero({ onHeroComplete }) {
+export default function Hero({ onHeroComplete, onVideoReady }) {
   const [videoSrc] = useState(() =>
     isMobile() ? '/HeroVideo-mobile.mp4' : '/HeroVideo.mp4'
   )
@@ -31,6 +31,20 @@ export default function Hero({ onHeroComplete }) {
     gsap.set(title, { xPercent: -50, yPercent: -50 })
     gsap.set(pk,    { opacity: 0, y: 50 })
     gsap.set(grp,   { opacity: 0, y: 25 })
+
+    // ── Video ready signal ───────────────────────────────────────────────
+    // canplaythrough is blocked on iOS; loadeddata fires earlier and is enough.
+    // Fallback timeout ensures the preloader never hangs on stubborn browsers.
+    const signalReady = () => { if (onVideoReady) onVideoReady() }
+    const readyFallback = setTimeout(signalReady, 6000)
+
+    const onLoadedData = () => { clearTimeout(readyFallback); signalReady() }
+    video.addEventListener('canplaythrough', onLoadedData, { once: true })
+    video.addEventListener('loadeddata',     onLoadedData, { once: true })
+    if (video.readyState >= 2) { clearTimeout(readyFallback); signalReady() }
+
+    // force mobile browsers to start loading (iOS ignores preload="auto")
+    video.load()
 
     // rAF throttle — video.currentTime is only written once per paint frame
     let rafId     = null
@@ -101,6 +115,9 @@ export default function Hero({ onHeroComplete }) {
     })
 
     return () => {
+      clearTimeout(readyFallback)
+      video.removeEventListener('canplaythrough', onLoadedData)
+      video.removeEventListener('loadeddata',     onLoadedData)
       if (rafId) cancelAnimationFrame(rafId)
       ScrollTrigger.getAll().forEach(st => st.kill())
     }
