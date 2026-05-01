@@ -6,7 +6,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
-export default function Hero({ onHeroComplete }) {
+export default function Hero({ onHeroComplete, onVideoReady }) {
   const [videoSrc] = useState(() =>
     isMobile() ? '/HeroVideo-mobile.mp4' : '/HeroVideo.mp4'
   )
@@ -31,6 +31,18 @@ export default function Hero({ onHeroComplete }) {
     gsap.set(title, { xPercent: -50, yPercent: -50 })
     gsap.set(pk,    { opacity: 0, y: 50 })
     gsap.set(grp,   { opacity: 0, y: 25 })
+
+    // Normalise scroll on mobile — fixes iOS Safari pin jitter
+    ScrollTrigger.normalizeScroll(true)
+
+    // Video ready signal — fires preloader exit
+    const signalReady = () => { if (onVideoReady) onVideoReady() }
+    const readyTimer  = setTimeout(signalReady, 6000) // hard fallback
+    const onData = () => { clearTimeout(readyTimer); signalReady() }
+    video.addEventListener('loadeddata',     onData, { once: true })
+    video.addEventListener('canplaythrough', onData, { once: true })
+    if (video.readyState >= 2) { clearTimeout(readyTimer); signalReady() }
+    video.load() // force iOS to start fetching
 
     // rAF throttle — video.currentTime is only written once per paint frame
     let rafId     = null
@@ -101,7 +113,11 @@ export default function Hero({ onHeroComplete }) {
     })
 
     return () => {
+      clearTimeout(readyTimer)
+      video.removeEventListener('loadeddata',     onData)
+      video.removeEventListener('canplaythrough', onData)
       if (rafId) cancelAnimationFrame(rafId)
+      ScrollTrigger.normalizeScroll(false)
       ScrollTrigger.getAll().forEach(st => st.kill())
     }
   }, [onHeroComplete])
