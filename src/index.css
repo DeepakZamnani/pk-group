@@ -23,6 +23,7 @@ body {
   color: var(--charcoal);
   font-family: 'Georgia', serif;
   overflow-x: clip;
+  overscroll-behavior: none; /* kills iOS rubber-band that flicks past sticky */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

@@ -92,13 +92,19 @@
   opacity: 1;
 }
 
-/* Hero — GSAP pin manages positioning; this is just sizing */
+/* Hero */
+.hero-wrapper {
+  height: 700vh; /* scroll budget — browser sticky handles the pin */
+}
+
 .hero-sticky {
+  position: sticky;
+  top: 0;
   width: 100%;
   height: 100vh;
+  height: 100dvh; /* dynamic vh — accounts for iOS address bar */
   overflow: hidden;
   background: #0a0a0a;
-  position: relative;
 }
 
 .hero-video {

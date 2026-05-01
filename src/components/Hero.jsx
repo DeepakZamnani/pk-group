@@ -10,7 +10,8 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
   const [videoSrc] = useState(() =>
     isMobile() ? '/HeroVideo-mobile.mp4' : '/HeroVideo.mp4'
   )
-  const wrapRef      = useRef(null)
+  const wrapRef      = useRef(null)   // outer scroll-height div
+  const stickyRef    = useRef(null)   // inner CSS-sticky viewport div
   const videoRef     = useRef(null)
   const titleRef     = useRef(null)
   const pkRef        = useRef(null)
@@ -31,9 +32,6 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
     gsap.set(title, { xPercent: -50, yPercent: -50 })
     gsap.set(pk,    { opacity: 0, y: 50 })
     gsap.set(grp,   { opacity: 0, y: 25 })
-
-    // Normalise scroll on mobile — fixes iOS Safari pin jitter
-    ScrollTrigger.normalizeScroll(true)
 
     // Video ready signal — fires preloader exit
     const signalReady = () => { if (onVideoReady) onVideoReady() }
@@ -81,16 +79,14 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
       .to(grp, { opacity: 0, duration: 0.08 }, 0.68)
       .to(pk,  { opacity: 0, duration: 0.10, ease: 'power2.in' }, 0.90)
 
-    // ─── GSAP pin — created immediately, not waiting for video ────────────
+    // CSS sticky handles the pin — no GSAP pin needed (iOS Safari safe)
     ScrollTrigger.create({
       trigger: wrap,
       start: 'top top',
-      end: '+=700%',
-      pin: true,
+      end: 'bottom bottom',
       scrub: 0.5,
       animation: tl,
       onUpdate(self) {
-        // read video.duration live so it works before metadata loads too
         const dur = video.duration || 8
         rafTarget = Math.min(self.progress / 0.5, 1) * dur
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
@@ -117,7 +113,6 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
       video.removeEventListener('loadeddata',     onData)
       video.removeEventListener('canplaythrough', onData)
       if (rafId) cancelAnimationFrame(rafId)
-      ScrollTrigger.normalizeScroll(false)
       ScrollTrigger.getAll().forEach(st => st.kill())
     }
   }, [onHeroComplete])
@@ -126,25 +121,27 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
     <>
       <div ref={progressRef} className="progress-bar" />
 
-      <div ref={wrapRef} className="hero-sticky">
-        <video
-          ref={videoRef}
-          className="hero-video"
-          src={videoSrc}
-          muted
-          playsInline
-          preload="auto"
-        />
-        <div className="hero-overlay" />
+      <div ref={wrapRef} className="hero-wrapper">
+        <div ref={stickyRef} className="hero-sticky">
+          <video
+            ref={videoRef}
+            className="hero-video"
+            src={videoSrc}
+            muted
+            playsInline
+            preload="auto"
+          />
+          <div className="hero-overlay" />
 
-        <div ref={titleRef} className="hero-title">
-          <span ref={pkRef}    className="hero-title-pk">PK</span>
-          <span ref={groupRef} className="hero-title-group">Group</span>
-        </div>
+          <div ref={titleRef} className="hero-title">
+            <span ref={pkRef}    className="hero-title-pk">PK</span>
+            <span ref={groupRef} className="hero-title-group">Group</span>
+          </div>
 
-        <div ref={scrollHintRef} className="scroll-hint">
-          <span>Scroll</span>
-          <div className="scroll-line" />
+          <div ref={scrollHintRef} className="scroll-hint">
+            <span>Scroll</span>
+            <div className="scroll-line" />
+          </div>
         </div>
       </div>
     </>
