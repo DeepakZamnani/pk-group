@@ -13,7 +13,7 @@ const STATS = [
 
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
-export default function Project() {
+export default function Project({ onVideoReady }) {
   const [videoSrc] = useState(() =>
     isMobile() ? '/drone-mobile.mp4' : '/drone-start.mp4'
   )
@@ -28,6 +28,12 @@ export default function Project() {
     const wrap    = wrapRef.current
     const section = sectionRef.current
     const video   = videoRef.current
+
+    const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
+    const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
+    video.addEventListener('loadeddata',     onData, { once: true })
+    video.addEventListener('canplaythrough', onData, { once: true })
+    if (video.readyState >= 2) { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
 
     video.load()
 
@@ -70,6 +76,9 @@ export default function Project() {
     })
 
     return () => {
+      clearTimeout(readyTimer)
+      video.removeEventListener('loadeddata',     onData)
+      video.removeEventListener('canplaythrough', onData)
       if (rafId) cancelAnimationFrame(rafId)
       st1.kill()
       st2.kill()

@@ -6,27 +6,31 @@ import Project from './components/Project'
 import './App.css'
 
 export default function App() {
-  const [heroComplete,  setHeroComplete]  = useState(false)
-  const [videoReady,    setVideoReady]    = useState(false)
-  const [preloaderDone, setPreloaderDone] = useState(false)
+  const [heroComplete,       setHeroComplete]       = useState(false)
+  const [heroVideoReady,     setHeroVideoReady]     = useState(false)
+  const [projectVideoReady,  setProjectVideoReady]  = useState(false)
+  const [preloaderDone,      setPreloaderDone]      = useState(false)
 
-  const handleVideoReady   = useCallback(() => setVideoReady(true),   [])
-  const handlePreloaderDone = useCallback(() => setPreloaderDone(true), [])
+  const handleHeroVideoReady    = useCallback(() => setHeroVideoReady(true),    [])
+  const handleProjectVideoReady = useCallback(() => setProjectVideoReady(true), [])
+  const handlePreloaderDone     = useCallback(() => setPreloaderDone(true),     [])
+
+  const allReady = heroVideoReady && projectVideoReady
 
   return (
     <>
       {!preloaderDone && (
         <Preloader
-          videoReady={videoReady}
+          videoReady={allReady}
           onComplete={handlePreloaderDone}
         />
       )}
       <Navbar heroComplete={heroComplete} />
       <Hero
         onHeroComplete={setHeroComplete}
-        onVideoReady={handleVideoReady}
+        onVideoReady={handleHeroVideoReady}
       />
-      <Project />
+      <Project onVideoReady={handleProjectVideoReady} />
     </>
   )
 }
