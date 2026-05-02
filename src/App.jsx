@@ -3,6 +3,8 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Preloader from './components/Preloader'
 import Project from './components/Project'
+import ProjectInfo from './components/ProjectInfo'
+// import ProjectInfo from './components/ProjectInfoMask'  // mask backup
 import './App.css'
 
 export default function App() {
@@ -31,6 +33,7 @@ export default function App() {
         onVideoReady={handleHeroVideoReady}
       />
       <Project onVideoReady={handleProjectVideoReady} />
+      <ProjectInfo />
     </>
   )
 }

@@ -243,6 +243,74 @@
   height: 500vh;
 }
 
+/* ── Project Reveal Text ────────────────────────────────────────────── */
+.project-reveal {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.pr-block { position: absolute; }
+.pr-mask  { overflow: hidden; }
+.pr-line  { display: block; font-family: 'Georgia', serif; font-weight: 400; }
+
+/* Film slate — top right */
+.pr-block--slate {
+  top: clamp(36px, 6vh, 72px);
+  right: clamp(24px, 5vw, 80px);
+}
+.pr-block--slate .pr-line {
+  font-size: clamp(9px, 0.85vw, 12px);
+  letter-spacing: 0.45em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* Narrator verse — left column, upper-mid */
+.pr-block--verse {
+  top: 50%;
+  left: clamp(24px, 6vw, 96px);
+  transform: translateY(-140%);
+}
+.pr-block--verse .pr-mask { margin-bottom: 2px; }
+.pr-block--verse .pr-line {
+  font-size: clamp(22px, 3.2vw, 46px);
+  font-style: italic;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  color: var(--charcoal);
+}
+.pr-block--verse .pr-mask:nth-child(2) .pr-line { padding-left: 1.4em; }
+.pr-block--verse .pr-mask:nth-child(3) .pr-line { padding-left: 2.6em; }
+
+/* Dominant name — massive, bottom-right-anchored */
+.pr-block--name {
+  bottom: clamp(48px, 9vh, 100px);
+  right: clamp(24px, 4vw, 64px);
+  text-align: right;
+}
+.pr-block--name .pr-line {
+  font-size: clamp(72px, 15vw, 200px);
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  color: var(--charcoal);
+  text-transform: uppercase;
+}
+
+/* Byline — bottom left */
+.pr-block--byline {
+  bottom: clamp(36px, 6vh, 72px);
+  left: clamp(24px, 6vw, 96px);
+}
+.pr-block--byline .pr-line {
+  font-size: clamp(9px, 0.85vw, 12px);
+  font-style: italic;
+  letter-spacing: 0.3em;
+  color: var(--charcoal);
+  opacity: 0.35;
+}
+
 /* ── Project Section ────────────────────────────────────────────────── */
 .project-wrapper {
   height: 300vh;
@@ -255,6 +323,7 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+  background: var(--warm-white);
 }
 
 .project-section {
@@ -419,29 +488,293 @@
 @media (max-width: 768px) {
   .project-section {
     grid-template-columns: 1fr;
-    padding: 80px 24px 60px;
-    gap: 56px;
-    overflow-y: auto;
-  }
-
-  .project-sticky {
-    height: auto;
-    position: relative;
-  }
-
-  .project-wrapper {
-    height: auto;
+    grid-template-rows: 1fr auto;
+    padding: 0 24px 48px;
+    gap: 32px;
+    align-items: end;
   }
 
   .project-copy {
     padding-right: 0;
   }
 
-  .project-gallery {
-    grid-template-rows: 180px 120px;
+  .project-name {
+    font-size: clamp(36px, 10vw, 52px);
   }
 
-  .project-name {
-    font-size: clamp(36px, 10vw, 56px);
+  .project-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 16px;
   }
+
+  .stat-num {
+    font-size: clamp(24px, 7vw, 36px);
+  }
+}
+
+/* ── ProjectInfo Carousel ───────────────────────────────────────────── */
+.pinfo-wrapper {
+  height: 900vh;
+}
+
+.pinfo-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.pinfo-track {
+  display: flex;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+}
+
+/* ── Slide ── */
+.pinfo-slide {
+  position: relative;
+  flex: 0 0 100vw;
+  width: 100vw;
+  height: 100%;
+  overflow: hidden;
+}
+
+.pinfo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.pinfo-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.18) 0%,
+    rgba(0,0,0,0)    40%,
+    rgba(0,0,0,0.72) 100%
+  );
+  z-index: 1;
+}
+
+/* Content block — bottom left */
+.pinfo-content {
+  position: absolute;
+  bottom: clamp(48px, 9vh, 96px);
+  left:   clamp(28px, 6vw, 96px);
+  z-index: 2;
+}
+
+.pinfo-label {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.pinfo-heading {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 20px;
+}
+
+.pinfo-heading-line {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(44px, 7vw, 100px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.pinfo-sub {
+  font-family: 'Georgia', serif;
+  font-size: clamp(12px, 1.1vw, 15px);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.55);
+  margin: 0;
+}
+
+/* Counter — top right */
+.pinfo-counter {
+  position: absolute;
+  top: clamp(36px, 6vh, 64px);
+  right: clamp(28px, 6vw, 96px);
+  z-index: 2;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.3);
+}
+
+/* Progress bar — bottom */
+.pinfo-progress-wrap {
+  position: absolute;
+  bottom: clamp(28px, 5vh, 48px);
+  right: clamp(28px, 6vw, 96px);
+  z-index: 2;
+  width: 120px;
+}
+
+.pinfo-progress-track {
+  width: 100%;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  overflow: hidden;
+}
+
+.pinfo-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .pinfo-wrapper   { height: 500vh; }
+  .pinfo-heading-line { font-size: clamp(36px, 11vw, 56px); }
+  .pinfo-progress-wrap { width: 80px; }
+}
+
+/* ── ProjectInfo Mask (wipe scenes) ────────────────────────────────── */
+.pmask-wrapper {
+  height: 900vh;
+}
+
+.pmask-sticky {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.pmask-slide {
+  position: absolute;
+  inset: 0;
+}
+
+/* clip container — overflow hidden is the mask, transform moves it */
+.pmask-clip {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  will-change: transform;
+}
+
+/* inner — counter-translates so image stays world-pinned */
+.pmask-inner {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.pmask-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pmask-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.15) 0%,
+    rgba(0,0,0,0)    35%,
+    rgba(0,0,0,0.7)  100%
+  );
+  z-index: 1;
+}
+
+.pmask-content {
+  position: absolute;
+  bottom: clamp(48px, 9vh, 96px);
+  left:   clamp(28px, 6vw, 96px);
+  z-index: 2;
+}
+
+.pmask-label {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 20px;
+}
+
+.pmask-heading {
+  display: flex;
+  flex-direction: column;
+  margin: 0 0 16px;
+}
+
+.pmask-heading-line {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(44px, 7vw, 100px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.pmask-sub {
+  font-family: 'Georgia', serif;
+  font-size: clamp(12px, 1.1vw, 15px);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.55);
+  margin: 0;
+}
+
+.pmask-counter {
+  position: absolute;
+  top: clamp(36px, 6vh, 64px);
+  right: clamp(28px, 6vw, 96px);
+  z-index: 2;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(255,255,255,0.3);
+}
+
+.pmask-progress {
+  position: absolute;
+  bottom: clamp(28px, 5vh, 48px);
+  right:  clamp(28px, 6vw, 96px);
+  z-index: 10;
+  width: 120px;
+  height: 1px;
+  background: rgba(255,255,255,0.2);
+  overflow: hidden;
+}
+
+.pmask-progress-fill {
+  height: 100%;
+  background: var(--gold);
+  transform-origin: left;
+  transform: scaleX(0);
+}
+
+@media (max-width: 768px) {
+  .pmask-wrapper { height: 500vh; }
+  .pmask-heading-line { font-size: clamp(36px, 11vw, 56px); }
+  .pmask-progress { width: 80px; }
 }

@@ -20,6 +20,7 @@ export default function Project({ onVideoReady }) {
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
   const videoRef   = useRef(null)
+  const revealRef  = useRef(null)
   const statsRef   = useRef([])
   const headRef    = useRef(null)
   const bodyRef    = useRef(null)
@@ -28,16 +29,31 @@ export default function Project({ onVideoReady }) {
     const wrap    = wrapRef.current
     const section = sectionRef.current
     const video   = videoRef.current
+    const lines   = revealRef.current.querySelectorAll('.pr-line')
 
     const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
     const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
     video.addEventListener('loadeddata',     onData, { once: true })
     video.addEventListener('canplaythrough', onData, { once: true })
     if (video.readyState >= 2) { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
-
     video.load()
 
-    // ── Circle reveal + video scrub — driven by wrapper scroll budget ────
+    // entry — lines wipe up in narrative order
+    gsap.set(lines, { yPercent: 115 })
+    ScrollTrigger.create({
+      trigger: wrap,
+      start: 'top 75%',
+      onEnter() {
+        gsap.to(lines, {
+          yPercent: 0,
+          duration: 1.3,
+          stagger: { each: 0.14, ease: 'power2.inOut' },
+          ease: 'power4.out',
+        })
+      },
+    })
+
+    // ── Circle reveal + video scrub ──────────────────────────────────────
     gsap.set(section, { clipPath: 'circle(0% at 50% 50%)' })
 
     let rafId = null, rafTarget = 0
@@ -52,13 +68,16 @@ export default function Project({ onVideoReady }) {
         const r = self.progress * 160
         gsap.set(section, { clipPath: `circle(${r}% at 50% 50%)` })
 
+        // lines wipe back down into masks as circle swallows them
+        gsap.set(lines, { yPercent: self.progress * 120 })
+
         const dur = video.duration || 6
         rafTarget = Math.min(self.progress, 1) * dur
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
       },
     })
 
-    // ── Content animations (fire once on enter) ──────────────────────────
+    // ── Content animations ───────────────────────────────────────────────
     gsap.set([headRef.current, bodyRef.current], { yPercent: 60, opacity: 0 })
     gsap.set(statsRef.current, { yPercent: 40, opacity: 0 })
 
@@ -88,8 +107,35 @@ export default function Project({ onVideoReady }) {
   return (
     <div ref={wrapRef} className="project-wrapper">
       <div className="project-sticky">
-        <section ref={sectionRef} className="project-section">
 
+        {/* ── Cinematic reveal text ── */}
+        <div ref={revealRef} className="project-reveal">
+
+          {/* top-right — film slate */}
+          <div className="pr-block pr-block--slate">
+            <div className="pr-mask"><span className="pr-line">Wakad · Pune · 2026</span></div>
+          </div>
+
+          {/* left — narrator lines, italic serif */}
+          <div className="pr-block pr-block--verse">
+            <div className="pr-mask"><span className="pr-line">Some addresses</span></div>
+            <div className="pr-mask"><span className="pr-line">don't just change</span></div>
+            <div className="pr-mask"><span className="pr-line">where you live.</span></div>
+          </div>
+
+          {/* dominant name — massive, right-edge */}
+          <div className="pr-block pr-block--name">
+            <div className="pr-mask"><span className="pr-line">Canopus</span></div>
+          </div>
+
+          {/* bottom-left — byline */}
+          <div className="pr-block pr-block--byline">
+            <div className="pr-mask"><span className="pr-line">by PK Group</span></div>
+          </div>
+
+        </div>
+
+        <section ref={sectionRef} className="project-section">
           <video
             ref={videoRef}
             className="project-video"
@@ -100,15 +146,12 @@ export default function Project({ onVideoReady }) {
           />
           <div className="project-overlay" />
 
-          {/* ── Left: copy ── */}
           <div className="project-copy">
             <span className="project-eyebrow">Featured Project</span>
-
             <div ref={headRef} className="project-head-wrap">
               <h2 className="project-name">PK<br />Canopus</h2>
               <p className="project-location">Wakad · Pimpri Chinchwad, Maharashtra</p>
             </div>
-
             <div ref={bodyRef} className="project-body-wrap">
               <p className="project-desc">
                 A refined residential address in the heart of Wakad.
@@ -123,22 +166,16 @@ export default function Project({ onVideoReady }) {
             </div>
           </div>
 
-          {/* ── Right: stats ── */}
           <div className="project-right">
             <div className="project-stats">
               {STATS.map((s, i) => (
-                <div
-                  key={s.label}
-                  className="stat-item"
-                  ref={el => statsRef.current[i] = el}
-                >
+                <div key={s.label} className="stat-item" ref={el => statsRef.current[i] = el}>
                   <span className="stat-num">{s.num}</span>
                   <span className="stat-label">{s.label}</span>
                 </div>
               ))}
             </div>
           </div>
-
         </section>
       </div>
     </div>
