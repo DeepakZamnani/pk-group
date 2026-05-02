@@ -116,6 +116,16 @@
   transform: translateZ(0); /* GPU compositor layer for smooth seeking */
 }
 
+/* Full black fade — animates in at end of hero scroll for seamless cut to project */
+.hero-fade {
+  position: absolute;
+  inset: 0;
+  background: #0a0a0a;
+  opacity: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
 /* Overlay gradient over video */
 .hero-overlay {
   position: absolute;
@@ -279,7 +289,7 @@
   font-style: italic;
   letter-spacing: 0.01em;
   line-height: 1.25;
-  color: var(--charcoal);
+  color: rgba(255,255,255,0.82);
 }
 .pr-block--verse .pr-mask:nth-child(2) .pr-line { padding-left: 1.4em; }
 .pr-block--verse .pr-mask:nth-child(3) .pr-line { padding-left: 2.6em; }
@@ -294,7 +304,7 @@
   font-size: clamp(72px, 15vw, 200px);
   letter-spacing: -0.01em;
   line-height: 0.9;
-  color: var(--charcoal);
+  color: rgba(255,255,255,0.88);
   text-transform: uppercase;
 }
 
@@ -307,8 +317,7 @@
   font-size: clamp(9px, 0.85vw, 12px);
   font-style: italic;
   letter-spacing: 0.3em;
-  color: var(--charcoal);
-  opacity: 0.35;
+  color: rgba(255,255,255,0.35);
 }
 
 /* ── Project Section ────────────────────────────────────────────────── */
@@ -323,7 +332,7 @@
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
-  background: var(--warm-white);
+  background: #0a0a0a;
 }
 
 .project-section {
@@ -337,7 +346,6 @@
   gap: 0;
   padding: 0 80px 80px;
   box-sizing: border-box;
-  will-change: clip-path;
 }
 
 .project-video {
@@ -347,6 +355,22 @@
   height: 100%;
   object-fit: cover;
   transform: translateZ(0) scale(1.2);
+}
+
+.project-fade {
+  position: absolute;
+  inset: 0;
+  background: #0a0a0a;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.project-exit {
+  position: absolute;
+  inset: 0;
+  background: var(--warm-white);
+  z-index: 5;
+  pointer-events: none;
 }
 
 .project-overlay {
@@ -512,6 +536,220 @@
   }
 }
 
+/* ── Video Section ──────────────────────────────────────────────────── */
+.vsec-section {
+  background: var(--warm-white);
+  padding: clamp(80px, 12vh, 140px) clamp(24px, 6vw, 96px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(36px, 6vh, 64px);
+}
+
+.vsec-rule {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(to right, var(--charcoal), rgba(26,26,26,0.06));
+  transform-origin: left;
+}
+
+/* Verse */
+.vsec-verse {
+  display: flex;
+  flex-direction: column;
+}
+
+.vsec-mask {
+  overflow: hidden;
+}
+
+.vsec-line {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(36px, 6.5vw, 96px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--charcoal);
+}
+
+.vsec-line--italic {
+  font-style: italic;
+  color: rgba(26,26,26,0.38);
+}
+
+/* Tagline */
+.vsec-tagline {
+  font-family: 'Georgia', serif;
+  font-size: clamp(18px, 2.2vw, 32px);
+  font-weight: 400;
+  color: var(--charcoal);
+  margin: 0;
+}
+
+.vsec-tagline em {
+  font-style: italic;
+  color: var(--gold);
+}
+
+/* Video card */
+.vsec-card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  cursor: pointer;
+  background: var(--charcoal);
+  border: 1px solid var(--border-light);
+  box-shadow: 0 8px 48px rgba(0,0,0,0.10);
+}
+
+.vsec-thumb {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vsec-card:hover .vsec-thumb {
+  transform: scale(1.03);
+}
+
+.vsec-veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.35);
+  transition: background 0.4s ease;
+}
+
+.vsec-card:hover .vsec-veil {
+  background: rgba(0,0,0,0.2);
+}
+
+.vsec-play-wrap {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.vsec-card:hover .vsec-play-wrap {
+  transform: translate(-50%, -50%) scale(1.06);
+}
+
+.vsec-play {
+  width: clamp(60px, 7vw, 80px);
+  height: clamp(60px, 7vw, 80px);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.vsec-play svg { width: 100%; height: 100%; }
+
+.vsec-play-label {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.55);
+  white-space: nowrap;
+}
+
+.vsec-card-meta {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: clamp(16px, 2.5vh, 28px) clamp(20px, 3vw, 40px);
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 100%);
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+.vsec-iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+@media (max-width: 768px) {
+  .vsec-line { font-size: clamp(28px, 9vw, 52px); }
+}
+
+/* ── ProjectInfo Intro Heading ──────────────────────────────────────── */
+.pinfo-intro {
+  background: #0a0a0a;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(80px, 12vh, 140px) clamp(24px, 6vw, 96px);
+  gap: clamp(28px, 4vh, 48px);
+  will-change: transform;
+}
+
+.pinfo-intro-eyebrow {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.pinfo-intro-mask {
+  overflow: hidden;
+}
+
+.pinfo-intro-heading {
+  display: flex;
+  flex-direction: column;
+}
+
+.pinfo-intro-line {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(52px, 9vw, 130px);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0;
+}
+
+.pinfo-intro-line--dim {
+  font-style: italic;
+  color: rgba(255,255,255,0.25);
+}
+
+.pinfo-intro-sub {
+  font-family: 'Georgia', serif;
+  font-size: clamp(12px, 1.1vw, 15px);
+  font-style: italic;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.3);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .pinfo-intro-line { font-size: clamp(40px, 12vw, 72px); }
+}
+
 /* ── ProjectInfo Carousel ───────────────────────────────────────────── */
 .pinfo-wrapper {
   height: 900vh;
@@ -528,18 +766,20 @@
 
 .pinfo-track {
   display: flex;
-  width: max-content;
   height: 100%;
+  width: max-content;
   will-change: transform;
+  transform: translateZ(0);
 }
 
-/* ── Slide ── */
+/* ── Slide — full bleed ── */
 .pinfo-slide {
   position: relative;
   flex: 0 0 100vw;
   width: 100vw;
   height: 100%;
   overflow: hidden;
+  transform: translateZ(0);
 }
 
 .pinfo-img {
@@ -548,89 +788,109 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  will-change: transform;
 }
 
-.pinfo-img-overlay {
+.pinfo-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.18) 0%,
-    rgba(0,0,0,0)    40%,
-    rgba(0,0,0,0.72) 100%
+    135deg,
+    rgba(0,0,0,0.55) 0%,
+    rgba(0,0,0,0.1)  50%,
+    rgba(0,0,0,0.45) 100%
   );
-  z-index: 1;
 }
 
-/* Content block — bottom left */
-.pinfo-content {
+/* ── Rotated edge label ── */
+.pinfo-edge-label {
   position: absolute;
-  bottom: clamp(48px, 9vh, 96px);
-  left:   clamp(28px, 6vw, 96px);
+  top: 50%;
+  font-family: 'Georgia', serif;
+  font-size: 10px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  white-space: nowrap;
   z-index: 2;
 }
 
-.pinfo-label {
-  display: block;
+.pinfo-edge-label--right {
+  right: 0;
+  transform: translateX(calc(50% - 20px)) translateY(-50%) rotate(90deg);
+}
+
+.pinfo-edge-label--left {
+  left: 0;
+  transform: translateX(calc(-50% + 20px)) translateY(-50%) rotate(-90deg);
+}
+
+/* ── Counter ── */
+.pinfo-counter {
+  position: absolute;
+  top: clamp(32px, 5vh, 56px);
   font-family: 'Georgia', serif;
-  font-size: 11px;
-  letter-spacing: 0.38em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 20px;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: rgba(255,255,255,0.3);
+  z-index: 2;
+}
+.pinfo-counter--left  { left:  clamp(40px, 6vw, 80px); }
+.pinfo-counter--right { right: clamp(40px, 6vw, 80px); }
+
+/* ── Heading block ── */
+.pinfo-text {
+  position: absolute;
+  bottom: clamp(48px, 9vh, 88px);
+  z-index: 2;
+  max-width: 55vw;
+  padding: clamp(20px, 3vw, 40px);
+}
+
+.pinfo-text--left  { left:  clamp(40px, 6vw, 80px); }
+.pinfo-text--right { right: clamp(40px, 6vw, 80px); text-align: right; }
+
+.pinfo-heading-mask {
+  overflow: hidden;
 }
 
 .pinfo-heading {
   display: flex;
   flex-direction: column;
-  margin: 0 0 20px;
+  margin: 0 0 16px;
 }
 
 .pinfo-heading-line {
   display: block;
   font-family: 'Georgia', serif;
-  font-size: clamp(44px, 7vw, 100px);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: -0.01em;
+  font-size: clamp(48px, 7.5vw, 110px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  font-style: normal;
   color: #fff;
 }
 
 .pinfo-sub {
   font-family: 'Georgia', serif;
-  font-size: clamp(12px, 1.1vw, 15px);
-  font-style: italic;
-  letter-spacing: 0.08em;
-  color: rgba(255,255,255,0.55);
+  font-size: clamp(11px, 1vw, 14px);
+  font-style: normal;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
   margin: 0;
 }
 
-/* Counter — top right */
-.pinfo-counter {
+/* ── Progress ── */
+.pinfo-progress {
   position: absolute;
-  top: clamp(36px, 6vh, 64px);
-  right: clamp(28px, 6vw, 96px);
-  z-index: 2;
-  font-family: 'Georgia', serif;
-  font-size: 11px;
-  letter-spacing: 0.2em;
-  color: rgba(255,255,255,0.3);
-}
-
-/* Progress bar — bottom */
-.pinfo-progress-wrap {
-  position: absolute;
-  bottom: clamp(28px, 5vh, 48px);
-  right: clamp(28px, 6vw, 96px);
-  z-index: 2;
-  width: 120px;
-}
-
-.pinfo-progress-track {
-  width: 100%;
+  bottom: clamp(28px, 4vh, 44px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: 160px;
   height: 1px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(255,255,255,0.15);
   overflow: hidden;
 }
 
@@ -643,11 +903,10 @@
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-  .pinfo-wrapper      { height: 700vh; }
-  .pinfo-heading-line { font-size: clamp(32px, 10vw, 52px); }
-  .pinfo-progress-wrap { width: 80px; }
-  .pinfo-content      { left: 24px; bottom: 48px; }
-  .pinfo-counter      { top: 28px; right: 24px; }
+  .pinfo-wrapper { height: 700vh; }
+  .pinfo-text    { max-width: 80vw; }
+  .pinfo-heading-line { font-size: clamp(36px, 10vw, 56px); }
+  .pinfo-edge-label { display: none; }
 }
 
 /* ── ProjectInfo Mask (wipe scenes) ────────────────────────────────── */

@@ -13,23 +13,21 @@ const STATS = [
 
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
-export default function Project({ onVideoReady }) {
+export default function Project({ onVideoReady, onLeave }) {
   const [videoSrc] = useState(() =>
     isMobile() ? '/drone-mobile.mp4' : '/drone-start.mp4'
   )
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
   const videoRef   = useRef(null)
-  const revealRef  = useRef(null)
+  const fadeRef    = useRef(null)
+  const exitRef    = useRef(null)
   const statsRef   = useRef([])
   const headRef    = useRef(null)
   const bodyRef    = useRef(null)
 
   useEffect(() => {
-    const wrap    = wrapRef.current
-    const section = sectionRef.current
-    const video   = videoRef.current
-    const lines   = revealRef.current.querySelectorAll('.pr-line')
+    const video = videoRef.current
 
     const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
     const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
@@ -38,46 +36,38 @@ export default function Project({ onVideoReady }) {
     if (video.readyState >= 2) { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
     video.load()
 
-    // entry — lines wipe up in narrative order
-    gsap.set(lines, { yPercent: 115 })
-    ScrollTrigger.create({
-      trigger: wrap,
-      start: 'top 75%',
-      onEnter() {
-        gsap.to(lines, {
-          yPercent: 0,
-          duration: 1.3,
-          stagger: { each: 0.14, ease: 'power2.inOut' },
-          ease: 'power4.out',
-        })
-      },
-    })
-
-    // ── Circle reveal + video scrub ──────────────────────────────────────
-    gsap.set(section, { clipPath: 'circle(0% at 50% 50%)' })
+    // start fully black — fades out as scroll begins
+    gsap.set(fadeRef.current, { opacity: 1 })
+    gsap.set(exitRef.current, { opacity: 0 })
 
     let rafId = null, rafTarget = 0
     const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
 
+    const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
+    const setFadeOut = gsap.quickSetter(exitRef.current, 'opacity')
+
     const st1 = ScrollTrigger.create({
-      trigger: wrap,
+      trigger: wrapRef.current,
       start: 'top top',
       end: 'bottom bottom',
       scrub: 0.8,
+      onLeave() { onLeave?.() },
       onUpdate(self) {
-        const r = self.progress * 160
-        gsap.set(section, { clipPath: `circle(${r}% at 50% 50%)` })
+        const p = self.progress
 
-        // lines wipe back down into masks as circle swallows them
-        gsap.set(lines, { yPercent: self.progress * 120 })
+        // fade from black at entry (0 → 0.15)
+        setFadeIn(Math.max(0, 1 - p / 0.15))
+
+        // flash to white at exit (0.82 → 1.0)
+        setFadeOut(Math.max(0, (p - 0.82) / 0.18))
 
         const dur = video.duration || 6
-        rafTarget = Math.min(self.progress, 1) * dur
+        rafTarget = Math.min(p, 1) * dur
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
       },
     })
 
-    // ── Content animations ───────────────────────────────────────────────
+    // content animations
     gsap.set([headRef.current, bodyRef.current], { yPercent: 60, opacity: 0 })
     gsap.set(statsRef.current, { yPercent: 40, opacity: 0 })
 
@@ -85,12 +75,9 @@ export default function Project({ onVideoReady }) {
       trigger: headRef.current,
       start: 'top 80%',
       onEnter() {
-        gsap.to(headRef.current, { yPercent: 0, opacity: 1, duration: 1, ease: 'power3.out' })
-        gsap.to(bodyRef.current, { yPercent: 0, opacity: 1, duration: 1, delay: 0.15, ease: 'power3.out' })
-        gsap.to(statsRef.current, {
-          yPercent: 0, opacity: 1, duration: 0.8,
-          stagger: 0.08, delay: 0.3, ease: 'power3.out',
-        })
+        gsap.to(headRef.current,  { yPercent: 0, opacity: 1, duration: 1, ease: 'power3.out' })
+        gsap.to(bodyRef.current,  { yPercent: 0, opacity: 1, duration: 1, delay: 0.15, ease: 'power3.out' })
+        gsap.to(statsRef.current, { yPercent: 0, opacity: 1, duration: 0.8, stagger: 0.08, delay: 0.3, ease: 'power3.out' })
       },
     })
 
@@ -107,34 +94,6 @@ export default function Project({ onVideoReady }) {
   return (
     <div ref={wrapRef} className="project-wrapper">
       <div className="project-sticky">
-
-        {/* ── Cinematic reveal text ── */}
-        <div ref={revealRef} className="project-reveal">
-
-          {/* top-right — film slate */}
-          <div className="pr-block pr-block--slate">
-            <div className="pr-mask"><span className="pr-line">Wakad · Pune · 2026</span></div>
-          </div>
-
-          {/* left — narrator lines, italic serif */}
-          <div className="pr-block pr-block--verse">
-            <div className="pr-mask"><span className="pr-line">Some addresses</span></div>
-            <div className="pr-mask"><span className="pr-line">don't just change</span></div>
-            <div className="pr-mask"><span className="pr-line">where you live.</span></div>
-          </div>
-
-          {/* dominant name — massive, right-edge */}
-          <div className="pr-block pr-block--name">
-            <div className="pr-mask"><span className="pr-line">Canopus</span></div>
-          </div>
-
-          {/* bottom-left — byline */}
-          <div className="pr-block pr-block--byline">
-            <div className="pr-mask"><span className="pr-line">by PK Group</span></div>
-          </div>
-
-        </div>
-
         <section ref={sectionRef} className="project-section">
           <video
             ref={videoRef}
@@ -145,6 +104,8 @@ export default function Project({ onVideoReady }) {
             preload="auto"
           />
           <div className="project-overlay" />
+          <div ref={fadeRef}  className="project-fade" />
+          <div ref={exitRef}  className="project-exit" />
 
           <div className="project-copy">
             <span className="project-eyebrow">Featured Project</span>

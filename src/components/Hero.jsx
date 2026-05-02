@@ -18,6 +18,7 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
   const groupRef      = useRef(null)
   const scrollHintRef = useRef(null)
   const progressRef   = useRef(null)
+  const fadeRef       = useRef(null)
 
   useEffect(() => {
     const wrap  = wrapRef.current
@@ -72,6 +73,8 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
       .to(pk,  { yPercent: -105, ease: 'power4.in', duration: 0.12 }, 0.82)
 
       .to(video, { filter: 'brightness(1)', duration: 0.08, ease: 'power2.in' }, 0.92)
+      // fade to black — dissolves seamlessly into the dark project section
+      .to(fadeRef.current, { opacity: 1, duration: 0.10, ease: 'power2.in' }, 0.90)
 
     // ── ScrollTrigger (CSS sticky handles pin) ────────────────────────────
     createdSTs.push(ScrollTrigger.create({
@@ -131,6 +134,8 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
               <span ref={groupRef} className="hero-title-group">Group</span>
             </div>
           </div>
+
+          <div ref={fadeRef} className="hero-fade" />
 
           <div ref={scrollHintRef} className="scroll-hint">
             <span>Scroll</span>

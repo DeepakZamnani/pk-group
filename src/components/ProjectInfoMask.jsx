@@ -18,7 +18,7 @@ const SLIDES = [
     sub:     'Resort-style swimming pool',
   },
   {
-    img:     '/carousel/pool-night.jpg',
+    img:     '/carousel/building-2.jpg',
     label:   '03 — Evenings',
     heading: 'The city\nbelow you.',
     sub:     'Poolside lounge & cabana',
@@ -30,7 +30,7 @@ const SLIDES = [
     sub:     'Professional-grade fitness studio',
   },
   {
-    img:     '/carousel/tennis.jpg',
+    img:     '/carousel/tennis-court.jpg',
     label:   '05 — Sport',
     heading: 'Play harder.\nLive better.',
     sub:     'Padel & tennis court',
