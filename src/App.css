@@ -643,9 +643,11 @@
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-  .pinfo-wrapper   { height: 500vh; }
-  .pinfo-heading-line { font-size: clamp(36px, 11vw, 56px); }
+  .pinfo-wrapper      { height: 700vh; }
+  .pinfo-heading-line { font-size: clamp(32px, 10vw, 52px); }
   .pinfo-progress-wrap { width: 80px; }
+  .pinfo-content      { left: 24px; bottom: 48px; }
+  .pinfo-counter      { top: 28px; right: 24px; }
 }
 
 /* ── ProjectInfo Mask (wipe scenes) ────────────────────────────────── */

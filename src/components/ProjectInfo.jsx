@@ -60,37 +60,42 @@ export default function ProjectInfo() {
   const trackRef = useRef(null)
 
   useEffect(() => {
-    const wrap     = wrapRef.current
-    const track    = trackRef.current
-    const n        = SLIDES.length
+    const wrap  = wrapRef.current
+    const track = trackRef.current
+    const n     = SLIDES.length
+    const vw    = () => window.visualViewport?.width ?? window.innerWidth
 
     const tl = gsap.to(track, {
-      x: -(n - 1) * window.innerWidth,
+      x:    -(n - 1) * vw(),
       ease: 'none',
       paused: true,
     })
 
-    const fill = document.getElementById('pinfo-fill')
+    const fill    = document.getElementById('pinfo-fill')
+    const setFill = fill ? gsap.quickSetter(fill, 'scaleX') : null
 
     const st = ScrollTrigger.create({
-      trigger: wrap,
-      start:   'top top',
-      end:     'bottom bottom',
-      scrub:   1,
+      trigger:   wrap,
+      start:     'top top',
+      end:       'bottom bottom',
+      scrub:     0.5,
       animation: tl,
-      onUpdate(self) {
-        if (fill) gsap.set(fill, { scaleX: self.progress })
-      },
+      onUpdate(self) { setFill?.(self.progress) },
     })
 
     const onResize = () => {
-      tl.vars.x = -(n - 1) * window.innerWidth
+      tl.vars.x = -(n - 1) * vw()
       tl.invalidate()
       ScrollTrigger.refresh()
     }
-    window.addEventListener('resize', onResize)
+    window.visualViewport?.addEventListener('resize', onResize)
+    window.addEventListener('orientationchange', onResize)
 
-    return () => { st.kill(); window.removeEventListener('resize', onResize) }
+    return () => {
+      st.kill()
+      window.visualViewport?.removeEventListener('resize', onResize)
+      window.removeEventListener('orientationchange', onResize)
+    }
   }, [])
 
   return (
@@ -101,7 +106,7 @@ export default function ProjectInfo() {
           {SLIDES.map((s, i) => (
             <div key={s.label} className="pinfo-slide">
 
-              <img src={s.img} alt={s.sub} className="pinfo-img" />
+              <img src={s.img} alt={s.sub} className="pinfo-img" loading={i === 0 ? 'eager' : 'lazy'} />
               <div className="pinfo-img-overlay" />
 
               <div className="pinfo-content">
