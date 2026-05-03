@@ -76,7 +76,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
         setFadeOut(Math.max(0, (p - (mobile ? 0.95 : 0.88)) / (mobile ? 0.05 : 0.12)))
 
         const dur = video.duration || 6
-        rafTarget = Math.min(mobile ? p / 0.4 : p, 1) * dur
+        rafTarget = Math.min(mobile ? p / 0.2 : p, 1) * dur
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
       },
     })

@@ -82,7 +82,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       animation: tl,
       onUpdate(self) {
         const dur = video.duration || 8
-        rafTarget = Math.min(self.progress / 0.3, 1) * dur
+        rafTarget = Math.min(self.progress / (mobile ? 0.15 : 0.3), 1) * dur
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
         gsap.set(bar, { scaleX: self.progress })
       },
