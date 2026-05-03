@@ -13,9 +13,11 @@ const STATS = [
 
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
-export default function Project({ onVideoReady, onLeave }) {
+export default function Project({ onVideoReady, onLeave, onProgress }) {
   const [videoSrc] = useState(() =>
-    isMobile() ? '/drone-mobile.mp4' : '/drone-start.mp4'
+    isMobile()
+      ? 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/drone-mobile.mp4'
+      : 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/drone-start.mp4'
   )
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
@@ -34,6 +36,17 @@ export default function Project({ onVideoReady, onLeave }) {
     video.addEventListener('loadeddata',     onData, { once: true })
     video.addEventListener('canplaythrough', onData, { once: true })
     if (video.readyState >= 2) { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
+
+    const onProgressEv = () => {
+      try {
+        if (video.buffered.length && video.duration) {
+          const p = video.buffered.end(video.buffered.length - 1) / video.duration
+          if (onProgress) onProgress(Math.min(p, 1))
+        }
+      } catch (_) {}
+    }
+    video.addEventListener('progress', onProgressEv)
+
     video.load()
 
     // start fully black — fades out as scroll begins
@@ -50,16 +63,16 @@ export default function Project({ onVideoReady, onLeave }) {
       trigger: wrapRef.current,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.8,
+      scrub: 0.2,
       onLeave() { onLeave?.() },
       onUpdate(self) {
         const p = self.progress
 
-        // fade from black at entry (0 → 0.15)
-        setFadeIn(Math.max(0, 1 - p / 0.15))
+        // fade from black at entry (0 → 0.08)
+        setFadeIn(Math.max(0, 1 - p / 0.08))
 
-        // flash to white at exit (0.82 → 1.0)
-        setFadeOut(Math.max(0, (p - 0.82) / 0.18))
+        // flash to white at exit (0.88 → 1.0)
+        setFadeOut(Math.max(0, (p - 0.88) / 0.12))
 
         const dur = video.duration || 6
         rafTarget = Math.min(p, 1) * dur
@@ -85,6 +98,7 @@ export default function Project({ onVideoReady, onLeave }) {
       clearTimeout(readyTimer)
       video.removeEventListener('loadeddata',     onData)
       video.removeEventListener('canplaythrough', onData)
+      video.removeEventListener('progress',       onProgressEv)
       if (rafId) cancelAnimationFrame(rafId)
       st1.kill()
       st2.kill()
@@ -92,7 +106,7 @@ export default function Project({ onVideoReady, onLeave }) {
   }, [])
 
   return (
-    <div ref={wrapRef} className="project-wrapper">
+    <div ref={wrapRef} id="projects" className="project-wrapper">
       <div className="project-sticky">
         <section ref={sectionRef} className="project-section">
           <video

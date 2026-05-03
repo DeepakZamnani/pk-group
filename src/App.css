@@ -1,3 +1,65 @@
+/* ── Footer ─────────────────────────────────────────────────────────── */
+.footer {
+  background: var(--charcoal);
+  padding: clamp(48px, 8vh, 80px) clamp(24px, 6vw, 96px);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding-top: clamp(32px, 5vh, 56px);
+}
+
+.footer-logo {
+  font-family: 'Georgia', serif;
+  font-size: 18px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.footer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: center;
+}
+
+.footer-details p,
+.footer-details a {
+  font-family: 'Georgia', serif;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.4);
+  text-decoration: none;
+}
+
+.footer-details a:hover {
+  color: var(--gold);
+}
+
+.footer-copy {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.2);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .footer-details { text-align: left; }
+}
+
 /* Preloader */
 .preloader {
   position: fixed;
@@ -35,6 +97,13 @@
   transform: scaleX(0);
 }
 
+.preloader-pct {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: rgba(26,26,26,0.35);
+}
+
 /* Navbar — hidden until hero animation completes */
 .navbar {
   position: fixed;
@@ -47,13 +116,21 @@
   justify-content: space-between;
   padding: 0 48px;
   height: 72px;
-  background: rgba(250, 248, 244, 0.92);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border-light);
+  background: transparent;
   opacity: 0;
   transform: translateY(-100%);
-  transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease;
+  transition: opacity 0.6s ease, transform 0.6s ease, color 0.4s ease;
   pointer-events: none;
+}
+
+/* Subtle top gradient — ensures readability on dark sections without a bg */
+.navbar--dark::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.35) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .navbar.visible {
@@ -62,13 +139,36 @@
   pointer-events: auto;
 }
 
-.navbar-logo {
-  font-family: 'Georgia', serif;
-  font-size: 18px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
+/* Dark section — white text */
+.navbar--dark .navbar-logo,
+.navbar--dark .navbar-links a {
+  color: rgba(255,255,255,0.85);
+}
+
+/* Light section — charcoal text */
+.navbar--light .navbar-logo,
+.navbar--light .navbar-links a {
   color: var(--charcoal);
-  text-transform: uppercase;
+}
+
+.navbar-logo {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.navbar-logo:hover {
+  opacity: 0.75;
+}
+
+.navbar--dark .navbar-logo {
+  filter: brightness(0) invert(1);
+}
+
+.navbar--light .navbar-logo {
+  filter: none;
 }
 
 .navbar-links {
@@ -82,10 +182,9 @@
   font-size: 13px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--charcoal);
   text-decoration: none;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+  opacity: 0.75;
+  transition: opacity 0.2s, color 0.4s ease;
 }
 
 .navbar-links a:hover {
@@ -185,6 +284,10 @@
 
   .navbar-links {
     display: none;
+  }
+
+  .navbar--dark::before {
+    background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%);
   }
 
   .hero-title-pk {

@@ -6,9 +6,11 @@ gsap.registerPlugin(ScrollTrigger)
 
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
-export default function Hero({ onHeroComplete, onVideoReady }) {
+export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const [videoSrc] = useState(() =>
-    isMobile() ? '/HeroVideo-mobile.mp4' : '/HeroVideo.mp4'
+    isMobile()
+      ? 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/HeroVideo-mobile.mp4'
+      : 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/HeroVideo.mp4'
   )
   const wrapRef       = useRef(null)
   const stickyRef     = useRef(null)
@@ -41,6 +43,17 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
     video.addEventListener('loadeddata',     onData, { once: true })
     video.addEventListener('canplaythrough', onData, { once: true })
     if (video.readyState >= 2) { clearTimeout(readyTimer); signalReady() }
+
+    const onProgress = () => {
+      try {
+        if (video.buffered.length && video.duration) {
+          const p = video.buffered.end(video.buffered.length - 1) / video.duration
+          if (onProgress) onProgress(Math.min(p, 1))
+        }
+      } catch (_) {}
+    }
+    video.addEventListener('progress', onProgress)
+
     video.load()
 
     // rAF-throttled video scrub
@@ -60,32 +73,32 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
     // 0.82–0.92  "PK" wipes back up out of frame (reverse stagger)
     // 0.92       overlay clears
 
-    tl.to({}, { duration: 0.5 })
+    // compressed into 0–0.65 of scroll — same beats, 35% tighter
+    tl.to({}, { duration: 0.3 })
 
-      .to(video, { filter: 'brightness(0.65)', duration: 0.10, ease: 'power2.out' }, 0.48)
+      .to(video, { filter: 'brightness(0.65)', duration: 0.06, ease: 'power2.out' }, 0.28)
 
-      // enter — slide up from mask
-      .to(pk,  { yPercent: 0, ease: 'power4.out', duration: 0.12 }, 0.50)
-      .to(grp, { yPercent: 0, ease: 'power4.out', duration: 0.11 }, 0.55)
+      // enter — snap up fast
+      .to(pk,  { yPercent: 0, ease: 'power4.out', duration: 0.07 }, 0.30)
+      .to(grp, { yPercent: 0, ease: 'power4.out', duration: 0.06 }, 0.34)
 
-      // exit — slide back up out of mask (reverse stagger: grp first)
-      .to(grp, { yPercent: -105, ease: 'power4.in', duration: 0.10 }, 0.78)
-      .to(pk,  { yPercent: -105, ease: 'power4.in', duration: 0.12 }, 0.82)
+      // hold, then exit sharply
+      .to(grp, { yPercent: -105, ease: 'power4.in', duration: 0.06 }, 0.55)
+      .to(pk,  { yPercent: -105, ease: 'power4.in', duration: 0.07 }, 0.58)
 
-      .to(video, { filter: 'brightness(1)', duration: 0.08, ease: 'power2.in' }, 0.92)
-      // fade to black — dissolves seamlessly into the dark project section
-      .to(fadeRef.current, { opacity: 1, duration: 0.10, ease: 'power2.in' }, 0.90)
+      .to(video, { filter: 'brightness(1)', duration: 0.05, ease: 'power2.in' }, 0.64)
+      .to(fadeRef.current, { opacity: 1, duration: 0.06, ease: 'power2.in' }, 0.62)
 
-    // ── ScrollTrigger (CSS sticky handles pin) ────────────────────────────
+    // ── ScrollTrigger ─────────────────────────────────────────────────────
     createdSTs.push(ScrollTrigger.create({
       trigger: wrap,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: 0.5,
+      scrub: 0.2,
       animation: tl,
       onUpdate(self) {
         const dur = video.duration || 8
-        rafTarget = Math.min(self.progress / 0.5, 1) * dur
+        rafTarget = Math.min(self.progress / 0.3, 1) * dur
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
         gsap.set(bar, { scaleX: self.progress })
       },
@@ -104,6 +117,7 @@ export default function Hero({ onHeroComplete, onVideoReady }) {
       clearTimeout(readyTimer)
       video.removeEventListener('loadeddata',     onData)
       video.removeEventListener('canplaythrough', onData)
+      video.removeEventListener('progress',       onProgress)
       if (rafId) cancelAnimationFrame(rafId)
       createdSTs.forEach(st => st.kill())
     }

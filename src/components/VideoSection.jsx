@@ -38,7 +38,14 @@ const VideoSection = forwardRef(function VideoSection(_, ref) {
 
     tlRef.current = tl
 
-    return () => tl.kill()
+    // autoplay when card is 60% visible
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setPlaying(true) },
+      { threshold: 0.6 }
+    )
+    if (cardRef.current) obs.observe(cardRef.current)
+
+    return () => { tl.kill(); obs.disconnect() }
   }, [])
 
   // expose snap() — scrolls to section and plays animation immediately
@@ -50,7 +57,7 @@ const VideoSection = forwardRef(function VideoSection(_, ref) {
   }))
 
   return (
-    <section ref={sectionRef} className="vsec-section">
+    <section ref={sectionRef} id="vision" className="vsec-section">
 
       <div ref={ruleRef} className="vsec-rule" />
 
@@ -71,7 +78,7 @@ const VideoSection = forwardRef(function VideoSection(_, ref) {
         Ours changes <em>how.</em>
       </p>
 
-      <div ref={cardRef} className="vsec-card" onClick={() => setPlaying(true)}>
+      <div ref={cardRef} className="vsec-card" onClick={() => setPlaying(true)} style={{ cursor: playing ? 'default' : 'pointer' }}>
         {playing ? (
           <iframe
             className="vsec-iframe"

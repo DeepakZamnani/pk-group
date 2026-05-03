@@ -1,37 +1,40 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 
-export default function Preloader({ videoReady, onComplete }) {
+export default function Preloader({ videoReady, loadProgress, onComplete }) {
   const wrapRef = useRef(null)
   const barRef  = useRef(null)
   const textRef = useRef(null)
+  const pctRef  = useRef(null)
 
-  // Lock body scroll so user can't scroll past the hero while loading
   useEffect(() => {
     document.body.style.overflow = 'hidden'
     return () => { document.body.style.overflow = '' }
   }, [])
 
-  // Entrance
   useEffect(() => {
     gsap.fromTo(textRef.current,
       { opacity: 0, y: 20 },
       { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.2 }
     )
-    gsap.to(barRef.current, {
-      scaleX: 0.55, duration: 1.8, ease: 'power1.inOut',
-      yoyo: true, repeat: -1,
-    })
+    gsap.set(barRef.current, { scaleX: 0 })
   }, [])
 
-  // Exit when video is ready
+  // Drive bar from real CDN buffer progress
+  useEffect(() => {
+    const p = Math.min(loadProgress ?? 0, 0.92) // cap at 92% until truly ready
+    gsap.to(barRef.current, { scaleX: p, duration: 0.4, ease: 'power2.out' })
+    if (pctRef.current) pctRef.current.textContent = `${Math.round(p * 100)}%`
+  }, [loadProgress])
+
+  // Fill to 100% and exit
   useEffect(() => {
     if (!videoReady) return
     document.body.style.overflow = ''
-    gsap.killTweensOf(barRef.current)
     gsap.to(barRef.current, {
-      scaleX: 1, duration: 0.3, ease: 'power2.out',
+      scaleX: 1, duration: 0.35, ease: 'power2.out',
       onComplete() {
+        if (pctRef.current) pctRef.current.textContent = '100%'
         gsap.to(wrapRef.current, {
           yPercent: -100,
           duration: 1,
@@ -48,6 +51,7 @@ export default function Preloader({ videoReady, onComplete }) {
       <div className="preloader-track">
         <div ref={barRef} className="preloader-bar" />
       </div>
+      <span ref={pctRef} className="preloader-pct">0%</span>
     </div>
   )
 }

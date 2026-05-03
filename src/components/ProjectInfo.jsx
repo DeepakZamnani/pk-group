@@ -152,7 +152,7 @@ export default function ProjectInfo() {
 
   return (
     <>
-    <div ref={introRef} className="pinfo-intro" style={{ height: '100vh' }}>
+    <div ref={introRef} id="about" className="pinfo-intro" style={{ height: '100vh' }}>
       <span className="pinfo-intro-eyebrow">Amenities</span>
       <div className="pinfo-intro-heading">
         <div className="pinfo-intro-mask">
