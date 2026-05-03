@@ -23,20 +23,19 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const fadeRef       = useRef(null)
 
   useEffect(() => {
-    const wrap  = wrapRef.current
-    const video = videoRef.current
-    const title = titleRef.current
-    const pk    = pkRef.current
-    const grp   = groupRef.current
-    const hint  = scrollHintRef.current
-    const bar   = progressRef.current
+    const wrap    = wrapRef.current
+    const video   = videoRef.current
+    const title   = titleRef.current
+    const pk      = pkRef.current
+    const grp     = groupRef.current
+    const hint    = scrollHintRef.current
+    const bar     = progressRef.current
+    const mobile  = isMobile()
 
-    // Text starts hidden below each line's overflow:hidden mask
     gsap.set(title, { xPercent: -50, yPercent: -50 })
     gsap.set(pk,  { yPercent: 105 })
     gsap.set(grp, { yPercent: 105 })
 
-    // Video ready → preloader exit
     const signalReady = () => { if (onVideoReady) onVideoReady() }
     const readyTimer  = setTimeout(signalReady, 6000)
     const onData = () => { clearTimeout(readyTimer); signalReady() }
@@ -44,7 +43,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
     video.addEventListener('canplaythrough', onData, { once: true })
     if (video.readyState >= 2) { clearTimeout(readyTimer); signalReady() }
 
-    const onProgress = () => {
+    const onProgressEv = () => {
       try {
         if (video.buffered.length && video.duration) {
           const p = video.buffered.end(video.buffered.length - 1) / video.duration
@@ -52,44 +51,29 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
         }
       } catch (_) {}
     }
-    video.addEventListener('progress', onProgress)
+    video.addEventListener('progress', onProgressEv)
 
     video.load()
 
-    // rAF-throttled video scrub
     let rafId = null, rafTarget = 0
-    const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
+    const seekVideo = () => {
+      if (mobile && video.fastSeek) video.fastSeek(rafTarget)
+      else video.currentTime = rafTarget
+      rafId = null
+    }
 
     const createdSTs = []
     const tl = gsap.timeline({ paused: true })
 
-    // ── Timeline ──────────────────────────────────────────────────────────
-    // 0.00–0.50  video scrubs
-    // 0.48       overlay dims slightly for text legibility
-    // 0.50–0.60  "PK" wipes up into view (line mask)
-    // 0.55–0.64  "Group" wipes up into view (staggered)
-    // 0.64–0.78  text holds — clean read
-    // 0.78–0.86  "Group" wipes back up out of frame
-    // 0.82–0.92  "PK" wipes back up out of frame (reverse stagger)
-    // 0.92       overlay clears
-
-    // compressed into 0–0.65 of scroll — same beats, 35% tighter
     tl.to({}, { duration: 0.3 })
-
       .to(video, { filter: 'brightness(0.65)', duration: 0.06, ease: 'power2.out' }, 0.28)
-
-      // enter — snap up fast
       .to(pk,  { yPercent: 0, ease: 'power4.out', duration: 0.07 }, 0.30)
       .to(grp, { yPercent: 0, ease: 'power4.out', duration: 0.06 }, 0.34)
-
-      // hold, then exit sharply
       .to(grp, { yPercent: -105, ease: 'power4.in', duration: 0.06 }, 0.55)
       .to(pk,  { yPercent: -105, ease: 'power4.in', duration: 0.07 }, 0.58)
-
       .to(video, { filter: 'brightness(1)', duration: 0.05, ease: 'power2.in' }, 0.64)
-      .to(fadeRef.current, { opacity: 1, duration: 0.06, ease: 'power2.in' }, 0.62)
+      .to(fadeRef.current, { opacity: 1, duration: mobile ? 0.04 : 0.06, ease: 'power2.in' }, mobile ? 0.65 : 0.62)
 
-    // ── ScrollTrigger ─────────────────────────────────────────────────────
     createdSTs.push(ScrollTrigger.create({
       trigger: wrap,
       start: 'top top',
@@ -117,7 +101,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       clearTimeout(readyTimer)
       video.removeEventListener('loadeddata',     onData)
       video.removeEventListener('canplaythrough', onData)
-      video.removeEventListener('progress',       onProgress)
+      video.removeEventListener('progress',       onProgressEv)
       if (rafId) cancelAnimationFrame(rafId)
       createdSTs.forEach(st => st.kill())
     }

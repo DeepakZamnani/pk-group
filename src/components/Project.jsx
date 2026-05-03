@@ -29,7 +29,8 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
   const bodyRef    = useRef(null)
 
   useEffect(() => {
-    const video = videoRef.current
+    const video  = videoRef.current
+    const mobile = isMobile()
 
     const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
     const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
@@ -49,12 +50,15 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
 
     video.load()
 
-    // start fully black — fades out as scroll begins
     gsap.set(fadeRef.current, { opacity: 1 })
     gsap.set(exitRef.current, { opacity: 0 })
 
     let rafId = null, rafTarget = 0
-    const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
+    const seekVideo = () => {
+      if (mobile && video.fastSeek) video.fastSeek(rafTarget)
+      else video.currentTime = rafTarget
+      rafId = null
+    }
 
     const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
     const setFadeOut = gsap.quickSetter(exitRef.current, 'opacity')
@@ -68,14 +72,11 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       onUpdate(self) {
         const p = self.progress
 
-        // fade from black at entry (0 → 0.08)
-        setFadeIn(Math.max(0, 1 - p / 0.08))
-
-        // flash to white at exit (0.88 → 1.0)
-        setFadeOut(Math.max(0, (p - 0.88) / 0.12))
+        setFadeIn(Math.max(0, 1 - p / (mobile ? 0.05 : 0.08)))
+        setFadeOut(Math.max(0, (p - (mobile ? 0.95 : 0.88)) / (mobile ? 0.05 : 0.12)))
 
         const dur = video.duration || 6
-        rafTarget = Math.min(p, 1) * dur
+        rafTarget = Math.min(mobile ? p / 0.4 : p, 1) * dur
         if (!rafId) rafId = requestAnimationFrame(seekVideo)
       },
     })

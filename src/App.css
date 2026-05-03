@@ -277,8 +277,8 @@
 
 /* ── Mobile ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .hero-wrapper    { height: 300vh; }
-  .project-wrapper { height: 120vh; }
+  .hero-wrapper    { height: 120vh; }
+  .project-wrapper { height: 110vh; }
 
   .navbar {
     padding: 0 20px;
