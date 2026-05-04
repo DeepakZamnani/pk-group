@@ -4,7 +4,9 @@ import Hero from './components/Hero'
 import Preloader from './components/Preloader'
 import Project from './components/Project'
 import VideoSection from './components/VideoSection'
+import About from './components/About'
 import ProjectInfo from './components/ProjectInfo'
+import Footer from './components/Footer'
 // import ProjectInfo from './components/ProjectInfoMask'  // mask backup
 import './App.css'
 
@@ -58,16 +60,8 @@ export default function App() {
       />
       <VideoSection ref={vsecRef} />
       <ProjectInfo />
-      <footer id="contact" className="footer">
-        <div className="footer-inner">
-          <span className="footer-logo">PK Group</span>
-          <div className="footer-details">
-            <p>Wakad · Pimpri Chinchwad, Maharashtra</p>
-            <a href="mailto:info@pkgroup.in">info@pkgroup.in</a>
-          </div>
-          <p className="footer-copy">© 2026 PK Group. All rights reserved.</p>
-        </div>
-      </footer>
+      <About />
+      <Footer />
     </>
   )
 }

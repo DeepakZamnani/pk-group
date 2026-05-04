@@ -72,8 +72,8 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       onUpdate(self) {
         const p = self.progress
 
-        setFadeIn(Math.max(0, 1 - p / (mobile ? 0.05 : 0.08)))
-        setFadeOut(Math.max(0, (p - (mobile ? 0.95 : 0.88)) / (mobile ? 0.05 : 0.12)))
+        setFadeIn(Math.max(0, 1 - p / (mobile ? 0.001 : 0.002)))
+        setFadeOut(Math.max(0, (p - (mobile ? 0.999 : 0.998)) / (mobile ? 0.001 : 0.002)))
 
         const dur = video.duration || 6
         rafTarget = Math.min(mobile ? p / 0.2 : p, 1) * dur

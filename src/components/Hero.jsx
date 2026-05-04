@@ -21,6 +21,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const scrollHintRef = useRef(null)
   const progressRef   = useRef(null)
   const fadeRef       = useRef(null)
+  const fadeTextRef   = useRef(null)
 
   useEffect(() => {
     const wrap    = wrapRef.current
@@ -72,7 +73,12 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       .to(grp, { yPercent: -105, ease: 'power4.in', duration: 0.06 }, 0.55)
       .to(pk,  { yPercent: -105, ease: 'power4.in', duration: 0.07 }, 0.58)
       .to(video, { filter: 'brightness(1)', duration: 0.05, ease: 'power2.in' }, 0.64)
-      .to(fadeRef.current, { opacity: 1, duration: mobile ? 0.04 : 0.06, ease: 'power2.in' }, mobile ? 0.65 : 0.62)
+      .to(fadeRef.current, { opacity: 1, duration: 0.001, ease: 'none' }, mobile ? 0.65 : 0.62)
+      .fromTo(fadeTextRef.current,
+        { opacity: 0, y: 14 },
+        { opacity: 1, y: 0, duration: 0.06, ease: 'power3.out' }, 0.38
+      )
+      .to(fadeTextRef.current, { opacity: 0, duration: 0.04, ease: 'power2.in' }, 0.52)
 
     createdSTs.push(ScrollTrigger.create({
       trigger: wrap,
@@ -134,6 +140,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
           </div>
 
           <div ref={fadeRef} className="hero-fade" />
+          <span ref={fadeTextRef} className="hero-fade-text">Crafting spaces that inspire.</span>
 
           <div ref={scrollHintRef} className="scroll-hint">
             <span>Scroll</span>

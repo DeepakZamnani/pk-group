@@ -1,63 +1,136 @@
 /* ── Footer ─────────────────────────────────────────────────────────── */
 .footer {
-  background: var(--charcoal);
-  padding: clamp(48px, 8vh, 80px) clamp(24px, 6vw, 96px);
+  background: #0a0a0a;
+  padding: clamp(80px, 12vh, 130px) clamp(24px, 6vw, 96px) clamp(40px, 6vh, 72px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(56px, 8vh, 80px);
 }
 
-.footer-inner {
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: clamp(40px, 5vw, 96px);
+  align-items: start;
+}
+
+.footer-brand {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  padding-top: clamp(32px, 5vh, 56px);
+  flex-direction: column;
+  gap: 18px;
 }
 
 .footer-logo {
   font-family: 'Georgia', serif;
-  font-size: 18px;
-  letter-spacing: 0.14em;
+  font-size: clamp(28px, 3vw, 44px);
+  font-weight: 400;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #fff;
 }
 
-.footer-details {
+.footer-tagline {
+  font-family: 'Georgia', serif;
+  font-size: clamp(14px, 1.2vw, 17px);
+  font-style: italic;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+  line-height: 1.7;
+  max-width: 280px;
+}
+
+.footer-nav {
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  text-align: center;
+  gap: 18px;
+  padding-top: 6px;
 }
 
-.footer-details p,
-.footer-details a {
+.footer-nav-link {
+  font-family: 'Georgia', serif;
+  font-size: 14px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+  transition: color 0.3s ease;
+}
+
+.footer-nav-link:hover {
+  color: var(--gold);
+}
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 6px;
+}
+
+.footer-contact-label {
   font-family: 'Georgia', serif;
   font-size: 12px;
-  letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.4);
-  text-decoration: none;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
 }
 
-.footer-details a:hover {
+.footer-contact-email {
+  font-family: 'Georgia', serif;
+  font-size: clamp(16px, 1.5vw, 22px);
+  color: #fff;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-contact-email:hover {
   color: var(--gold);
+}
+
+.footer-contact-addr {
+  font-family: 'Georgia', serif;
+  font-size: clamp(13px, 1.1vw, 15px);
+  font-style: italic;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+}
+
+.footer-line {
+  height: 1px;
+  background: rgba(255,255,255,0.08);
+  width: 100%;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .footer-copy {
   font-family: 'Georgia', serif;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.2);
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.25);
   margin: 0;
 }
 
 @media (max-width: 768px) {
-  .footer-inner {
+  .footer-top {
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 5vh, 48px);
+  }
+  .footer-bottom {
     flex-direction: column;
     align-items: flex-start;
-    gap: 16px;
   }
-
-  .footer-details { text-align: left; }
 }
 
 /* Preloader */
@@ -222,6 +295,22 @@
   background: #0a0a0a;
   opacity: 0;
   z-index: 5;
+  pointer-events: none;
+}
+
+.hero-fade-text {
+  position: absolute;
+  bottom: 14%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.72);
+  font-size: clamp(0.75rem, 1.8vw, 1.1rem);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: 0;
+  z-index: 6;
   pointer-events: none;
 }
 
@@ -795,6 +884,245 @@
 
 @media (max-width: 768px) {
   .vsec-line { font-size: clamp(28px, 9vw, 52px); }
+}
+
+/* ── About ──────────────────────────────────────────────────────────── */
+.about-section {
+  background: var(--cream);
+  padding: clamp(80px, 14vh, 140px) clamp(24px, 6vw, 96px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(60px, 10vh, 100px);
+}
+
+.about-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 96px);
+  align-items: start;
+}
+
+.about-left {
+  position: sticky;
+  top: clamp(80px, 14vh, 120px);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.about-eyebrow {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.about-tagline {
+  font-family: 'Georgia', serif;
+  font-size: clamp(36px, 5vw, 72px);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--charcoal);
+  margin: 0;
+}
+
+.about-tagline em {
+  font-style: italic;
+  color: rgba(26,26,26,0.3);
+}
+
+.about-right {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(56px, 8vh, 88px);
+}
+
+.about-block {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.about-block-eyebrow {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.about-block-mask {
+  overflow: hidden;
+}
+
+.about-block-heading {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.about-block-line {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(26px, 3vw, 44px);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--charcoal);
+}
+
+.about-block-body {
+  font-family: 'Georgia', serif;
+  font-size: clamp(13px, 1.1vw, 15px);
+  font-style: italic;
+  line-height: 1.8;
+  color: rgba(26,26,26,0.5);
+  margin: 0;
+  max-width: 480px;
+}
+
+.about-divider {
+  height: 1px;
+  background: rgba(201,169,110,0.5);
+  width: 100%;
+}
+
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.about-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: clamp(24px, 4vh, 40px);
+  border-top: 1px solid rgba(26,26,26,0.12);
+}
+
+.about-stat-num {
+  font-family: 'Georgia', serif;
+  font-size: clamp(40px, 6vw, 80px);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--charcoal);
+  line-height: 1;
+}
+
+.about-stat-label {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+@media (max-width: 768px) {
+  .about-split {
+    grid-template-columns: 1fr;
+  }
+  .about-left {
+    position: static;
+  }
+  .about-stats {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .about-stat {
+    padding: clamp(20px, 4vh, 32px) 0;
+  }
+}
+
+/* ── About Team ─────────────────────────────────────────────────────── */
+.about-team {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 5vh, 52px);
+}
+
+.about-team-eyebrow {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.about-team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(16px, 2.5vw, 32px);
+}
+
+.about-team-card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  cursor: default;
+}
+
+.about-team-photo {
+  aspect-ratio: 3 / 4;
+  background: #141414;
+  border: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: border-color 0.4s ease;
+}
+
+.about-team-card:hover .about-team-photo {
+  border-color: rgba(201,169,110,0.3);
+}
+
+.about-team-initials {
+  font-family: 'Georgia', serif;
+  font-size: clamp(28px, 4vw, 56px);
+  font-weight: 400;
+  color: rgba(255,255,255,0.1);
+  letter-spacing: 0.05em;
+  transition: color 0.4s ease;
+}
+
+.about-team-card:hover .about-team-initials {
+  color: rgba(201,169,110,0.35);
+}
+
+.about-team-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.about-team-name {
+  font-family: 'Georgia', serif;
+  font-size: clamp(16px, 1.8vw, 24px);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  color: #fff;
+}
+
+.about-team-title {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+@media (max-width: 768px) {
+  .about-team-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 5vh, 48px);
+  }
+  .about-team-photo {
+    aspect-ratio: 4 / 3;
+  }
 }
 
 /* ── ProjectInfo Intro Heading ──────────────────────────────────────── */
