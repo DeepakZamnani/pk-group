@@ -47,7 +47,7 @@ export default function About() {
 
       ScrollTrigger.create({
         trigger: sectionRef.current,
-        start: 'top 75%',
+        start: 'top 95%',
         onEnter() {
           gsap.to(eyebrowRef.current, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
           gsap.to(taglineRef.current, { opacity: 1, y: 0, duration: 1.1, delay: 0.15, ease: 'power3.out' })
@@ -67,7 +67,7 @@ export default function About() {
 
         ScrollTrigger.create({
           trigger: block,
-          start: 'top 82%',
+          start: 'top 98%',
           onEnter() {
             gsap.to(eyebrow, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' })
             gsap.to(lines,   { yPercent: 0, duration: 0.85, stagger: 0.07, delay: 0.1, ease: 'power4.out' })
@@ -80,7 +80,7 @@ export default function About() {
       gsap.set(dividerRef.current, { scaleX: 0, transformOrigin: 'left center' })
       ScrollTrigger.create({
         trigger: dividerRef.current,
-        start: 'top 85%',
+        start: 'top 98%',
         onEnter() {
           gsap.to(dividerRef.current, { scaleX: 1, duration: 1.2, ease: 'power3.inOut' })
         },
@@ -92,7 +92,7 @@ export default function About() {
         gsap.set(el, { opacity: 0, y: 30 })
         ScrollTrigger.create({
           trigger: el,
-          start: 'top 88%',
+          start: 'top 98%',
           onEnter() {
             gsap.to(el, { opacity: 1, y: 0, duration: 0.9, delay: i * 0.12, ease: 'power3.out' })
           },

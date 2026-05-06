@@ -4,16 +4,21 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const YT_ID = 'hGmHAxVMwiQ'
-const THUMB = '/carousel/building-2.jpg'
-
-const LINES = [
+const DEFAULT_YT_ID = 'hGmHAxVMwiQ'
+const DEFAULT_THUMB  = '/carousel-canopus/building-2.jpg'
+const DEFAULT_LINES  = [
   { text: 'Some addresses',    indent: 0, italic: false },
   { text: "don't just change", indent: 1, italic: false },
   { text: 'where you live.',   indent: 2, italic: true  },
 ]
 
-const VideoSection = forwardRef(function VideoSection(_, ref) {
+const VideoSection = forwardRef(function VideoSection({
+  ytId     = DEFAULT_YT_ID,
+  thumb    = DEFAULT_THUMB,
+  lines    = DEFAULT_LINES,
+  tagline  = 'Ours changes how.',
+  cardMeta = { label: 'PK Canopus — Wakad, Pune', year: '2026' },
+}, ref) {
   const sectionRef = useRef(null)
   const ruleRef    = useRef(null)
   const lineRefs   = useRef([])
@@ -38,14 +43,21 @@ const VideoSection = forwardRef(function VideoSection(_, ref) {
 
     tlRef.current = tl
 
-    // autoplay when card is 60% visible
+    // Play animation when section scrolls into view
+    const st = ScrollTrigger.create({
+      trigger: sectionRef.current,
+      start: 'top 85%',
+      onEnter: () => tl.play(0),
+    })
+
+    // Autoplay video when card is 60% visible
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setPlaying(true) },
       { threshold: 0.6 }
     )
     if (cardRef.current) obs.observe(cardRef.current)
 
-    return () => { tl.kill(); obs.disconnect() }
+    return () => { st.kill(); tl.kill(); obs.disconnect() }
   }, [])
 
   // expose snap() — scrolls to section and plays animation immediately
@@ -62,7 +74,7 @@ const VideoSection = forwardRef(function VideoSection(_, ref) {
       <div ref={ruleRef} className="vsec-rule" />
 
       <div className="vsec-verse">
-        {LINES.map((l, i) => (
+        {lines.map((l, i) => (
           <div key={i} className="vsec-mask" style={{ paddingLeft: `${l.indent * 1.4}em` }}>
             <span
               ref={el => lineRefs.current[i] = el}
@@ -74,23 +86,21 @@ const VideoSection = forwardRef(function VideoSection(_, ref) {
         ))}
       </div>
 
-      <p ref={taglineRef} className="vsec-tagline">
-        Ours changes <em>how.</em>
-      </p>
+      <p ref={taglineRef} className="vsec-tagline">{tagline}</p>
 
       <div ref={cardRef} className="vsec-card" onClick={() => setPlaying(true)} style={{ cursor: playing ? 'default' : 'pointer' }}>
         {playing ? (
           <iframe
             className="vsec-iframe"
-            src={`https://www.youtube.com/embed/${YT_ID}?autoplay=1&rel=0&modestbranding=1&color=white`}
-            title="PK Canopus"
+            src={`https://www.youtube.com/embed/${ytId}?autoplay=1&rel=0&modestbranding=1&color=white`}
+            title={cardMeta.label}
             frameBorder="0"
             allow="autoplay; encrypted-media; picture-in-picture"
             allowFullScreen
           />
         ) : (
           <>
-            <img className="vsec-thumb" src={THUMB} alt="PK Canopus walkthrough" />
+            <img className="vsec-thumb" src={thumb} alt={cardMeta.label} />
             <div className="vsec-veil" />
             <div className="vsec-play-wrap">
               <button className="vsec-play" aria-label="Play">
@@ -102,8 +112,8 @@ const VideoSection = forwardRef(function VideoSection(_, ref) {
               <span className="vsec-play-label">Watch Film</span>
             </div>
             <div className="vsec-card-meta">
-              <span>PK Canopus — Wakad, Pune</span>
-              <span>2026</span>
+              <span>{cardMeta.label}</span>
+              <span>{cardMeta.year}</span>
             </div>
           </>
         )}
