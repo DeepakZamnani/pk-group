@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useMemo } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Hero from '../components/Hero'
 import Preloader from '../components/Preloader'
@@ -29,6 +30,8 @@ export default function HomePage() {
     [heroProgress, projectProgress]
   )
 
+  const navigate = useNavigate()
+
   const handleProjectLeave = useCallback(() => {
     vsecRef.current?.snap()
   }, [])
@@ -57,6 +60,29 @@ export default function HomePage() {
       />
       <VideoSection ref={vsecRef} />
       <ProjectInfo />
+
+      {/* ── View More Projects ── */}
+      <div className="home-more-projects">
+        <div className="home-more-inner">
+          <div className="home-more-text">
+            <span className="home-more-eyebrow">Our Portfolio</span>
+            <h2 className="home-more-heading">
+              Two addresses.<br />
+              <em>One standard.</em>
+            </h2>
+          </div>
+          <button
+            className="home-more-btn"
+            onClick={() => navigate('/projects')}
+          >
+            <span>View All Projects</span>
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M3 9h12M11 5l4 4-4 4" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
       <Footer />
     </>
   )

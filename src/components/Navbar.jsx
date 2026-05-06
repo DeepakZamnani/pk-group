@@ -4,11 +4,11 @@ import { useNavigate, useLocation, Link } from 'react-router-dom'
 
 const LINKS = [
   { label: 'Home',      route:   '/'          },
-  { label: 'Projects',  route:   '/projects' },
-  { label: 'About',     route:   '/about'    },
-  { label: 'Amenities', section: 'vision'    },
-  { label: 'Contact',   section: 'contact'   },
-  
+  { label: 'Projects',  route:   '/projects'  },
+  { label: 'About',     route:   '/about'     },
+  { label: 'Careers',   route:   '/careers'   },
+  { label: 'Reconstruction', section: 'vision'     },
+  { label: 'Contact',   route:   '/contact'    },
 ]
 
 export default function Navbar({ heroComplete }) {
