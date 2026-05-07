@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import { useLayoutEffect } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import gsap from 'gsap'
 import HomePage     from './pages/HomePage'
 import AboutPage    from './pages/AboutPage'
 import ProjectsPage from './pages/ProjectsPage'
@@ -13,8 +13,7 @@ gsap.registerPlugin(ScrollTrigger)
 
 function RouteReset() {
   const location = useLocation()
-  useEffect(() => {
-    ScrollTrigger.killAll()
+  useLayoutEffect(() => {
     window.scrollTo(0, 0)
     document.body.style.overflow = ''
   }, [location.pathname])
