@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -29,7 +29,9 @@ export default function ProjectInfo() {
   const labelRefs   = useRef([])
   const counterRefs = useRef([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    let onResize = null
+    const ctx = gsap.context(() => {
     // ── Intro heading — pinned scrub ─────────────────────────────────
     gsap.set([introLine1.current, introLine2.current], { y: '110%' })
     gsap.set(introSub.current, { opacity: 0, y: 24 })
@@ -132,7 +134,7 @@ export default function ProjectInfo() {
       },
     })
 
-    const onResize = () => {
+    onResize = () => {
       scrollTL.vars.x = -(n - 1) * vw()
       scrollTL.invalidate()
       ScrollTrigger.refresh()
@@ -140,11 +142,10 @@ export default function ProjectInfo() {
     window.visualViewport?.addEventListener('resize', onResize)
     window.addEventListener('orientationchange', onResize)
 
+    }) // end gsap.context
+
     return () => {
-      introST.kill()
-      introTL.kill()
-      st.kill()
-      slideTLs.forEach(tl => tl.kill())
+      ctx.revert()
       window.visualViewport?.removeEventListener('resize', onResize)
       window.removeEventListener('orientationchange', onResize)
     }

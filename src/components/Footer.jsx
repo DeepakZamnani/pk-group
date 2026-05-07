@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -17,24 +17,24 @@ export default function Footer() {
   const bottomRef  = useRef(null)
   const lineRef    = useRef(null)
 
-  useEffect(() => {
-    gsap.set(lineRef.current,   { scaleX: 0, transformOrigin: 'left center' })
-    gsap.set(topRef.current,    { opacity: 0, y: 24 })
-    gsap.set(bottomRef.current, { opacity: 0 })
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(lineRef.current,   { scaleX: 0, transformOrigin: 'left center' })
+      gsap.set(topRef.current,    { opacity: 0, y: 24 })
+      gsap.set(bottomRef.current, { opacity: 0 })
 
-    ScrollTrigger.create({
-      trigger: footerRef.current,
-      start: 'top 90%',
-      onEnter() {
-        gsap.to(lineRef.current,   { scaleX: 1, duration: 1.2, ease: 'power3.inOut' })
-        gsap.to(topRef.current,    { opacity: 1, y: 0, duration: 0.9, delay: 0.3, ease: 'power3.out' })
-        gsap.to(bottomRef.current, { opacity: 1, duration: 0.8, delay: 0.7, ease: 'power2.out' })
-      },
+      ScrollTrigger.create({
+        trigger: footerRef.current,
+        start: 'top 90%',
+        onEnter() {
+          gsap.to(lineRef.current,   { scaleX: 1, duration: 1.2, ease: 'power3.inOut' })
+          gsap.to(topRef.current,    { opacity: 1, y: 0, duration: 0.9, delay: 0.3, ease: 'power3.out' })
+          gsap.to(bottomRef.current, { opacity: 1, duration: 0.8, delay: 0.7, ease: 'power2.out' })
+        },
+      })
     })
 
-    return () => ScrollTrigger.getAll().forEach(st => {
-      if (st.trigger === footerRef.current) st.kill()
-    })
+    return () => ctx.revert()
   }, [])
 
   const scrollTo = (href) => {

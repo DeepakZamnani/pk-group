@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -28,10 +28,11 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
   const headRef    = useRef(null)
   const bodyRef    = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const video  = videoRef.current
     const mobile = isMobile()
 
+    // Video loading (not GSAP — handled outside context)
     const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
     const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
     video.addEventListener('loadeddata',     onData, { once: true })
@@ -47,11 +48,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       } catch (_) {}
     }
     video.addEventListener('progress', onProgressEv)
-
     video.load()
-
-    gsap.set(fadeRef.current, { opacity: 1 })
-    gsap.set(exitRef.current, { opacity: 0 })
 
     let rafId = null, rafTarget = 0
     const seekVideo = () => {
@@ -60,39 +57,41 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       rafId = null
     }
 
-    const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
-    const setFadeOut = gsap.quickSetter(exitRef.current, 'opacity')
+    const ctx = gsap.context(() => {
+      gsap.set(fadeRef.current, { opacity: 1 })
+      gsap.set(exitRef.current, { opacity: 0 })
 
-    const st1 = ScrollTrigger.create({
-      trigger: wrapRef.current,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.2,
-      onLeave() { onLeave?.() },
-      onUpdate(self) {
-        const p = self.progress
+      const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
+      const setFadeOut = gsap.quickSetter(exitRef.current, 'opacity')
 
-        setFadeIn(Math.max(0, 1 - p / (mobile ? 0.001 : 0.002)))
-        setFadeOut(Math.max(0, (p - (mobile ? 0.999 : 0.998)) / (mobile ? 0.001 : 0.002)))
+      ScrollTrigger.create({
+        trigger: wrapRef.current,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.2,
+        onLeave() { onLeave?.() },
+        onUpdate(self) {
+          const p = self.progress
+          setFadeIn(Math.max(0, 1 - p / (mobile ? 0.001 : 0.002)))
+          setFadeOut(Math.max(0, (p - (mobile ? 0.999 : 0.998)) / (mobile ? 0.001 : 0.002)))
+          const dur = video.duration || 6
+          rafTarget = Math.min(mobile ? p / 0.2 : p, 1) * dur
+          if (!rafId) rafId = requestAnimationFrame(seekVideo)
+        },
+      })
 
-        const dur = video.duration || 6
-        rafTarget = Math.min(mobile ? p / 0.2 : p, 1) * dur
-        if (!rafId) rafId = requestAnimationFrame(seekVideo)
-      },
-    })
+      gsap.set([headRef.current, bodyRef.current], { yPercent: 60, opacity: 0 })
+      gsap.set(statsRef.current, { yPercent: 40, opacity: 0 })
 
-    // content animations
-    gsap.set([headRef.current, bodyRef.current], { yPercent: 60, opacity: 0 })
-    gsap.set(statsRef.current, { yPercent: 40, opacity: 0 })
-
-    const st2 = ScrollTrigger.create({
-      trigger: headRef.current,
-      start: 'top 80%',
-      onEnter() {
-        gsap.to(headRef.current,  { yPercent: 0, opacity: 1, duration: 1, ease: 'power3.out' })
-        gsap.to(bodyRef.current,  { yPercent: 0, opacity: 1, duration: 1, delay: 0.15, ease: 'power3.out' })
-        gsap.to(statsRef.current, { yPercent: 0, opacity: 1, duration: 0.8, stagger: 0.08, delay: 0.3, ease: 'power3.out' })
-      },
+      ScrollTrigger.create({
+        trigger: headRef.current,
+        start: 'top 80%',
+        onEnter() {
+          gsap.to(headRef.current,  { yPercent: 0, opacity: 1, duration: 1, ease: 'power3.out' })
+          gsap.to(bodyRef.current,  { yPercent: 0, opacity: 1, duration: 1, delay: 0.15, ease: 'power3.out' })
+          gsap.to(statsRef.current, { yPercent: 0, opacity: 1, duration: 0.8, stagger: 0.08, delay: 0.3, ease: 'power3.out' })
+        },
+      })
     })
 
     return () => {
@@ -101,8 +100,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       video.removeEventListener('canplaythrough', onData)
       video.removeEventListener('progress',       onProgressEv)
       if (rafId) cancelAnimationFrame(rafId)
-      st1.kill()
-      st2.kill()
+      ctx.revert()
     }
   }, [])
 

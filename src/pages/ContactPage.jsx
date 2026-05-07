@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
@@ -82,10 +82,9 @@ export default function ContactPage() {
   const contentRef = useRef(null)
   const detailRefs = useRef([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0)
     document.body.style.overflow = ''
-    ScrollTrigger.refresh()
 
     const ctx = gsap.context(() => {
       gsap.set([heroLine1.current, heroLine2.current], { yPercent: 110 })
@@ -93,29 +92,26 @@ export default function ContactPage() {
       gsap.to(heroLine1.current, { yPercent: 0, duration: 1.1, delay: 0.2,  ease: 'power4.out' })
       gsap.to(heroLine2.current, { yPercent: 0, duration: 1.1, delay: 0.34, ease: 'power4.out' })
       gsap.to(heroSub.current,   { opacity: 1, y: 0, duration: 0.9, delay: 0.6, ease: 'power3.out' })
+
+      gsap.set(contentRef.current, { opacity: 0, y: 30 })
+      ScrollTrigger.create({
+        trigger: contentRef.current,
+        start: 'top 88%',
+        onEnter: () => gsap.to(contentRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }),
+      })
+
+      detailRefs.current.forEach((el, i) => {
+        if (!el) return
+        gsap.set(el, { opacity: 0, y: 24 })
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 90%',
+          onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.7, delay: i * 0.08, ease: 'power3.out' }),
+        })
+      })
     })
 
-    const triggers = []
-
-    gsap.set(contentRef.current, { opacity: 0, y: 30 })
-    triggers.push(ScrollTrigger.create({
-      trigger: contentRef.current,
-      start: 'top 88%',
-      onEnter: () => gsap.to(contentRef.current, { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }),
-    }))
-
-    detailRefs.current.forEach((el, i) => {
-      if (!el) return
-      gsap.set(el, { opacity: 0, y: 24 })
-      triggers.push(ScrollTrigger.create({
-        trigger: el,
-        start: 'top 90%',
-        onEnter: () => gsap.to(el, { opacity: 1, y: 0, duration: 0.7, delay: i * 0.08, ease: 'power3.out' }),
-      }))
-    })
-
-    const t = setTimeout(() => ScrollTrigger.refresh(), 200)
-    return () => { ctx.revert(); clearTimeout(t); triggers.forEach(st => st.kill()) }
+    return () => ctx.revert()
   }, [])
 
   const handleChange = e => setForm(f => ({ ...f, [e.target.name]: e.target.value }))

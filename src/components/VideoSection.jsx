@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react'
+import { useLayoutEffect, useRef, useState, forwardRef, useImperativeHandle } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -27,40 +27,39 @@ const VideoSection = forwardRef(function VideoSection({
   const tlRef      = useRef(null)
   const [playing, setPlaying] = useState(false)
 
-  useEffect(() => {
-    gsap.set(ruleRef.current,    { scaleX: 0, transformOrigin: 'left' })
-    gsap.set(lineRefs.current,   { y: '108%' })
-    gsap.set(taglineRef.current, { opacity: 0, y: 12 })
-    gsap.set(cardRef.current,    { opacity: 0, y: 32 })
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.set(ruleRef.current,    { scaleX: 0, transformOrigin: 'left' })
+      gsap.set(lineRefs.current,   { y: '108%' })
+      gsap.set(taglineRef.current, { opacity: 0, y: 12 })
+      gsap.set(cardRef.current,    { opacity: 0, y: 32 })
 
-    const tl = gsap.timeline({ paused: true })
-    tl.to(ruleRef.current,    { scaleX: 1, duration: 0.6, ease: 'power3.inOut' }, 0)
-    lineRefs.current.forEach((el, i) => {
-      tl.to(el, { y: '0%', duration: 0.7, ease: 'power4.out' }, 0.08 + i * 0.08)
+      const tl = gsap.timeline({ paused: true })
+      tl.to(ruleRef.current, { scaleX: 1, duration: 0.6, ease: 'power3.inOut' }, 0)
+      lineRefs.current.forEach((el, i) => {
+        tl.to(el, { y: '0%', duration: 0.7, ease: 'power4.out' }, 0.08 + i * 0.08)
+      })
+      tl.to(taglineRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.35)
+        .to(cardRef.current,    { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.42)
+
+      tlRef.current = tl
+
+      ScrollTrigger.create({
+        trigger: sectionRef.current,
+        start: 'top 85%',
+        onEnter: () => tl.play(0),
+      })
     })
-    tl.to(taglineRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.35)
-      .to(cardRef.current,    { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.42)
 
-    tlRef.current = tl
-
-    // Play animation when section scrolls into view
-    const st = ScrollTrigger.create({
-      trigger: sectionRef.current,
-      start: 'top 85%',
-      onEnter: () => tl.play(0),
-    })
-
-    // Autoplay video when card is 60% visible
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setPlaying(true) },
       { threshold: 0.6 }
     )
     if (cardRef.current) obs.observe(cardRef.current)
 
-    return () => { st.kill(); tl.kill(); obs.disconnect() }
+    return () => { ctx.revert(); obs.disconnect() }
   }, [])
 
-  // expose snap() — scrolls to section and plays animation immediately
   useImperativeHandle(ref, () => ({
     snap() {
       sectionRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -38,7 +38,7 @@ export default function About() {
   const statRefs    = useRef([])
   const dividerRef  = useRef(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
 
       // ── Left panel entrance ───────────────────────────────────────

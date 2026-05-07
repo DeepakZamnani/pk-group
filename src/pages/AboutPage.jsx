@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
@@ -30,49 +30,44 @@ export default function AboutPage() {
   const subRef      = useRef(null)
   const founderRefs = useRef([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0)
     document.body.style.overflow = ''
-    ScrollTrigger.refresh()
 
-    gsap.set([line1Ref.current, line2Ref.current], { yPercent: 110 })
-    gsap.set(subRef.current, { opacity: 0, y: 16 })
-    gsap.to(line1Ref.current, { yPercent: 0, duration: 1.1, delay: 0.2,  ease: 'power4.out' })
-    gsap.to(line2Ref.current, { yPercent: 0, duration: 1.1, delay: 0.34, ease: 'power4.out' })
-    gsap.to(subRef.current,   { opacity: 1, y: 0, duration: 0.9, delay: 0.6, ease: 'power3.out' })
+    const ctx = gsap.context(() => {
+      gsap.set([line1Ref.current, line2Ref.current], { yPercent: 110 })
+      gsap.set(subRef.current, { opacity: 0, y: 16 })
+      gsap.to(line1Ref.current, { yPercent: 0, duration: 1.1, delay: 0.2,  ease: 'power4.out' })
+      gsap.to(line2Ref.current, { yPercent: 0, duration: 1.1, delay: 0.34, ease: 'power4.out' })
+      gsap.to(subRef.current,   { opacity: 1, y: 0, duration: 0.9, delay: 0.6, ease: 'power3.out' })
 
-    // Founders scroll animations
-    const triggers = []
-    founderRefs.current.forEach((el) => {
-      if (!el) return
-      const img   = el.querySelector('.founder-img-wrap')
-      const names = el.querySelectorAll('.founder-name-mask span')
-      const rule  = el.querySelector('.founder-gold-rule')
-      const title = el.querySelector('.founder-title')
-      const bio   = el.querySelector('.founder-bio')
+      founderRefs.current.forEach((el) => {
+        if (!el) return
+        const img   = el.querySelector('.founder-img-wrap')
+        const names = el.querySelectorAll('.founder-name-mask span')
+        const rule  = el.querySelector('.founder-gold-rule')
+        const title = el.querySelector('.founder-title')
+        const bio   = el.querySelector('.founder-bio')
 
-      gsap.set(img,   { opacity: 0, y: 40 })
-      gsap.set(names, { yPercent: 110 })
-      gsap.set(rule,  { scaleX: 0, transformOrigin: 'left' })
-      gsap.set([title, bio], { opacity: 0, y: 16 })
+        gsap.set(img,   { opacity: 0, y: 40 })
+        gsap.set(names, { yPercent: 110 })
+        gsap.set(rule,  { scaleX: 0, transformOrigin: 'left' })
+        gsap.set([title, bio], { opacity: 0, y: 16 })
 
-      triggers.push(ScrollTrigger.create({
-        trigger: el, start: 'top 82%',
-        onEnter() {
-          gsap.to(img,   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' })
-          gsap.to(names, { yPercent: 0, duration: 0.9, stagger: 0.08, delay: 0.15, ease: 'power4.out' })
-          gsap.to(rule,  { scaleX: 1, duration: 0.7, delay: 0.4, ease: 'power3.inOut' })
-          gsap.to(title, { opacity: 1, y: 0, duration: 0.7, delay: 0.5, ease: 'power3.out' })
-          gsap.to(bio,   { opacity: 1, y: 0, duration: 0.8, delay: 0.65, ease: 'power3.out' })
-        },
-      }))
+        ScrollTrigger.create({
+          trigger: el, start: 'top 82%',
+          onEnter() {
+            gsap.to(img,   { opacity: 1, y: 0, duration: 1.0, ease: 'power3.out' })
+            gsap.to(names, { yPercent: 0, duration: 0.9, stagger: 0.08, delay: 0.15, ease: 'power4.out' })
+            gsap.to(rule,  { scaleX: 1, duration: 0.7, delay: 0.4, ease: 'power3.inOut' })
+            gsap.to(title, { opacity: 1, y: 0, duration: 0.7, delay: 0.5, ease: 'power3.out' })
+            gsap.to(bio,   { opacity: 1, y: 0, duration: 0.8, delay: 0.65, ease: 'power3.out' })
+          },
+        })
+      })
     })
 
-    const t = setTimeout(() => ScrollTrigger.refresh(), 200)
-    return () => {
-      clearTimeout(t)
-      triggers.forEach(st => st.kill())
-    }
+    return () => ctx.revert()
   }, [])
 
   return (

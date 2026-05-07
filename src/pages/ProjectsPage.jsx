@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
@@ -134,7 +134,7 @@ export default function ProjectsPage() {
   const infoRef    = useRef(null)
 
   // Hero entrance — once
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0)
     const ctx = gsap.context(() => {
       gsap.set(heroMeta.current,  { opacity: 0, y: 10 })
@@ -149,7 +149,7 @@ export default function ProjectsPage() {
   }, [])
 
   // Content animations — reruns on tab switch
-  useEffect(() => {
+  useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(contentRef.current,
         { opacity: 0, y: 20 },

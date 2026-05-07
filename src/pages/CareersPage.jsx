@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
@@ -117,7 +117,7 @@ export default function CareersPage() {
   const overlayRef  = useRef(null)
 
   // Hero entrance
-  useEffect(() => {
+  useLayoutEffect(() => {
     window.scrollTo(0, 0)
     document.body.style.overflow = ''
     ScrollTrigger.refresh()
@@ -133,23 +133,23 @@ export default function CareersPage() {
   }, [])
 
   // Cards scroll in
-  useEffect(() => {
-    const triggers = []
-    cardRefs.current.forEach((el, i) => {
-      if (!el) return
-      gsap.set(el, { opacity: 0, y: 40 })
-      triggers.push(ScrollTrigger.create({
-        trigger: el,
-        start: 'top 90%',
-        onEnter: () => gsap.to(el, {
-          opacity: 1, y: 0,
-          duration: 0.8, delay: (i % 2) * 0.1,
-          ease: 'power3.out',
-        }),
-      }))
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      cardRefs.current.forEach((el, i) => {
+        if (!el) return
+        gsap.set(el, { opacity: 0, y: 40 })
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 90%',
+          onEnter: () => gsap.to(el, {
+            opacity: 1, y: 0,
+            duration: 0.8, delay: (i % 2) * 0.1,
+            ease: 'power3.out',
+          }),
+        })
+      })
     })
-    const t = setTimeout(() => ScrollTrigger.refresh(), 200)
-    return () => { clearTimeout(t); triggers.forEach(st => st.kill()) }
+    return () => ctx.revert()
   }, [])
 
   // Drawer open/close

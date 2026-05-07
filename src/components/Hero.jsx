@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -23,20 +23,17 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const fadeRef       = useRef(null)
   const fadeTextRef   = useRef(null)
 
-  useEffect(() => {
-    const wrap    = wrapRef.current
-    const video   = videoRef.current
-    const title   = titleRef.current
-    const pk      = pkRef.current
-    const grp     = groupRef.current
-    const hint    = scrollHintRef.current
-    const bar     = progressRef.current
-    const mobile  = isMobile()
+  useLayoutEffect(() => {
+    const wrap   = wrapRef.current
+    const video  = videoRef.current
+    const title  = titleRef.current
+    const pk     = pkRef.current
+    const grp    = groupRef.current
+    const hint   = scrollHintRef.current
+    const bar    = progressRef.current
+    const mobile = isMobile()
 
-    gsap.set(title, { xPercent: -50, yPercent: -50 })
-    gsap.set(pk,  { yPercent: 105 })
-    gsap.set(grp, { yPercent: 105 })
-
+    // Video loading (not GSAP — handled outside context)
     const signalReady = () => { if (onVideoReady) onVideoReady() }
     const readyTimer  = setTimeout(signalReady, 6000)
     const onData = () => { clearTimeout(readyTimer); signalReady() }
@@ -53,7 +50,6 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       } catch (_) {}
     }
     video.addEventListener('progress', onProgressEv)
-
     video.load()
 
     let rafId = null, rafTarget = 0
@@ -63,45 +59,49 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       rafId = null
     }
 
-    const createdSTs = []
-    const tl = gsap.timeline({ paused: true })
+    const ctx = gsap.context(() => {
+      gsap.set(title, { xPercent: -50, yPercent: -50 })
+      gsap.set(pk,    { yPercent: 105 })
+      gsap.set(grp,   { yPercent: 105 })
 
-    tl.to({}, { duration: 0.3 })
-      .to(video, { filter: 'brightness(0.65)', duration: 0.06, ease: 'power2.out' }, 0.28)
-      .to(pk,  { yPercent: 0, ease: 'power4.out', duration: 0.07 }, 0.30)
-      .to(grp, { yPercent: 0, ease: 'power4.out', duration: 0.06 }, 0.34)
-      .to(grp, { yPercent: -105, ease: 'power4.in', duration: 0.06 }, 0.55)
-      .to(pk,  { yPercent: -105, ease: 'power4.in', duration: 0.07 }, 0.58)
-      .to(video, { filter: 'brightness(1)', duration: 0.05, ease: 'power2.in' }, 0.64)
-      .to(fadeRef.current, { opacity: 1, duration: 0.001, ease: 'none' }, mobile ? 0.65 : 0.62)
-      .fromTo(fadeTextRef.current,
-        { opacity: 0, y: 14 },
-        { opacity: 1, y: 0, duration: 0.06, ease: 'power3.out' }, 0.38
-      )
-      .to(fadeTextRef.current, { opacity: 0, duration: 0.04, ease: 'power2.in' }, 0.52)
+      const tl = gsap.timeline({ paused: true })
+      tl.to({}, { duration: 0.3 })
+        .to(video, { filter: 'brightness(0.65)', duration: 0.06, ease: 'power2.out' }, 0.28)
+        .to(pk,    { yPercent: 0, ease: 'power4.out', duration: 0.07 }, 0.30)
+        .to(grp,   { yPercent: 0, ease: 'power4.out', duration: 0.06 }, 0.34)
+        .to(grp,   { yPercent: -105, ease: 'power4.in', duration: 0.06 }, 0.55)
+        .to(pk,    { yPercent: -105, ease: 'power4.in', duration: 0.07 }, 0.58)
+        .to(video, { filter: 'brightness(1)', duration: 0.05, ease: 'power2.in' }, 0.64)
+        .to(fadeRef.current, { opacity: 1, duration: 0.001, ease: 'none' }, mobile ? 0.65 : 0.62)
+        .fromTo(fadeTextRef.current,
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.06, ease: 'power3.out' }, 0.38
+        )
+        .to(fadeTextRef.current, { opacity: 0, duration: 0.04, ease: 'power2.in' }, 0.52)
 
-    createdSTs.push(ScrollTrigger.create({
-      trigger: wrap,
-      start: 'top top',
-      end: 'bottom bottom',
-      scrub: 0.2,
-      animation: tl,
-      onUpdate(self) {
-        const dur = video.duration || 8
-        rafTarget = Math.min(self.progress / (mobile ? 0.15 : 0.3), 1) * dur
-        if (!rafId) rafId = requestAnimationFrame(seekVideo)
-        gsap.set(bar, { scaleX: self.progress })
-      },
-      onLeave()      { if (onHeroComplete) onHeroComplete(true)  },
-      onEnterBack()  { if (onHeroComplete) onHeroComplete(false) },
-    }))
+      ScrollTrigger.create({
+        trigger: wrap,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.2,
+        animation: tl,
+        onUpdate(self) {
+          const dur = video.duration || 8
+          rafTarget = Math.min(self.progress / (mobile ? 0.15 : 0.3), 1) * dur
+          if (!rafId) rafId = requestAnimationFrame(seekVideo)
+          gsap.set(bar, { scaleX: self.progress })
+        },
+        onLeave()     { if (onHeroComplete) onHeroComplete(true)  },
+        onEnterBack() { if (onHeroComplete) onHeroComplete(false) },
+      })
 
-    gsap.to(hint, { opacity: 1, delay: 1.4, duration: 1.2 })
-    createdSTs.push(ScrollTrigger.create({
-      trigger: wrap,
-      start: 'top+=1px top',
-      onEnter: () => gsap.to(hint, { opacity: 0, duration: 0.5 }),
-    }))
+      gsap.to(hint, { opacity: 1, delay: 1.4, duration: 1.2 })
+      ScrollTrigger.create({
+        trigger: wrap,
+        start: 'top+=1px top',
+        onEnter: () => gsap.to(hint, { opacity: 0, duration: 0.5 }),
+      })
+    })
 
     return () => {
       clearTimeout(readyTimer)
@@ -109,7 +109,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       video.removeEventListener('canplaythrough', onData)
       video.removeEventListener('progress',       onProgressEv)
       if (rafId) cancelAnimationFrame(rafId)
-      createdSTs.forEach(st => st.kill())
+      ctx.revert()
     }
   }, [onHeroComplete, onVideoReady])
 
@@ -130,7 +130,6 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
           <div className="hero-overlay" />
 
           <div ref={titleRef} className="hero-title">
-            {/* Each line-mask clips the text — creates the wipe effect */}
             <div className="line-mask">
               <span ref={pkRef} className="hero-title-pk">PK</span>
             </div>

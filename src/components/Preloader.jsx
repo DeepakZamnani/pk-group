@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 
 export default function Preloader({ videoReady, loadProgress, onComplete }) {
@@ -12,23 +12,24 @@ export default function Preloader({ videoReady, loadProgress, onComplete }) {
     return () => { document.body.style.overflow = '' }
   }, [])
 
-  useEffect(() => {
-    gsap.fromTo(textRef.current,
-      { opacity: 0, y: 20 },
-      { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.2 }
-    )
-    gsap.set(barRef.current, { scaleX: 0 })
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(textRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 1, ease: 'power3.out', delay: 0.2 }
+      )
+      gsap.set(barRef.current, { scaleX: 0 })
+    })
+    return () => ctx.revert()
   }, [])
 
-  // Drive bar from real CDN buffer progress
-  useEffect(() => {
-    const p = Math.min(loadProgress ?? 0, 0.92) // cap at 92% until truly ready
+  useLayoutEffect(() => {
+    const p = Math.min(loadProgress ?? 0, 0.92)
     gsap.to(barRef.current, { scaleX: p, duration: 0.4, ease: 'power2.out' })
     if (pctRef.current) pctRef.current.textContent = `${Math.round(p * 100)}%`
   }, [loadProgress])
 
-  // Fill to 100% and exit
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!videoReady) return
     document.body.style.overflow = ''
     gsap.to(barRef.current, {
