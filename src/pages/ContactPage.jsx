@@ -37,7 +37,7 @@ const CONTACT_DETAILS = [
         <circle cx="9" cy="6.75" r="1.8" fill="currentColor"/>
       </svg>
     ),
-    lines: ['PK Group, Wakad', 'Pimpri Chinchwad, Maharashtra – 411057'],
+    lines: ['136, Near PK Internation School', 'Pimple Saudagar , Pune , Maharashtra – 411027'],
   },
   {
     label: 'Call Us',
@@ -46,7 +46,7 @@ const CONTACT_DETAILS = [
         <path d="M3.5 3h3l1.5 3.5-1.75 1.25A9.5 9.5 0 0 0 9.25 10.75L10.5 9l3.5 1.5V14a1 1 0 0 1-1 1C6.5 15 3 8.5 3.5 4a1 1 0 0 1 0 0z" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round" strokeLinejoin="round" fill="none"/>
       </svg>
     ),
-    lines: ['+91 98765 43210', '+91 98765 43211'],
+    lines: ['+91 7631125125'],
   },
   {
     label: 'Write to Us',
@@ -56,7 +56,7 @@ const CONTACT_DETAILS = [
         <path d="M2 5l7 5.5L16 5" stroke="currentColor" strokeWidth="1.1" strokeLinecap="round"/>
       </svg>
     ),
-    lines: ['info@pkgroup.in', 'sales@pkgroup.in'],
+    lines: ['pkgroup125@gmail.com'],
   },
   {
     label: 'Office Hours',
