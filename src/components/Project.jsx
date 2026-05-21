@@ -14,11 +14,7 @@ const STATS = [
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
 export default function Project({ onVideoReady, onLeave, onProgress }) {
-  const [videoSrc] = useState(() =>
-    isMobile()
-      ? 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/drone-mobile.mp4'
-      : 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/drone-start.mp4'
-  )
+  const [mobile]   = useState(isMobile)
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
   const videoRef   = useRef(null)
@@ -29,10 +25,31 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
   const bodyRef    = useRef(null)
 
   useLayoutEffect(() => {
-    const video  = videoRef.current
-    const mobile = isMobile()
+    if (mobile) {
+      if (onVideoReady) onVideoReady()
+      if (onProgress)  onProgress(1)
 
-    // Video loading (not GSAP — handled outside context)
+      const ctx = gsap.context(() => {
+        gsap.set(fadeRef.current, { opacity: 0 })
+        gsap.set(exitRef.current, { opacity: 0 })
+        gsap.set([headRef.current, bodyRef.current], { yPercent: 30, opacity: 0 })
+        gsap.set(statsRef.current, { yPercent: 20, opacity: 0 })
+
+        ScrollTrigger.create({
+          trigger: headRef.current,
+          start: 'top 85%',
+          onEnter() {
+            gsap.to(headRef.current,  { yPercent: 0, opacity: 1, duration: 0.7, ease: 'power3.out' })
+            gsap.to(bodyRef.current,  { yPercent: 0, opacity: 1, duration: 0.7, delay: 0.1, ease: 'power3.out' })
+            gsap.to(statsRef.current, { yPercent: 0, opacity: 1, duration: 0.5, stagger: 0.06, delay: 0.2, ease: 'power3.out' })
+          },
+        })
+      })
+      return () => ctx.revert()
+    }
+
+    const video = videoRef.current
+
     const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
     const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
     video.addEventListener('loadeddata',     onData, { once: true })
@@ -51,11 +68,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
     video.load()
 
     let rafId = null, rafTarget = 0
-    const seekVideo = () => {
-      if (mobile && video.fastSeek) video.fastSeek(rafTarget)
-      else video.currentTime = rafTarget
-      rafId = null
-    }
+    const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
 
     const ctx = gsap.context(() => {
       gsap.set(fadeRef.current, { opacity: 1 })
@@ -72,10 +85,10 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
         onLeave() { onLeave?.() },
         onUpdate(self) {
           const p = self.progress
-          setFadeIn(Math.max(0, 1 - p / (mobile ? 0.001 : 0.002)))
-          setFadeOut(Math.max(0, (p - (mobile ? 0.999 : 0.998)) / (mobile ? 0.001 : 0.002)))
+          setFadeIn(Math.max(0, 1 - p / 0.001))
+          setFadeOut(Math.max(0, (p - 0.998) / 0.002))
           const dur = video.duration || 6
-          rafTarget = Math.min(mobile ? p / 0.2 : p, 1) * dur
+          rafTarget = Math.min(p, 1) * dur
           if (!rafId) rafId = requestAnimationFrame(seekVideo)
         },
       })
@@ -102,20 +115,24 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       if (rafId) cancelAnimationFrame(rafId)
       ctx.revert()
     }
-  }, [])
+  }, [mobile])
 
   return (
     <div ref={wrapRef} id="projects" className="project-wrapper">
       <div className="project-sticky">
         <section ref={sectionRef} className="project-section">
-          <video
-            ref={videoRef}
-            className="project-video"
-            src={videoSrc}
-            muted
-            playsInline
-            preload="auto"
-          />
+          {mobile ? (
+            <img src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/project-mobile.jpeg" className="project-video" alt="" />
+          ) : (
+            <video
+              ref={videoRef}
+              className="project-video"
+              src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/drone-start.mp4"
+              muted
+              playsInline
+              preload="auto"
+            />
+          )}
           <div className="project-overlay" />
           <div ref={fadeRef}  className="project-fade" />
           <div ref={exitRef}  className="project-exit" />

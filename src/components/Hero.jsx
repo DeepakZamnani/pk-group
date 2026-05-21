@@ -7,30 +7,44 @@ gsap.registerPlugin(ScrollTrigger)
 const isMobile = () => window.matchMedia('(max-width: 768px)').matches
 
 export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
-  const [videoSrc] = useState(() =>
-    isMobile()
-      ? 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/HeroVideo-mobile.mp4'
-      : 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo.mp4'
-  )
-  const wrapRef       = useRef(null)
-  const stickyRef     = useRef(null)
-  const videoRef      = useRef(null)
-  const titleRef      = useRef(null)
-  const pkRef         = useRef(null)
-  const groupRef      = useRef(null)
-  const progressRef   = useRef(null)
-  const fadeRef       = useRef(null)
+  const [mobile]   = useState(isMobile)
+  const wrapRef     = useRef(null)
+  const stickyRef   = useRef(null)
+  const videoRef    = useRef(null)
+  const titleRef    = useRef(null)
+  const pkRef       = useRef(null)
+  const progressRef = useRef(null)
+  const fadeRef     = useRef(null)
 
   useLayoutEffect(() => {
-    const wrap   = wrapRef.current
-    const video  = videoRef.current
-    const title  = titleRef.current
-    const pk     = pkRef.current
-    const grp    = groupRef.current
-    const bar    = progressRef.current
-    const mobile = isMobile()
+    const title = titleRef.current
+    const pk    = pkRef.current
 
-    // Video loading (not GSAP — handled outside context)
+    if (mobile) {
+      if (onVideoReady) onVideoReady()
+      if (onProgress)  onProgress(1)
+      const ctx = gsap.context(() => {
+        gsap.set(title, { xPercent: -50, yPercent: -50 })
+        gsap.set(pk, { yPercent: 20, scale: 0.9, opacity: 0 })
+        const tl = gsap.timeline({ delay: 0.4 })
+        tl.to(pk, { yPercent: 0, scale: 1, opacity: 1, duration: 0.55, ease: 'power4.out' })
+          .to(pk, { scale: 1.1, opacity: 0, duration: 0.45, ease: 'power2.in' }, '+=0.9')
+          .add(() => {
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+            setTimeout(() => {
+              if (wrapRef.current) wrapRef.current.style.display = 'none'
+              window.scrollTo(0, 0)
+              ScrollTrigger.refresh()
+            }, 750)
+          })
+      })
+      return () => ctx.revert()
+    }
+
+    const wrap  = wrapRef.current
+    const video = videoRef.current
+    const bar   = progressRef.current
+
     const signalReady = () => { if (onVideoReady) onVideoReady() }
     const readyTimer  = setTimeout(signalReady, 6000)
     const onData = () => { clearTimeout(readyTimer); signalReady() }
@@ -50,11 +64,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
     video.load()
 
     let rafId = null, rafTarget = 0
-    const seekVideo = () => {
-      if (mobile && video.fastSeek) video.fastSeek(rafTarget)
-      else video.currentTime = rafTarget
-      rafId = null
-    }
+    const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
 
     const ctx = gsap.context(() => {
       gsap.set(title, { xPercent: -50, yPercent: -50 })
@@ -62,13 +72,11 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
 
       const tl = gsap.timeline({ paused: true })
       tl.to({}, { duration: 0.3 })
-        .to(video, { filter: 'brightness(0.55)', duration: 0.08, ease: 'power2.out'  }, 0.24)
-        // Enter: rise + scale up + fade in
-        .to(pk,    { yPercent: 0, scale: 1, opacity: 1, ease: 'power4.out', duration: 0.12 }, 0.26)
-        // Exit: expand outward + fade out
-        .to(pk,    { scale: 1.12, opacity: 0, ease: 'power2.in',  duration: 0.10 }, 0.54)
-        .to(video, { filter: 'brightness(1)', duration: 0.06, ease: 'power2.out' }, 0.64)
-        .to(fadeRef.current, { opacity: 1, duration: 0.001, ease: 'none' }, mobile ? 0.65 : 0.62)
+        .to(video, { filter: 'brightness(0.55)', duration: 0.06, ease: 'power2.out'  }, 0.20)
+        .to(pk,    { yPercent: 0, scale: 1, opacity: 1, ease: 'power4.out', duration: 0.08 }, 0.22)
+        .to(pk,    { scale: 1.12, opacity: 0, ease: 'power2.in',  duration: 0.07 }, 0.36)
+        .to(video, { filter: 'brightness(1)', duration: 0.05, ease: 'power2.out' }, 0.44)
+        .to(fadeRef.current, { opacity: 1, duration: 0.004, ease: 'none' }, 0.486)
 
       ScrollTrigger.create({
         trigger: wrap,
@@ -78,14 +86,13 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
         animation: tl,
         onUpdate(self) {
           const dur = video.duration || 8
-          rafTarget = Math.min(self.progress / (mobile ? 0.15 : 0.3), 1) * dur
+          rafTarget = Math.min(self.progress / 0.3, 1) * dur
           if (!rafId) rafId = requestAnimationFrame(seekVideo)
           gsap.set(bar, { scaleX: self.progress })
         },
         onLeave()     { if (onHeroComplete) onHeroComplete(true)  },
         onEnterBack() { if (onHeroComplete) onHeroComplete(false) },
       })
-
     })
 
     return () => {
@@ -96,7 +103,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       if (rafId) cancelAnimationFrame(rafId)
       ctx.revert()
     }
-  }, [onHeroComplete, onVideoReady])
+  }, [mobile, onHeroComplete, onVideoReady, onProgress])
 
   return (
     <>
@@ -104,14 +111,18 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
 
       <div ref={wrapRef} className="hero-wrapper">
         <div ref={stickyRef} className="hero-sticky">
-          <video
-            ref={videoRef}
-            className="hero-video"
-            src={videoSrc}
-            muted
-            playsInline
-            preload="auto"
-          />
+          {mobile ? (
+            <img src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/hero-mobile.jpeg" className="hero-video" alt="" />
+          ) : (
+            <video
+              ref={videoRef}
+              className="hero-video"
+              src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo.mp4"
+              muted
+              playsInline
+              preload="auto"
+            />
+          )}
           <div className="hero-overlay" />
 
           <div ref={titleRef} className="hero-title">
