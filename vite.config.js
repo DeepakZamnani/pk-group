@@ -10,8 +10,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       workbox: {
-        // pre-cache all built JS, CSS, HTML, fonts, and images
-        globPatterns: ['**/*.{js,css,html,svg,png,jpg,jpeg,webp,ttf,woff,woff2}'],
+        // pre-cache only app shell — JS, CSS, HTML, fonts
+        // images are handled by runtime CacheFirst below (cached on first access)
+        globPatterns: ['**/*.{js,css,html,ttf,woff,woff2}'],
 
         // skip videos — too large for Cache API, served via CDN instead
         globIgnores: ['**/*.{mp4,mov,webm}'],
