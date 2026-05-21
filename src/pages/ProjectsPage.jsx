@@ -34,7 +34,7 @@ const PROJECTS = [
     name:     'PK Canopus',
     location: 'Wakad · Pune',
     year:     '2026',
-    heroBg:   '/carousel-canopus/hero.jpg',
+    heroBg:   'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/hero.jpg',
     sub:      '3 & 4 BHK ultra-luxurious apartments rising above Wakad. Live close to everything — Hinjawadi, Phoenix Mall, top schools — and shine above all.',
     stats: [
       { num: '24',   label: 'Floors'     },
@@ -79,7 +79,7 @@ const PROJECTS = [
     id:       'ornate',
     name:     'PK Ornate',
     location: 'Pimple Saudagar · Pune',
-    year:     '2027',
+    year:     '2025',
     sub:      '2 & 2.5 BHK premium residences in the heart of Pimple Saudagar. Surrounded by lush greenery — a private oasis designed for families who refuse to compromise.',
     stats: [
       { num: '1',    label: 'Tower'      },
