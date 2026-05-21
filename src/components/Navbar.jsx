@@ -120,7 +120,7 @@ export default function Navbar({ heroComplete }) {
             <span className="cs-eyebrow">Coming Soon</span>
 
             <h2 className="cs-heading">
-              Reconstruction.<br />
+              Redevelopment.<br />
               <em>Reimagined.</em>
             </h2>
 
@@ -133,7 +133,7 @@ export default function Navbar({ heroComplete }) {
             <div className="cs-rule" />
 
             <p className="cs-note">
-              Interested in a reconstruction consultation?<br />
+              Interested in a redevelopment consultation?<br />
               Reach us at{' '}
               <a className="cs-link" href="mailto:info@pkgroup.in">info@pkgroup.in</a>
             </p>
