@@ -10,17 +10,17 @@ gsap.registerPlugin(ScrollTrigger)
 const FOUNDERS = [
   {
     index:  '01',
-    name:   ['Ar. Rohan', 'J Kate'],
-    title:  'Architect & Director',
+    name:   ['Ar. Rohan', 'J. Kate'],
+    title:  'Architect & Director at PK Group',
     img:    '/founders/Director.png',
-    bio:    'A practising architect whose vision extends far beyond blueprints. Mr.Rohan brings a disciplined design sensibility to every PK Group project — ensuring that each residence is not merely built, but deeply considered. His approach balances structural rigour with an intuitive understanding of how people truly inhabit space.',
+    bio:    'He is a visionary founder of PK Group, established with the mission of leading the way in construction and contributing towards design that takes into consideration the future needs and lifestyle of people in developing times. With over 10 years of rich experience in the field of construction and management, Mr. Rohan has dedicated himself to developing highly premium and exclusive design projects. His positive outlook and technical expertise are driving innovation within the builder and developer ecosystem, paving the way for advanced facilities.',
   },
   {
     index:  '02',
-    name:   ['Mr Somnath', 'Pandurang Kate'],
-    title:  'Founder & Visionary',
+    name:   ['Mr. Somnath', 'Pandurang Kate'],
+    title:  'Founder & Visionary at PK Group',
     img:    '/founders/Founder.jpeg',
-    bio:    'The driving force and founding spirit of PK Group. Mr. Somnath\'s enduring belief — that every family deserves a home of lasting quality — has shaped the group\'s ethos since its inception. His vision continues to set the standard for every decision made, every material chosen, and every home delivered.',
+    bio:    'Mr. Somnath Pandurang Kate is a visionary leader and the founder of PK Group, established with the mission of revolutionizing the construction industry. His vision focuses on designing future-ready spaces that cater to evolving lifestyles and modern needs. With over a decade of expertise in construction and management, Mr. Kate has been instrumental in developing premium and exclusive design projects. His commitment to innovation and excellence is shaping the builder and developer ecosystem, paving the way for advanced facilities and sustainable growth.',
   },
 ]
 

@@ -10,7 +10,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const [videoSrc] = useState(() =>
     isMobile()
       ? 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/HeroVideo-mobile.mp4'
-      : 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/HeroVideo.mp4'
+      : 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo.mp4'
   )
   const wrapRef       = useRef(null)
   const stickyRef     = useRef(null)
@@ -18,10 +18,8 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const titleRef      = useRef(null)
   const pkRef         = useRef(null)
   const groupRef      = useRef(null)
-  const scrollHintRef = useRef(null)
   const progressRef   = useRef(null)
   const fadeRef       = useRef(null)
-  const fadeTextRef   = useRef(null)
 
   useLayoutEffect(() => {
     const wrap   = wrapRef.current
@@ -29,7 +27,6 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
     const title  = titleRef.current
     const pk     = pkRef.current
     const grp    = groupRef.current
-    const hint   = scrollHintRef.current
     const bar    = progressRef.current
     const mobile = isMobile()
 
@@ -61,23 +58,17 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
 
     const ctx = gsap.context(() => {
       gsap.set(title, { xPercent: -50, yPercent: -50 })
-      gsap.set(pk,    { yPercent: 105 })
-      gsap.set(grp,   { yPercent: 105 })
+      gsap.set(pk,    { yPercent: 30, scale: 0.88, opacity: 0, transformOrigin: 'center center' })
 
       const tl = gsap.timeline({ paused: true })
       tl.to({}, { duration: 0.3 })
-        .to(video, { filter: 'brightness(0.65)', duration: 0.06, ease: 'power2.out' }, 0.28)
-        .to(pk,    { yPercent: 0, ease: 'power4.out', duration: 0.07 }, 0.30)
-        .to(grp,   { yPercent: 0, ease: 'power4.out', duration: 0.06 }, 0.34)
-        .to(grp,   { yPercent: -105, ease: 'power4.in', duration: 0.06 }, 0.55)
-        .to(pk,    { yPercent: -105, ease: 'power4.in', duration: 0.07 }, 0.58)
-        .to(video, { filter: 'brightness(1)', duration: 0.05, ease: 'power2.in' }, 0.64)
+        .to(video, { filter: 'brightness(0.55)', duration: 0.08, ease: 'power2.out'  }, 0.24)
+        // Enter: rise + scale up + fade in
+        .to(pk,    { yPercent: 0, scale: 1, opacity: 1, ease: 'power4.out', duration: 0.12 }, 0.26)
+        // Exit: expand outward + fade out
+        .to(pk,    { scale: 1.12, opacity: 0, ease: 'power2.in',  duration: 0.10 }, 0.54)
+        .to(video, { filter: 'brightness(1)', duration: 0.06, ease: 'power2.out' }, 0.64)
         .to(fadeRef.current, { opacity: 1, duration: 0.001, ease: 'none' }, mobile ? 0.65 : 0.62)
-        .fromTo(fadeTextRef.current,
-          { opacity: 0, y: 14 },
-          { opacity: 1, y: 0, duration: 0.06, ease: 'power3.out' }, 0.38
-        )
-        .to(fadeTextRef.current, { opacity: 0, duration: 0.04, ease: 'power2.in' }, 0.52)
 
       ScrollTrigger.create({
         trigger: wrap,
@@ -95,12 +86,6 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
         onEnterBack() { if (onHeroComplete) onHeroComplete(false) },
       })
 
-      gsap.to(hint, { opacity: 1, delay: 1.4, duration: 1.2 })
-      ScrollTrigger.create({
-        trigger: wrap,
-        start: 'top+=1px top',
-        onEnter: () => gsap.to(hint, { opacity: 0, duration: 0.5 }),
-      })
     })
 
     return () => {
@@ -131,20 +116,16 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
 
           <div ref={titleRef} className="hero-title">
             <div className="line-mask">
-              <span ref={pkRef} className="hero-title-pk">PK</span>
-            </div>
-            <div className="line-mask">
-              <span ref={groupRef} className="hero-title-group">Group</span>
+              <img
+                ref={pkRef}
+                src="/pk-logo.png"
+                alt="PK Group"
+                className="hero-title-logo"
+              />
             </div>
           </div>
 
           <div ref={fadeRef} className="hero-fade" />
-          <span ref={fadeTextRef} className="hero-fade-text">Crafting spaces that inspire.</span>
-
-          <div ref={scrollHintRef} className="scroll-hint">
-            <span>Scroll</span>
-            <div className="scroll-line" />
-          </div>
         </div>
       </div>
     </>

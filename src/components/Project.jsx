@@ -17,7 +17,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
   const [videoSrc] = useState(() =>
     isMobile()
       ? 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/drone-mobile.mp4'
-      : 'https://mumvmszlytwswvacxnsg.supabase.co/storage/v1/object/public/assets/drone-start.mp4'
+      : 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/drone-start.mp4'
   )
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
@@ -128,8 +128,8 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
             </div>
             <div ref={bodyRef} className="project-body-wrap">
               <p className="project-desc">
-                A refined residential address in the heart of Wakad.
-                Thoughtfully designed homes that balance modern living with natural calm.
+                3 &amp; 4 BHK ultra-luxurious residences in the heart of Wakad.
+                A landmark mixed-use address — retail, dining, and workspace at your doorstep, with Hinjawadi moments away.
               </p>
               <a href="#" className="project-cta">
                 <span>Explore Project</span>

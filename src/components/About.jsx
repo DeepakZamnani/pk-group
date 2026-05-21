@@ -13,19 +13,19 @@ const STATS = [
 
 const BLOCKS = [
   {
-    eyebrow: 'Our Founding',
-    heading: 'Born from a belief\nthat homes deserve more.',
-    body: 'PK Group was established with a singular conviction — that residential spaces should do more than shelter. They should elevate. Since our founding, we have pursued that standard without compromise.',
+    eyebrow: 'Who We Are',
+    heading: 'Shaping the future\nof real estate.',
+    body: 'PK Group Realty is a full-service real estate company dedicated to innovation, success, and client satisfaction. By prioritising professionalism and customer service, we deliver exceptional results for buyers and sellers alike — continuing to redefine excellence in real estate.',
   },
   {
-    eyebrow: 'Our Philosophy',
-    heading: 'Design that outlasts\nthe decade.',
-    body: 'Every project begins with restraint. We strip away the superfluous and build inward — toward precision, toward quiet luxury, toward spaces that feel as considered ten years on as they do the day you move in.',
+    eyebrow: 'How We Are Different',
+    heading: 'Built on a foundation\nof real support.',
+    body: 'True servant-leadership. Unwavering support at every level. Industry-leading plans, unmatched guidance, and a commitment to the people who make PK Group what it is — because when our people grow, every home we build reflects it.',
   },
   {
     eyebrow: 'Our Promise',
     heading: 'Your address is\nour signature.',
-    body: 'We do not deliver units. We deliver addresses — each one a statement of intent. From the lobby to the last detail of the penthouse, PK Group\'s name is the guarantee.',
+    body: 'We do not deliver units. We deliver addresses — each one a statement of intent. From the lobby to the last detail of every residence, PK Group\'s name is the guarantee.',
   },
 ]
 

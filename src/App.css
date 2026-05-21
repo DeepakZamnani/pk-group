@@ -1,3 +1,12 @@
+/* ── Fonts ───────────────────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Strong';
+  src: url('./assets/fonts/Strong.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 /* ── Footer ─────────────────────────────────────────────────────────── */
 .footer {
   background: #0a0a0a;
@@ -349,29 +358,15 @@
 
 /* overflow:hidden clips each line — this is what makes the wipe work */
 .line-mask {
-  overflow: hidden;
+  overflow: visible;
 }
 
-.hero-title-pk {
+.hero-title-logo {
   display: block;
-  font-family: 'Georgia', serif;
-  font-size: clamp(72px, 14vw, 160px);
-  font-weight: 400;
-  letter-spacing: 0.18em;
-  color: #fff;
-  text-transform: uppercase;
-  line-height: 1;
-}
-
-.hero-title-group {
-  display: block;
-  font-family: 'Georgia', serif;
-  font-size: clamp(14px, 2.5vw, 28px);
-  font-weight: 400;
-  letter-spacing: 0.55em;
-  color: rgba(255,255,255,0.8);
-  text-transform: uppercase;
-  padding-top: 10px;
+  width: clamp(160px, 22vw, 320px);
+  height: auto;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 /* Hamburger button — hidden on desktop */
@@ -606,14 +601,8 @@
     background: linear-gradient(to bottom, rgba(0,0,0,0.45) 0%, transparent 100%);
   }
 
-  .hero-title-pk {
-    font-size: clamp(52px, 18vw, 80px);
-    letter-spacing: 0.12em;
-  }
-
-  .hero-title-group {
-    font-size: clamp(10px, 3.5vw, 14px);
-    letter-spacing: 0.4em;
+  .hero-title-logo {
+    width: clamp(120px, 42vw, 200px);
   }
 
   .scroll-hint {
@@ -795,12 +784,19 @@
 .project-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(0,0,0,0.1) 0%,
-    rgba(0,0,0,0) 40%,
-    rgba(0,0,0,0.65) 100%
-  );
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,0.15) 0%,
+      rgba(0,0,0,0.1)  35%,
+      rgba(0,0,0,0.6)  65%,
+      rgba(0,0,0,0.88) 100%
+    ),
+    linear-gradient(
+      to right,
+      rgba(0,0,0,0.45) 0%,
+      rgba(0,0,0,0)    55%
+    );
   z-index: 1;
 }
 
@@ -830,11 +826,11 @@
 }
 
 .project-name {
-  font-family: 'Georgia', serif;
+  font-family: 'Strong', 'Georgia', serif;
   font-size: clamp(40px, 5.5vw, 80px);
   font-weight: 400;
   line-height: 1.05;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.06em;
   color: #fff;
   margin: 0 0 16px;
 }
