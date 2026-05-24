@@ -99,12 +99,12 @@ const PROJECTS = [
       'Premium design flexibility',
       'Green & serene surroundings',
     ],
-    heroBg: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.png',
+    heroBg: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.jpg',
     gallery: [
-      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK Ornate Brochure (1).pdf (2).png',  caption: 'Overview'    },
-      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK Ornate Brochure (1).pdf (6).png',  caption: 'Design'      },
-      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK Ornate Brochure (1).pdf (7).png',  caption: 'Elevation'   },
-      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK Ornate Brochure (1).pdf (8).png',  caption: 'Perspective' },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(2).jpg',  caption: 'Overview'    },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(6).png',  caption: 'Design'      },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(7).png',  caption: 'Elevation'   },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(8).png',  caption: 'Perspective' },
     ],
     video: {
       ytId:    '',
