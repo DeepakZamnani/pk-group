@@ -120,7 +120,7 @@ const PROJECTS = [
   },{
   id: 'hillcrest',
   name: 'PK Hillcrest',
-  location: 'Pisoli, South Pune',
+  location: 'Pimple Saudagar · Pune',
   year: '2027',
   sub: '3 & 4 BHK premium homes crafted for elevated urban living. A landmark lifestyle destination where South Pune comes to live, shop, and play.',
   stats: [
