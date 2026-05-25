@@ -11,19 +11,25 @@ const STATS = [
   { num: '2026',  label: 'Completion' },
 ]
 
+const mobile = window.matchMedia('(max-width: 768px)').matches
+
+const DRONE_SRC = mobile
+  ? 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/drone-mobile.mp4'
+  : 'drone-start-4k.mp4'
+
 export default function Project({ onVideoReady, onLeave, onProgress }) {
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
   const videoRef   = useRef(null)
   const fadeRef    = useRef(null)
   const exitRef    = useRef(null)
+  const introRef   = useRef(null)
   const statsRef   = useRef([])
   const headRef    = useRef(null)
   const bodyRef    = useRef(null)
 
   useLayoutEffect(() => {
-    const mobile = window.matchMedia('(max-width: 768px)').matches
-    const video  = videoRef.current
+    const video = videoRef.current
 
     const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
     const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
@@ -46,7 +52,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
     const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
 
     const ctx = gsap.context(() => {
-      gsap.set(fadeRef.current, { opacity: mobile ? 0 : 1 })
+      gsap.set(fadeRef.current, { opacity: 1 })
       gsap.set(exitRef.current, { opacity: 0 })
 
       const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
@@ -61,12 +67,32 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
         onUpdate(self) {
           const p = self.progress
           if (!mobile) setFadeIn(Math.max(0, 1 - p / 0.001))
+          else         setFadeIn(Math.max(0, 1 - p / 0.20))
           setFadeOut(Math.max(0, (p - 0.998) / 0.002))
           const dur = video.duration || 6
           rafTarget = Math.min(p, 1) * dur
           if (!rafId) rafId = requestAnimationFrame(seekVideo)
         },
       })
+
+      if (mobile && introRef.current) {
+        const items = introRef.current.children
+        gsap.set(items, { opacity: 0 })
+        ScrollTrigger.create({
+          trigger: wrapRef.current,
+          start: 'top 95%',
+          once: true,
+          onEnter() {
+            gsap.to(items, {
+              opacity: 1,
+              duration: 0.75,
+              stagger: 0.2,
+              ease: 'power2.out',
+              delay: 0.1,
+            })
+          },
+        })
+      }
 
       gsap.set([headRef.current, bodyRef.current], { yPercent: 60, opacity: 0 })
       gsap.set(statsRef.current, { yPercent: 40, opacity: 0 })
@@ -99,13 +125,21 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
           <video
             ref={videoRef}
             className="project-video"
-            src="drone-start-4k.mp4"
+            src={DRONE_SRC}
             muted
             playsInline
             preload="auto"
           />
           <div className="project-overlay" />
-          <div ref={fadeRef}  className="project-fade" />
+          <div ref={fadeRef} className="project-fade">
+            {mobile && (
+              <div ref={introRef} className="project-fade-intro">
+                <span className="pf-eyebrow">Featured Project</span>
+                <h2 className="pf-name">PK<br />Canopus</h2>
+                <span className="pf-sub">Wakad · Pune · 2026</span>
+              </div>
+            )}
+          </div>
           <div ref={exitRef}  className="project-exit" />
 
           <div className="project-copy">

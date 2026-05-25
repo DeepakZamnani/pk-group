@@ -4,6 +4,12 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
+const mobile = window.matchMedia('(max-width: 768px)').matches
+
+const HERO_SRC = mobile
+  ? 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo-mobile.mp4'
+  : 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo.mp4'
+
 export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const wrapRef     = useRef(null)
   const stickyRef   = useRef(null)
@@ -14,7 +20,6 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const fadeRef     = useRef(null)
 
   useLayoutEffect(() => {
-    const mobile = window.matchMedia('(max-width: 768px)').matches
     const title = titleRef.current
     const pk    = pkRef.current
     const wrap  = wrapRef.current
@@ -90,7 +95,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
           <video
             ref={videoRef}
             className="hero-video"
-            src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo.mp4"
+            src={HERO_SRC}
             muted
             playsInline
             preload="auto"

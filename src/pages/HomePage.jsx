@@ -54,13 +54,6 @@ export default function HomePage() {
         onProgress={handleHeroProgress}
       />
 
-      {/* Mobile-only title card — sits between hero fade and drone video */}
-      <div className="project-title-card">
-        <span className="project-title-card-eyebrow">Featured Project</span>
-        <h2 className="project-title-card-name">PK<br />Canopus</h2>
-        <span className="project-title-card-sub">Wakad · Pune · 2026</span>
-      </div>
-
       <Project
         onVideoReady={handleProjectVideoReady}
         onLeave={handleProjectLeave}
