@@ -68,6 +68,14 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
           const p = self.progress
           if (!mobile) setFadeIn(Math.max(0, 1 - p / 0.001))
           else         setFadeIn(Math.max(0, 1 - p / 0.20))
+
+          if (mobile && p > 0.04 && !introExited && introEyebrow) {
+            introExited = true
+            gsap.to(introSub,     { opacity: 0, duration: 0.35, ease: 'power2.in'             })
+            gsap.to(introName,    { opacity: 0, scale: 0.94, duration: 0.45, ease: 'power2.in', delay: 0.08 })
+            gsap.to(introEyebrow, { opacity: 0, letterSpacing: '0.72em', duration: 0.35, ease: 'power2.in', delay: 0.18 })
+          }
+
           setFadeOut(Math.max(0, (p - 0.998) / 0.002))
           const dur = video.duration || 6
           rafTarget = Math.min(p, 1) * dur
@@ -75,21 +83,25 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
         },
       })
 
+      let introEyebrow = null, introName = null, introSub = null, introExited = false
+
       if (mobile && introRef.current) {
-        const items = introRef.current.children
-        gsap.set(items, { opacity: 0 })
+        introEyebrow = introRef.current.children[0]
+        introName    = introRef.current.children[1]
+        introSub     = introRef.current.children[2]
+
+        gsap.set(introEyebrow, { opacity: 0, letterSpacing: '0.72em' })
+        gsap.set(introName,    { opacity: 0, scale: 0.94, transformOrigin: 'center center' })
+        gsap.set(introSub,     { opacity: 0 })
+
         ScrollTrigger.create({
           trigger: wrapRef.current,
           start: 'top 95%',
           once: true,
           onEnter() {
-            gsap.to(items, {
-              opacity: 1,
-              duration: 0.75,
-              stagger: 0.2,
-              ease: 'power2.out',
-              delay: 0.1,
-            })
+            gsap.to(introEyebrow, { opacity: 1, letterSpacing: '0.38em', duration: 1.0, ease: 'power3.out', delay: 0.25 })
+            gsap.to(introName,    { opacity: 1, scale: 1,                 duration: 1.3, ease: 'expo.out',   delay: 0.6  })
+            gsap.to(introSub,     { opacity: 1,                           duration: 0.7, ease: 'power2.out', delay: 1.15 })
           },
         })
       }
