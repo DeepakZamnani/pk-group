@@ -1,4 +1,5 @@
 import { useLayoutEffect, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -30,6 +31,18 @@ export default function ProjectInfo() {
   const counterRefs = useRef([])
 
   const [activeSlide, setActiveSlide] = useState(0)
+  const [lightbox, setLightbox]       = useState(null)
+
+  useEffect(() => {
+    const onKey = e => { if (e.key === 'Escape') setLightbox(null) }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  useEffect(() => {
+    document.body.style.overflow = lightbox ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [lightbox])
 
   // ── Mobile: scroll-snap dot sync ────────────────────────────────────
   useEffect(() => {
@@ -185,7 +198,11 @@ export default function ProjectInfo() {
             const flip = i % 2 !== 0
 
             return (
-              <div key={s.label} className="pinfo-slide">
+              <div
+                key={s.label}
+                className="pinfo-slide"
+                onClick={() => setLightbox(s)}
+              >
 
                 <img
                   ref={el => imgRefs.current[i] = el}
@@ -256,6 +273,23 @@ export default function ProjectInfo() {
 
       </div>
     </div>
+
+    {lightbox && createPortal(
+      <div className="lightbox" onClick={() => setLightbox(null)}>
+        <button className="lightbox-close" onClick={() => setLightbox(null)}>✕</button>
+        <div className="lightbox-caption">
+          <span className="lightbox-label">{lightbox.label}</span>
+          <span className="lightbox-sub">{lightbox.sub}</span>
+        </div>
+        <img
+          src={lightbox.img}
+          alt={lightbox.sub}
+          className="lightbox-img"
+          onClick={e => e.stopPropagation()}
+        />
+      </div>,
+      document.body
+    )}
     </>
   )
 }

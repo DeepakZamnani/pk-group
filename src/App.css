@@ -802,16 +802,22 @@
 
 @media (max-width: 768px) {
   .project-fade-intro {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    padding: 0 32px;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 0 32px 60px;
+    gap: 14px;
     box-sizing: border-box;
-    gap: 20px;
+  }
+
+  .pf-rule {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin-bottom: 4px;
   }
 
   .pf-eyebrow {
@@ -824,9 +830,9 @@
 
   .pf-name {
     font-family: 'Georgia', serif;
-    font-size: clamp(64px, 20vw, 96px);
+    font-size: clamp(56px, 17vw, 84px);
     font-weight: 400;
-    line-height: 0.9;
+    line-height: 0.88;
     letter-spacing: -0.02em;
     color: #fff;
     margin: 0;
@@ -834,10 +840,10 @@
 
   .pf-sub {
     font-family: 'Georgia', serif;
-    font-size: 12px;
-    letter-spacing: 0.24em;
+    font-size: 11px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
+    color: rgba(255,255,255,0.4);
   }
 }
 
@@ -937,8 +943,11 @@
   color: #fff;
   text-decoration: none;
   padding: 12px 0 4px;
+  background: none;
+  border: none;
   border-bottom: 1px solid var(--gold);
   width: fit-content;
+  cursor: pointer;
   transition: opacity 0.2s, gap 0.25s;
 }
 
@@ -2227,6 +2236,7 @@
   height: 100%;
   overflow: hidden;
   transform: translateZ(0);
+  cursor: pointer;
 }
 
 .pinfo-img {
@@ -2330,6 +2340,81 @@
 
 /* ── Dot nav (mobile only) ── */
 .pinfo-dots { display: none; }
+
+/* ── Lightbox ── */
+@keyframes lightbox-in {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.94);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: lightbox-in 0.25s ease;
+  cursor: zoom-out;
+}
+
+.lightbox-img {
+  max-width: 92vw;
+  max-height: 84vh;
+  object-fit: contain;
+  display: block;
+  cursor: default;
+  border-radius: 2px;
+}
+
+.lightbox-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: rgba(255,255,255,0.7);
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, color 0.2s;
+  z-index: 1;
+}
+.lightbox-close:hover { background: rgba(255,255,255,0.16); color: #fff; }
+
+.lightbox-caption {
+  position: absolute;
+  bottom: 28px;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.lightbox-label {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.lightbox-sub {
+  font-family: 'Georgia', serif;
+  font-size: 13px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+}
 
 /* ── Progress ── */
 .pinfo-progress {

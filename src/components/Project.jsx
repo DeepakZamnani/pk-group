@@ -1,4 +1,5 @@
 import { useLayoutEffect, useRef } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -18,6 +19,7 @@ const DRONE_SRC = mobile
   : 'drone-start-4k.mp4'
 
 export default function Project({ onVideoReady, onLeave, onProgress }) {
+  const navigate = useNavigate()
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
   const videoRef   = useRef(null)
@@ -58,6 +60,13 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
       const setFadeOut = gsap.quickSetter(exitRef.current, 'opacity')
 
+      let introEl = null, introExited = false
+
+      if (mobile && introRef.current) {
+        introEl = introRef.current
+        gsap.set(introEl, { opacity: 1 })
+      }
+
       ScrollTrigger.create({
         trigger: wrapRef.current,
         start: 'top top',
@@ -69,11 +78,9 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
           if (!mobile) setFadeIn(Math.max(0, 1 - p / 0.001))
           else         setFadeIn(Math.max(0, 1 - p / 0.20))
 
-          if (mobile && p > 0.04 && !introExited && introEyebrow) {
+          if (mobile && p > 0.08 && !introExited && introEl) {
             introExited = true
-            gsap.to(introSub,     { opacity: 0, duration: 0.35, ease: 'power2.in'             })
-            gsap.to(introName,    { opacity: 0, scale: 0.94, duration: 0.45, ease: 'power2.in', delay: 0.08 })
-            gsap.to(introEyebrow, { opacity: 0, letterSpacing: '0.72em', duration: 0.35, ease: 'power2.in', delay: 0.18 })
+            gsap.to(introEl, { opacity: 0, duration: 0.35, ease: 'power2.in' })
           }
 
           setFadeOut(Math.max(0, (p - 0.998) / 0.002))
@@ -82,29 +89,6 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
           if (!rafId) rafId = requestAnimationFrame(seekVideo)
         },
       })
-
-      let introEyebrow = null, introName = null, introSub = null, introExited = false
-
-      if (mobile && introRef.current) {
-        introEyebrow = introRef.current.children[0]
-        introName    = introRef.current.children[1]
-        introSub     = introRef.current.children[2]
-
-        gsap.set(introEyebrow, { opacity: 0, letterSpacing: '0.72em' })
-        gsap.set(introName,    { opacity: 0, scale: 0.94, transformOrigin: 'center center' })
-        gsap.set(introSub,     { opacity: 0 })
-
-        ScrollTrigger.create({
-          trigger: wrapRef.current,
-          start: 'top 95%',
-          once: true,
-          onEnter() {
-            gsap.to(introEyebrow, { opacity: 1, letterSpacing: '0.38em', duration: 1.0, ease: 'power3.out', delay: 0.25 })
-            gsap.to(introName,    { opacity: 1, scale: 1,                 duration: 1.3, ease: 'expo.out',   delay: 0.6  })
-            gsap.to(introSub,     { opacity: 1,                           duration: 0.7, ease: 'power2.out', delay: 1.15 })
-          },
-        })
-      }
 
       gsap.set([headRef.current, bodyRef.current], { yPercent: 60, opacity: 0 })
       gsap.set(statsRef.current, { yPercent: 40, opacity: 0 })
@@ -146,6 +130,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
           <div ref={fadeRef} className="project-fade">
             {mobile && (
               <div ref={introRef} className="project-fade-intro">
+                <div className="pf-rule" />
                 <span className="pf-eyebrow">Featured Project</span>
                 <h2 className="pf-name">PK<br />Canopus</h2>
                 <span className="pf-sub">Wakad · Pune · 2026</span>
@@ -165,12 +150,12 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
                 3 &amp; 4 BHK ultra-luxurious residences in the heart of Wakad.
                 A landmark mixed-use address — retail, dining, and workspace at your doorstep, with Hinjawadi moments away.
               </p>
-              <a href="#" className="project-cta">
+              <button className="project-cta" onClick={() => navigate('/projects')}>
                 <span>Explore Project</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
-              </a>
+              </button>
             </div>
           </div>
 
