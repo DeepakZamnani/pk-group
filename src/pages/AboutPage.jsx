@@ -34,6 +34,8 @@ export default function AboutPage() {
     window.scrollTo(0, 0)
     document.body.style.overflow = ''
 
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     const ctx = gsap.context(() => {
       gsap.set([line1Ref.current, line2Ref.current], { yPercent: 110 })
       gsap.set(subRef.current, { opacity: 0, y: 16 })

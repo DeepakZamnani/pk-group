@@ -122,6 +122,8 @@ export default function CareersPage() {
     document.body.style.overflow = ''
     ScrollTrigger.refresh()
 
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     const ctx = gsap.context(() => {
       gsap.set([heroLine1.current, heroLine2.current], { yPercent: 110 })
       gsap.set(heroSub.current, { opacity: 0, y: 16 })
@@ -134,6 +136,8 @@ export default function CareersPage() {
 
   // Cards scroll in
   useLayoutEffect(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     const ctx = gsap.context(() => {
       cardRefs.current.forEach((el, i) => {
         if (!el) return

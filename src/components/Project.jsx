@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -11,10 +11,7 @@ const STATS = [
   { num: '2026',  label: 'Completion' },
 ]
 
-const isMobile = () => window.matchMedia('(max-width: 768px)').matches
-
 export default function Project({ onVideoReady, onLeave, onProgress }) {
-  const [mobile]   = useState(isMobile)
   const wrapRef    = useRef(null)
   const sectionRef = useRef(null)
   const videoRef   = useRef(null)
@@ -25,30 +22,8 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
   const bodyRef    = useRef(null)
 
   useLayoutEffect(() => {
-    if (mobile) {
-      if (onVideoReady) onVideoReady()
-      if (onProgress)  onProgress(1)
-
-      const ctx = gsap.context(() => {
-        gsap.set(fadeRef.current, { opacity: 0 })
-        gsap.set(exitRef.current, { opacity: 0 })
-        gsap.set([headRef.current, bodyRef.current], { yPercent: 30, opacity: 0 })
-        gsap.set(statsRef.current, { yPercent: 20, opacity: 0 })
-
-        ScrollTrigger.create({
-          trigger: headRef.current,
-          start: 'top 85%',
-          onEnter() {
-            gsap.to(headRef.current,  { yPercent: 0, opacity: 1, duration: 0.7, ease: 'power3.out' })
-            gsap.to(bodyRef.current,  { yPercent: 0, opacity: 1, duration: 0.7, delay: 0.1, ease: 'power3.out' })
-            gsap.to(statsRef.current, { yPercent: 0, opacity: 1, duration: 0.5, stagger: 0.06, delay: 0.2, ease: 'power3.out' })
-          },
-        })
-      })
-      return () => ctx.revert()
-    }
-
-    const video = videoRef.current
+    const mobile = window.matchMedia('(max-width: 768px)').matches
+    const video  = videoRef.current
 
     const readyTimer = setTimeout(() => { if (onVideoReady) onVideoReady() }, 6000)
     const onData = () => { clearTimeout(readyTimer); if (onVideoReady) onVideoReady() }
@@ -71,7 +46,7 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
     const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
 
     const ctx = gsap.context(() => {
-      gsap.set(fadeRef.current, { opacity: 1 })
+      gsap.set(fadeRef.current, { opacity: mobile ? 0 : 1 })
       gsap.set(exitRef.current, { opacity: 0 })
 
       const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
@@ -81,11 +56,11 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
         trigger: wrapRef.current,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.2,
+        scrub: mobile ? 0.45 : 0.2,
         onLeave() { onLeave?.() },
         onUpdate(self) {
           const p = self.progress
-          setFadeIn(Math.max(0, 1 - p / 0.001))
+          if (!mobile) setFadeIn(Math.max(0, 1 - p / 0.001))
           setFadeOut(Math.max(0, (p - 0.998) / 0.002))
           const dur = video.duration || 6
           rafTarget = Math.min(p, 1) * dur
@@ -115,24 +90,20 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
       if (rafId) cancelAnimationFrame(rafId)
       ctx.revert()
     }
-  }, [mobile])
+  }, [])
 
   return (
     <div ref={wrapRef} id="projects" className="project-wrapper">
       <div className="project-sticky">
         <section ref={sectionRef} className="project-section">
-          {mobile ? (
-            <img src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/project-mobile.jpeg" className="project-video" alt="" />
-          ) : (
-            <video
-              ref={videoRef}
-              className="project-video"
-              src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/drone-start.mp4"
-              muted
-              playsInline
-              preload="auto"
-            />
-          )}
+          <video
+            ref={videoRef}
+            className="project-video"
+            src="drone-start-4k.mp4"
+            muted
+            playsInline
+            preload="auto"
+          />
           <div className="project-overlay" />
           <div ref={fadeRef}  className="project-fade" />
           <div ref={exitRef}  className="project-exit" />

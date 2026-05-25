@@ -304,7 +304,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: translateZ(0); /* GPU compositor layer for smooth seeking */
+  transform: translateZ(0);
 }
 
 /* Full black fade — animates in at end of hero scroll for seamless cut to project */
@@ -586,9 +586,9 @@
 
 /* ── Mobile ─────────────────────────────────────────────────────────── */
 @media (max-width: 768px) {
-  .hero-wrapper    { height: 100vh; height: 100dvh; }
-  .project-wrapper { height: 100vh; height: 100dvh; }
-  .project-sticky  { position: relative; }
+  .hero-wrapper    { height: 280vh; }
+  .project-wrapper { height: 250vh; }
+
 
   .hero-overlay {
     background:
@@ -793,6 +793,52 @@
   background: #0a0a0a;
   z-index: 5;
   pointer-events: none;
+}
+
+/* ── Mobile project title card (between hero and drone) ── */
+.project-title-card {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .project-title-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    height: 100vh;
+    height: 100dvh;
+    background: #0a0a0a;
+    text-align: center;
+    padding: 0 32px;
+  }
+
+  .project-title-card-eyebrow {
+    font-family: 'Georgia', serif;
+    font-size: 11px;
+    letter-spacing: 0.38em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .project-title-card-name {
+    font-family: 'Georgia', serif;
+    font-size: clamp(64px, 20vw, 96px);
+    font-weight: 400;
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    color: #fff;
+    margin: 0;
+  }
+
+  .project-title-card-sub {
+    font-family: 'Georgia', serif;
+    font-size: 12px;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+  }
 }
 
 .project-exit {
@@ -2282,6 +2328,9 @@
   margin: 0;
 }
 
+/* ── Dot nav (mobile only) ── */
+.pinfo-dots { display: none; }
+
 /* ── Progress ── */
 .pinfo-progress {
   position: absolute;
@@ -2304,9 +2353,26 @@
 
 /* ── Mobile ── */
 @media (max-width: 768px) {
-  .pinfo-wrapper      { height: 600vh; }
+  /* ── Swipeable carousel ── */
+  .pinfo-wrapper      { height: auto; }
+  .pinfo-sticky       { position: relative; height: 72vh; height: 72dvh; overflow: hidden; }
+  .pinfo-track        {
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .pinfo-track::-webkit-scrollbar { display: none; }
+  .pinfo-slide        { width: 100vw; flex: 0 0 100vw; height: 100%; scroll-snap-align: start; }
+  .pinfo-img          { transform: none !important; }
+
+  /* ── Intro ── */
   .pinfo-intro        { padding-left: 24px; padding-right: 24px; }
 
+  /* ── Text overlay ── */
   .pinfo-text         { max-width: 82vw; bottom: clamp(52px, 9vh, 76px); padding: 0; }
   .pinfo-text--left   { left: 24px; }
   .pinfo-text--right  { right: auto; left: 24px; text-align: left; }
@@ -2314,11 +2380,41 @@
   .pinfo-heading-line { font-size: clamp(30px, 8vw, 44px); }
   .pinfo-sub          { font-size: 11px; letter-spacing: 0.16em; }
 
+  /* ── Counter ── */
   .pinfo-counter--left  { left: 24px; }
   .pinfo-counter--right { right: 24px; }
 
   .pinfo-edge-label   { display: none; }
-  .pinfo-progress     { width: 100px; }
+  .pinfo-progress     { display: none; }
+
+  /* ── Dot navigation ── */
+  .pinfo-dots {
+    display: flex;
+    position: absolute;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    gap: 7px;
+    z-index: 4;
+    align-items: center;
+  }
+
+  .pinfo-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+    flex-shrink: 0;
+  }
+
+  .pinfo-dot--active {
+    background: #fff;
+    transform: scale(1.5);
+  }
 }
 
 /* ── ProjectInfo Mask (wipe scenes) ────────────────────────────────── */

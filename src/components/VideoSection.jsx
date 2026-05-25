@@ -28,28 +28,33 @@ const VideoSection = forwardRef(function VideoSection({
   const [playing, setPlaying] = useState(false)
 
   useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.set(ruleRef.current,    { scaleX: 0, transformOrigin: 'left' })
-      gsap.set(lineRefs.current,   { y: '108%' })
-      gsap.set(taglineRef.current, { opacity: 0, y: 12 })
-      gsap.set(cardRef.current,    { opacity: 0, y: 32 })
+    const mobile = window.matchMedia('(max-width: 768px)').matches
+    let ctx = null
 
-      const tl = gsap.timeline({ paused: true })
-      tl.to(ruleRef.current, { scaleX: 1, duration: 0.6, ease: 'power3.inOut' }, 0)
-      lineRefs.current.forEach((el, i) => {
-        tl.to(el, { y: '0%', duration: 0.7, ease: 'power4.out' }, 0.08 + i * 0.08)
+    if (!mobile) {
+      ctx = gsap.context(() => {
+        gsap.set(ruleRef.current,    { scaleX: 0, transformOrigin: 'left' })
+        gsap.set(lineRefs.current,   { y: '108%' })
+        gsap.set(taglineRef.current, { opacity: 0, y: 12 })
+        gsap.set(cardRef.current,    { opacity: 0, y: 32 })
+
+        const tl = gsap.timeline({ paused: true })
+        tl.to(ruleRef.current, { scaleX: 1, duration: 0.6, ease: 'power3.inOut' }, 0)
+        lineRefs.current.forEach((el, i) => {
+          tl.to(el, { y: '0%', duration: 0.7, ease: 'power4.out' }, 0.08 + i * 0.08)
+        })
+        tl.to(taglineRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.35)
+          .to(cardRef.current,    { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.42)
+
+        tlRef.current = tl
+
+        ScrollTrigger.create({
+          trigger: sectionRef.current,
+          start: 'top 85%',
+          onEnter: () => tl.play(0),
+        })
       })
-      tl.to(taglineRef.current, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.35)
-        .to(cardRef.current,    { opacity: 1, y: 0, duration: 0.65, ease: 'power3.out' }, 0.42)
-
-      tlRef.current = tl
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top 85%',
-        onEnter: () => tl.play(0),
-      })
-    })
+    }
 
     const obs = new IntersectionObserver(
       ([entry]) => { if (entry.isIntersecting) setPlaying(true) },
@@ -57,7 +62,7 @@ const VideoSection = forwardRef(function VideoSection({
     )
     if (cardRef.current) obs.observe(cardRef.current)
 
-    return () => { ctx.revert(); obs.disconnect() }
+    return () => { ctx?.revert(); obs.disconnect() }
   }, [])
 
   useImperativeHandle(ref, () => ({

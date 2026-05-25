@@ -39,6 +39,8 @@ export default function About() {
   const dividerRef  = useRef(null)
 
   useLayoutEffect(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     const ctx = gsap.context(() => {
 
       // ── Left panel entrance ───────────────────────────────────────

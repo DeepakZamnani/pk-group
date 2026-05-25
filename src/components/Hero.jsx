@@ -1,13 +1,10 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useRef } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const isMobile = () => window.matchMedia('(max-width: 768px)').matches
-
 export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
-  const [mobile]   = useState(isMobile)
   const wrapRef     = useRef(null)
   const stickyRef   = useRef(null)
   const videoRef    = useRef(null)
@@ -17,30 +14,9 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
   const fadeRef     = useRef(null)
 
   useLayoutEffect(() => {
+    const mobile = window.matchMedia('(max-width: 768px)').matches
     const title = titleRef.current
     const pk    = pkRef.current
-
-    if (mobile) {
-      if (onVideoReady) onVideoReady()
-      if (onProgress)  onProgress(1)
-      const ctx = gsap.context(() => {
-        gsap.set(title, { xPercent: -50, yPercent: -50 })
-        gsap.set(pk, { yPercent: 20, scale: 0.9, opacity: 0 })
-        const tl = gsap.timeline({ delay: 0.4 })
-        tl.to(pk, { yPercent: 0, scale: 1, opacity: 1, duration: 0.55, ease: 'power4.out' })
-          .to(pk, { scale: 1.1, opacity: 0, duration: 0.45, ease: 'power2.in' }, '+=0.9')
-          .add(() => {
-            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
-            setTimeout(() => {
-              if (wrapRef.current) wrapRef.current.style.display = 'none'
-              window.scrollTo(0, 0)
-              ScrollTrigger.refresh()
-            }, 750)
-          })
-      })
-      return () => ctx.revert()
-    }
-
     const wrap  = wrapRef.current
     const video = videoRef.current
     const bar   = progressRef.current
@@ -82,7 +58,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
         trigger: wrap,
         start: 'top top',
         end: 'bottom bottom',
-        scrub: 0.2,
+        scrub: mobile ? 0.45 : 0.2,
         animation: tl,
         onUpdate(self) {
           const dur = video.duration || 8
@@ -103,7 +79,7 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
       if (rafId) cancelAnimationFrame(rafId)
       ctx.revert()
     }
-  }, [mobile, onHeroComplete, onVideoReady, onProgress])
+  }, [onHeroComplete, onVideoReady, onProgress])
 
   return (
     <>
@@ -111,18 +87,14 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
 
       <div ref={wrapRef} className="hero-wrapper">
         <div ref={stickyRef} className="hero-sticky">
-          {mobile ? (
-            <img src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/hero-mobile.jpeg" className="hero-video" alt="" />
-          ) : (
-            <video
-              ref={videoRef}
-              className="hero-video"
-              src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo.mp4"
-              muted
-              playsInline
-              preload="auto"
-            />
-          )}
+          <video
+            ref={videoRef}
+            className="hero-video"
+            src="https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/HeroVideo.mp4"
+            muted
+            playsInline
+            preload="auto"
+          />
           <div className="hero-overlay" />
 
           <div ref={titleRef} className="hero-title">

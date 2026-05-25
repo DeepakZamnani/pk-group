@@ -86,6 +86,8 @@ export default function ContactPage() {
     window.scrollTo(0, 0)
     document.body.style.overflow = ''
 
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     const ctx = gsap.context(() => {
       gsap.set([heroLine1.current, heroLine2.current], { yPercent: 110 })
       gsap.set(heroSub.current, { opacity: 0, y: 16 })

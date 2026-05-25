@@ -18,6 +18,8 @@ export default function Footer() {
   const lineRef    = useRef(null)
 
   useLayoutEffect(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     const ctx = gsap.context(() => {
       gsap.set(lineRef.current,   { scaleX: 0, transformOrigin: 'left center' })
       gsap.set(topRef.current,    { opacity: 0, y: 24 })

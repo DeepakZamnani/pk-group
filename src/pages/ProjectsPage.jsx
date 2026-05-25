@@ -160,7 +160,7 @@ const PROJECTS = [
       { text: 'destination.', indent: 2, italic: true }
     ],
     cardMeta: {
-      label: 'PK Hillcrest — Pisoli, South Pune',
+      label: 'PK Hillcrest — Pimple Saudagar, Pune',
       year: '2027'
     }
   }
@@ -184,6 +184,8 @@ export default function ProjectsPage() {
   // Hero entrance — once
   useLayoutEffect(() => {
     window.scrollTo(0, 0)
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     const ctx = gsap.context(() => {
       gsap.set(heroMeta.current,  { opacity: 0, y: 10 })
       gsap.set(heroLine1.current, { yPercent: 110 })
@@ -198,6 +200,11 @@ export default function ProjectsPage() {
 
   // Content animations — reruns on tab switch
   useLayoutEffect(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      if (contentRef.current) gsap.set(contentRef.current, { opacity: 1, y: 0 })
+      return
+    }
+
     const ctx = gsap.context(() => {
       gsap.fromTo(contentRef.current,
         { opacity: 0, y: 20 },
@@ -247,6 +254,12 @@ export default function ProjectsPage() {
 
   const switchTab = (i) => {
     if (i === active) return
+
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      setActive(i)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      return
+    }
 
     gsap.to(heroLine1.current, {
       yPercent: -110, duration: 0.35, ease: 'power3.in',

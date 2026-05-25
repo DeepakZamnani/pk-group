@@ -1,4 +1,4 @@
-import { useLayoutEffect, useRef } from 'react'
+import { useLayoutEffect, useEffect, useRef, useState } from 'react'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
@@ -29,7 +29,32 @@ export default function ProjectInfo() {
   const labelRefs   = useRef([])
   const counterRefs = useRef([])
 
+  const [activeSlide, setActiveSlide] = useState(0)
+
+  // ── Mobile: scroll-snap dot sync ────────────────────────────────────
+  useEffect(() => {
+    if (!window.matchMedia('(max-width: 768px)').matches) return
+    const track = trackRef.current
+    if (!track) return
+
+    const onScroll = () => {
+      const i = Math.round(track.scrollLeft / track.clientWidth)
+      setActiveSlide(i)
+    }
+    track.addEventListener('scroll', onScroll, { passive: true })
+    return () => track.removeEventListener('scroll', onScroll)
+  }, [])
+
+  const goToSlide = (i) => {
+    const track = trackRef.current
+    if (!track) return
+    track.scrollTo({ left: i * track.clientWidth, behavior: 'smooth' })
+  }
+
+  // ── Desktop: GSAP scroll-driven carousel ────────────────────────────
   useLayoutEffect(() => {
+    if (window.matchMedia('(max-width: 768px)').matches) return
+
     let onResize = null
     const ctx = gsap.context(() => {
     // ── Intro heading — pinned scrub ─────────────────────────────────
@@ -41,12 +66,11 @@ export default function ProjectInfo() {
       .to(introLine1.current, { y: '0%',    duration: 0.25, ease: 'power4.out' }, 0.05)
       .to(introLine2.current, { y: '0%',    duration: 0.25, ease: 'power4.out' }, 0.15)
       .to(introSub.current,   { opacity: 1, y: 0, duration: 0.2, ease: 'power3.out' }, 0.3)
-      // hold — then exit
       .to(introLine1.current, { y: '-30%', opacity: 0, duration: 0.2, ease: 'power2.in' }, 0.7)
       .to(introLine2.current, { y: '-30%', opacity: 0, duration: 0.2, ease: 'power2.in' }, 0.75)
       .to(introSub.current,   { opacity: 0, y: -16,   duration: 0.15, ease: 'power2.in' }, 0.78)
 
-    const introST = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: introRef.current,
       start: 'top top',
       end: 'bottom top',
@@ -59,26 +83,15 @@ export default function ProjectInfo() {
     const n  = SLIDES.length
     const vw = () => window.visualViewport?.width ?? window.innerWidth
 
-    // scale images up so parallax never reveals edges
     imgRefs.current.forEach(el => { if (el) gsap.set(el, { scale: 1.3 }) })
 
-    // hide all text upfront
-    headRefs.current.forEach(el => {
-      if (el) gsap.set(el, { y: '108%' })
-    })
-    subRefs.current.forEach(el => {
-      if (el) gsap.set(el, { opacity: 0, y: 12 })
-    })
-    labelRefs.current.forEach(el => {
-      if (el) gsap.set(el, { opacity: 0 })
-    })
-    counterRefs.current.forEach(el => {
-      if (el) gsap.set(el, { opacity: 0 })
-    })
+    headRefs.current.forEach(el => { if (el) gsap.set(el, { y: '108%' }) })
+    subRefs.current.forEach(el => { if (el) gsap.set(el, { opacity: 0, y: 12 }) })
+    labelRefs.current.forEach(el => { if (el) gsap.set(el, { opacity: 0 }) })
+    counterRefs.current.forEach(el => { if (el) gsap.set(el, { opacity: 0 }) })
 
-    // pre-build one paused timeline per slide — zero allocation during scroll
     const slideTLs = SLIDES.map((_, i) => {
-      const tl = gsap.timeline({ paused: true })
+      const tl      = gsap.timeline({ paused: true })
       const head    = headRefs.current[i]
       const sub     = subRefs.current[i]
       const label   = labelRefs.current[i]
@@ -92,10 +105,8 @@ export default function ProjectInfo() {
       return tl
     })
 
-    // play slide 0 immediately
     slideTLs[0].play(0)
 
-    // quickSetters — zero GC pressure per frame
     const setImgX = imgRefs.current.map(el => el ? gsap.quickSetter(el, 'x', 'px') : null)
     const setFill = fillRef.current ? gsap.quickSetter(fillRef.current, 'scaleX') : null
 
@@ -105,7 +116,7 @@ export default function ProjectInfo() {
 
     let lastSlide = 0
 
-    const st = ScrollTrigger.create({
+    ScrollTrigger.create({
       trigger: wrapRef.current,
       start: 'top top',
       end: 'bottom bottom',
@@ -115,7 +126,6 @@ export default function ProjectInfo() {
         const progress = self.progress
         const w = vw()
 
-        // parallax per image
         for (let i = 0; i < n; i++) {
           const set = setImgX[i]
           if (!set) continue
@@ -125,7 +135,6 @@ export default function ProjectInfo() {
 
         setFill?.(progress)
 
-        // fire pre-built timeline when slide changes
         const active = Math.round(progress * (n - 1))
         if (active !== lastSlide) {
           lastSlide = active
@@ -228,8 +237,21 @@ export default function ProjectInfo() {
 
         </div>
 
+        {/* Desktop progress bar */}
         <div className="pinfo-progress">
           <div className="pinfo-progress-fill" ref={fillRef} />
+        </div>
+
+        {/* Mobile dot navigation */}
+        <div className="pinfo-dots">
+          {SLIDES.map((_, i) => (
+            <button
+              key={i}
+              className={`pinfo-dot${activeSlide === i ? ' pinfo-dot--active' : ''}`}
+              onClick={() => goToSlide(i)}
+              aria-label={`Go to slide ${i + 1}`}
+            />
+          ))}
         </div>
 
       </div>
