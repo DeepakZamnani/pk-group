@@ -44,8 +44,15 @@ export default function Hero({ onHeroComplete, onVideoReady, onProgress }) {
     video.addEventListener('progress', onProgressEv)
     video.load()
 
-    let rafId = null, rafTarget = 0
-    const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
+    let rafId = null, rafTarget = 0, lastSeeked = -1
+    const seekVideo = () => {
+      if (Math.abs(rafTarget - lastSeeked) >= 0.05) {
+        if (video.fastSeek) video.fastSeek(rafTarget)
+        else video.currentTime = rafTarget
+        lastSeeked = rafTarget
+      }
+      rafId = null
+    }
 
     const ctx = gsap.context(() => {
       gsap.set(title, { xPercent: -50, yPercent: -50 })

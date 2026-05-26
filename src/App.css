@@ -589,6 +589,9 @@
   .hero-wrapper    { height: 280vh; }
   .project-wrapper { height: 250vh; }
 
+  .hero-video    { transform: none; }
+  .project-video { transform: none; }
+
 
   .hero-overlay {
     background:
@@ -811,6 +814,8 @@
     padding: 0 32px 60px;
     gap: 14px;
     box-sizing: border-box;
+    z-index: 3;
+    pointer-events: none;
   }
 
   .pf-rule {

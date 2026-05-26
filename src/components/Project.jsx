@@ -50,11 +50,18 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
     video.addEventListener('progress', onProgressEv)
     video.load()
 
-    let rafId = null, rafTarget = 0
-    const seekVideo = () => { video.currentTime = rafTarget; rafId = null }
+    let rafId = null, rafTarget = 0, lastSeeked = -1
+    const seekVideo = () => {
+      if (Math.abs(rafTarget - lastSeeked) >= 0.05) {
+        if (video.fastSeek) video.fastSeek(rafTarget)
+        else video.currentTime = rafTarget
+        lastSeeked = rafTarget
+      }
+      rafId = null
+    }
 
     const ctx = gsap.context(() => {
-      gsap.set(fadeRef.current, { opacity: 1 })
+      gsap.set(fadeRef.current, { opacity: mobile ? 0 : 1 })
       gsap.set(exitRef.current, { opacity: 0 })
 
       const setFadeIn  = gsap.quickSetter(fadeRef.current, 'opacity')
@@ -76,11 +83,10 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
         onUpdate(self) {
           const p = self.progress
           if (!mobile) setFadeIn(Math.max(0, 1 - p / 0.001))
-          else         setFadeIn(Math.max(0, 1 - p / 0.20))
 
-          if (mobile && p > 0.08 && !introExited && introEl) {
+          if (mobile && p > 0.15 && !introExited && introEl) {
             introExited = true
-            gsap.to(introEl, { opacity: 0, duration: 0.35, ease: 'power2.in' })
+            gsap.to(introEl, { opacity: 0, duration: 0.4, ease: 'power2.in' })
           }
 
           setFadeOut(Math.max(0, (p - 0.998) / 0.002))
@@ -127,16 +133,15 @@ export default function Project({ onVideoReady, onLeave, onProgress }) {
             preload="auto"
           />
           <div className="project-overlay" />
-          <div ref={fadeRef} className="project-fade">
-            {mobile && (
-              <div ref={introRef} className="project-fade-intro">
-                <div className="pf-rule" />
-                <span className="pf-eyebrow">Featured Project</span>
-                <h2 className="pf-name">PK<br />Canopus</h2>
-                <span className="pf-sub">Wakad · Pune · 2026</span>
-              </div>
-            )}
-          </div>
+          <div ref={fadeRef} className="project-fade" />
+          {mobile && (
+            <div ref={introRef} className="project-fade-intro">
+              <div className="pf-rule" />
+              <span className="pf-eyebrow">Featured Project</span>
+              <h2 className="pf-name">PK<br />Canopus</h2>
+              <span className="pf-sub">Wakad · Pune · 2026</span>
+            </div>
+          )}
           <div ref={exitRef}  className="project-exit" />
 
           <div className="project-copy">
