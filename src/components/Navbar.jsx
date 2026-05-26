@@ -6,7 +6,7 @@ const LINKS = [
   { label: 'Projects',       route:   '/projects'        },
   { label: 'About',          route:   '/about'           },
   { label: 'Careers',        route:   '/careers'         },
-  { label: 'Reconstruction', modal:   'coming-soon'      },
+  { label: 'Redevelopment', modal:   'coming-soon'      },
   { label: 'Contact',        route:   '/contact'         },
 ]
 
