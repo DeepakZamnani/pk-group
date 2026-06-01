@@ -1,4 +1,5 @@
-import { useLayoutEffect, useRef, useState } from 'react'
+import { useLayoutEffect, useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
@@ -108,6 +109,37 @@ const PROJECTS = [
       { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/clubhouse.jpg',    caption: 'Clubhouse'       },
       { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/theatre.jpg',      caption: 'Private Theatre' },
       { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/tennis-court.jpg', caption: 'Sport Court'     },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.1.png',  caption: 'Project Overview' },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.2.png',  caption: 'Location Map'     },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.3.png',  caption: 'Floor Plan'       },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.4.png',  caption: 'View 04'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.5.png',  caption: 'View 05'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.6.png',  caption: 'View 06'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.7.png',  caption: 'View 07'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.8.png',  caption: 'View 08'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.9.png',  caption: 'View 09'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.10.png', caption: 'View 10'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.11.png', caption: 'View 11'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.12.png', caption: 'View 12'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.13.png', caption: 'View 13'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.14.png', caption: 'View 14'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.15.png', caption: 'View 15'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.16.png', caption: 'View 16'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.17.png', caption: 'View 17'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.18.png', caption: 'View 18'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.19.png', caption: 'View 19'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.20.png', caption: 'View 20'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.21.png', caption: 'View 21'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.22.png', caption: 'View 22'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.23.png', caption: 'View 23'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.24.png', caption: 'View 24'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.25.png', caption: 'View 25'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.26.png', caption: 'View 26'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.27.png', caption: 'View 27'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.28.png', caption: 'View 28'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.29.png', caption: 'View 29'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.30.png', caption: 'View 30'          },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/ebsite%202/Still%202026-05-23%20010129_1.1.31.png', caption: 'View 31'          },
     ],
     video: {
       ytId:    'hGmHAxVMwiQ',
@@ -295,9 +327,32 @@ const PROJECTS = [
 
 ]
 
+const GALLERY_PREVIEW = 4
+
 export default function ProjectsPage() {
-  const [active, setActive] = useState(0)
+  const [active, setActive]                   = useState(0)
+  const [galleryExpanded, setGalleryExpanded] = useState(false)
+  const [lightboxIdx, setLightboxIdx]         = useState(null)
   const project = PROJECTS[active]
+
+  const lbTotal   = project.gallery.length
+  const lbPrev    = () => setLightboxIdx(i => (i - 1 + lbTotal) % lbTotal)
+  const lbNext    = () => setLightboxIdx(i => (i + 1) % lbTotal)
+  const lbClose   = () => setLightboxIdx(null)
+
+  useEffect(() => { setGalleryExpanded(false) }, [active])
+
+  useEffect(() => {
+    if (lightboxIdx === null) return
+    const onKey = e => {
+      if (e.key === 'Escape')     lbClose()
+      if (e.key === 'ArrowRight') lbNext()
+      if (e.key === 'ArrowLeft')  lbPrev()
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [lightboxIdx, lbTotal])
 
   useSEO({
     title:       project.seo.title,
@@ -535,21 +590,70 @@ export default function ProjectsPage() {
         )}
 
         {/* ── GALLERY ── */}
-        {project.gallery.length > 0 ? (
-          <div className="proj-gallery" style={galleryGridStyle(project.gallery.length)}>
-            {project.gallery.map((g, i) => (
+        {project.gallery.length > 0 ? (() => {
+          const previewCount  = Math.min(GALLERY_PREVIEW, project.gallery.length)
+          const visibleCount  = galleryExpanded ? project.gallery.length : previewCount
+          const visibleItems  = project.gallery.slice(0, visibleCount)
+          const hiddenCount   = project.gallery.length - previewCount
+
+          return (
+            <>
               <div
-                key={i}
-                ref={el => galleryRef.current[i] = el}
-                className="proj-gallery-item"
-                style={galleryItemStyle(i, project.gallery.length)}
+                className="proj-gallery"
+                style={galleryGridStyle(visibleCount)}
               >
-                <img src={g.src} alt={g.caption} />
-                <span className="proj-gallery-caption">{g.caption}</span>
+                {visibleItems.map((g, i) => (
+                  <div
+                    key={`${active}-${i}`}
+                    ref={el => galleryRef.current[i] = el}
+                    className={`proj-gallery-item${i >= GALLERY_PREVIEW ? ' proj-gallery-item--new' : ''}`}
+                    style={{ ...galleryItemStyle(i, visibleCount), cursor: 'zoom-in' }}
+                    onClick={() => setLightboxIdx(i)}
+                  >
+                    <img src={g.src} alt={g.caption} loading={i === 0 ? 'eager' : 'lazy'} />
+                    <span className="proj-gallery-caption">{g.caption}</span>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        ) : (
+
+
+              {hiddenCount > 0 && (
+                <div className="proj-gallery-footer">
+                  {!galleryExpanded && (
+                    <p className="proj-gallery-tally">
+                      Showing {previewCount} of {project.gallery.length}
+                    </p>
+                  )}
+                  <button
+                    className="proj-gallery-expand-btn"
+                    data-expanded={galleryExpanded}
+                    onClick={() => setGalleryExpanded(e => !e)}
+                  >
+                    {galleryExpanded ? (
+                      <>
+                        <span>Show Less</span>
+                        <span className="proj-gallery-expand-icon">
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M2 6h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                          </svg>
+                        </span>
+                      </>
+                    ) : (
+                      <>
+                        <span>View All {project.gallery.length} Photographs</span>
+                        <span className="proj-gallery-expand-icon">
+                          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                            <path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+                          </svg>
+                        </span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
+            </>
+          )
+        })() : (
           <div className="proj-coming-soon">
             <span className="proj-coming-eyebrow">Gallery</span>
             <p className="proj-coming-text">Assets coming soon.</p>
@@ -559,6 +663,38 @@ export default function ProjectsPage() {
       </div>
 
       <Footer />
+
+      {lightboxIdx !== null && createPortal(
+        <div className="lightbox" onClick={lbClose}>
+          <button className="lightbox-close" onClick={lbClose}>✕</button>
+
+          <button className="lightbox-nav lightbox-nav--prev" onClick={e => { e.stopPropagation(); lbPrev() }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M13 4l-6 6 6 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          <img
+            key={lightboxIdx}
+            src={project.gallery[lightboxIdx].src}
+            alt={project.gallery[lightboxIdx].caption}
+            className="lightbox-img"
+            onClick={e => e.stopPropagation()}
+          />
+
+          <button className="lightbox-nav lightbox-nav--next" onClick={e => { e.stopPropagation(); lbNext() }}>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M7 4l6 6-6 6" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+            </svg>
+          </button>
+
+          <div className="lightbox-caption">
+            <span className="lightbox-label">{project.gallery[lightboxIdx].caption}</span>
+            <span className="lightbox-sub">{lightboxIdx + 1} / {lbTotal}</span>
+          </div>
+        </div>,
+        document.body
+      )}
     </>
   )
 }

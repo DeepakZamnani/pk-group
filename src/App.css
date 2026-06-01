@@ -1606,6 +1606,92 @@
   .proj-gallery-caption { opacity: 1; transform: translateY(0); }
 }
 
+/* ── Gallery — new items reveal animation ── */
+.proj-gallery-item--new {
+  animation: gallery-item-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.proj-gallery-item--new:nth-child(5)  { animation-delay: 0.00s; }
+.proj-gallery-item--new:nth-child(6)  { animation-delay: 0.06s; }
+.proj-gallery-item--new:nth-child(7)  { animation-delay: 0.12s; }
+.proj-gallery-item--new:nth-child(8)  { animation-delay: 0.18s; }
+.proj-gallery-item--new:nth-child(9)  { animation-delay: 0.24s; }
+.proj-gallery-item--new:nth-child(10) { animation-delay: 0.30s; }
+.proj-gallery-item--new:nth-child(11) { animation-delay: 0.36s; }
+.proj-gallery-item--new:nth-child(12) { animation-delay: 0.40s; }
+
+@keyframes gallery-item-in {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Gallery — expand footer ── */
+.proj-gallery-footer {
+  background: #0a0a0a;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: clamp(40px, 6vh, 64px) clamp(24px, 6vw, 96px);
+  gap: 24px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.proj-gallery-tally {
+  font-family: 'Georgia', serif;
+  font-size: 10px;
+  letter-spacing: 0.44em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.18);
+}
+
+.proj-gallery-expand-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 16px;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  padding: 18px 52px;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.35s ease, border-color 0.35s ease, gap 0.3s ease;
+}
+
+.proj-gallery-expand-btn::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--gold);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+
+.proj-gallery-expand-btn:hover {
+  color: var(--gold);
+  border-color: transparent;
+  gap: 22px;
+}
+
+.proj-gallery-expand-btn:hover::before {
+  opacity: 1;
+}
+
+.proj-gallery-expand-icon {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@media (max-width: 768px) {
+  .proj-gallery-footer   { padding: 36px 24px; }
+  .proj-gallery-expand-btn { padding: 16px 36px; width: 100%; justify-content: center; }
+}
+
 /* Coming soon */
 .proj-coming-soon {
   background: #f7f4ef;
@@ -1669,8 +1755,19 @@
 
   .proj-amenities-label { padding-left: clamp(20px, 5vw, 40px); }
 
-  .proj-gallery { grid-template-columns: repeat(2, 1fr) !important; gap: 2px; }
-  .proj-gallery-item { grid-column: unset !important; grid-row: unset !important; height: 220px; }
+  /* ── Mobile gallery — 2-column grid ── */
+  .proj-gallery {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    grid-template-rows: unset !important;
+    gap: 3px !important;
+  }
+
+  .proj-gallery-item {
+    height: 48vw !important;
+    grid-column: unset !important;
+    grid-row: unset !important;
+  }
 }
 
 /* ── Founders Section ───────────────────────────────────────────────── */
@@ -2393,6 +2490,38 @@
   z-index: 1;
 }
 .lightbox-close:hover { background: rgba(255,255,255,0.16); color: #fff; }
+
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  z-index: 2;
+  flex-shrink: 0;
+}
+.lightbox-nav:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: rgba(255,255,255,0.25);
+  color: #fff;
+}
+.lightbox-nav--prev { left: clamp(12px, 3vw, 40px); }
+.lightbox-nav--next { right: clamp(12px, 3vw, 40px); }
+
+@media (max-width: 768px) {
+  .lightbox-nav { width: 40px; height: 40px; }
+  .lightbox-nav--prev { left: 10px; }
+  .lightbox-nav--next { right: 10px; }
+}
 
 .lightbox-caption {
   position: absolute;
