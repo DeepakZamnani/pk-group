@@ -47,16 +47,16 @@ export default function HomePage() {
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
-      '@id': 'https://www.pkgroup.in/#webpage',
-      'url': 'https://www.pkgroup.in/',
+      '@id': 'https://www.pkgroupcompanies.com/#webpage',
+      'url': 'https://www.pkgroupcompanies.com/',
       'name': 'PK Group | Luxury Real Estate Developer in Pune',
       'description': 'Ultra-luxury residential developer in Pune — PK Canopus, PK Ornate, PK Hillcrest.',
-      'isPartOf': { '@id': 'https://www.pkgroup.in/#website' },
-      'about': { '@id': 'https://www.pkgroup.in/#organization' },
+      'isPartOf': { '@id': 'https://www.pkgroupcompanies.com/#website' },
+      'about': { '@id': 'https://www.pkgroupcompanies.com/#organization' },
       'breadcrumb': {
         '@type': 'BreadcrumbList',
         'itemListElement': [
-          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.pkgroup.in/' },
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.pkgroupcompanies.com/' },
         ],
       },
     },

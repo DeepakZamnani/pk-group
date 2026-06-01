@@ -34,16 +34,16 @@ export default function AboutPage() {
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'AboutPage',
-      '@id': 'https://www.pkgroup.in/about#webpage',
-      'url': 'https://www.pkgroup.in/about',
+      '@id': 'https://www.pkgroupcompanies.com/about#webpage',
+      'url': 'https://www.pkgroupcompanies.com/about',
       'name': 'About PK Group | Luxury Real Estate Developer Pune',
       'description': 'Ar. Rohan J. Kate and Mr. Somnath Pandurang Kate — founders of PK Group Realty, Pune.',
-      'isPartOf': { '@id': 'https://www.pkgroup.in/#website' },
+      'isPartOf': { '@id': 'https://www.pkgroupcompanies.com/#website' },
       'breadcrumb': {
         '@type': 'BreadcrumbList',
         'itemListElement': [
-          { '@type': 'ListItem', 'position': 1, 'name': 'Home',  'item': 'https://www.pkgroup.in/' },
-          { '@type': 'ListItem', 'position': 2, 'name': 'About', 'item': 'https://www.pkgroup.in/about' },
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home',  'item': 'https://www.pkgroupcompanies.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'About', 'item': 'https://www.pkgroupcompanies.com/about' },
         ],
       },
       'mainEntity': {

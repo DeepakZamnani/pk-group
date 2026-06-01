@@ -81,16 +81,16 @@ export default function ContactPage() {
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'ContactPage',
-      '@id': 'https://www.pkgroup.in/contact#webpage',
-      'url': 'https://www.pkgroup.in/contact',
+      '@id': 'https://www.pkgroupcompanies.com/contact#webpage',
+      'url': 'https://www.pkgroupcompanies.com/contact',
       'name': 'Contact PK Group | Luxury Real Estate Pune',
       'description': 'Reach out to PK Group Realty for project enquiries, site visits, or partnership opportunities.',
-      'isPartOf': { '@id': 'https://www.pkgroup.in/#website' },
+      'isPartOf': { '@id': 'https://www.pkgroupcompanies.com/#website' },
       'breadcrumb': {
         '@type': 'BreadcrumbList',
         'itemListElement': [
-          { '@type': 'ListItem', 'position': 1, 'name': 'Home',    'item': 'https://www.pkgroup.in/' },
-          { '@type': 'ListItem', 'position': 2, 'name': 'Contact', 'item': 'https://www.pkgroup.in/contact' },
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home',    'item': 'https://www.pkgroupcompanies.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Contact', 'item': 'https://www.pkgroupcompanies.com/contact' },
         ],
       },
     },

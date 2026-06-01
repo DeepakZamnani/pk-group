@@ -44,13 +44,13 @@ const PROJECTS = [
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'ItemPage',
-        'url': 'https://www.pkgroup.in/projects',
+        'url': 'https://www.pkgroupcompanies.com/projects',
         'name': 'PK Canopus | 3 & 4 BHK Ultra-Luxury Apartments Wakad Pune',
         'breadcrumb': {
           '@type': 'BreadcrumbList',
           'itemListElement': [
-            { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroup.in/' },
-            { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroup.in/projects' },
+            { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroupcompanies.com/' },
+            { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroupcompanies.com/projects' },
             { '@type': 'ListItem', 'position': 3, 'name': 'PK Canopus' },
           ],
         },
@@ -130,17 +130,17 @@ const PROJECTS = [
     seo: {
       title:       'PK Ornate Pimple Saudagar | 2 & 2.5 BHK Premium Homes Pune',
       description: 'PK Ornate — premium 2 & 2.5 BHK residences from 775 sq. ft. in Pimple Saudagar, Pune. Customizable interiors, yoga plaza, party lawn, senior sitout. Designed for families who refuse to compromise.',
-      image:       'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.jpg',
+      image:       'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.png',
       jsonLd: {
         '@context': 'https://schema.org',
         '@type': 'ItemPage',
-        'url': 'https://www.pkgroup.in/projects',
+        'url': 'https://www.pkgroupcompanies.com/projects',
         'name': 'PK Ornate | 2 & 2.5 BHK Premium Residences Pimple Saudagar Pune',
         'breadcrumb': {
           '@type': 'BreadcrumbList',
           'itemListElement': [
-            { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroup.in/' },
-            { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroup.in/projects' },
+            { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroupcompanies.com/' },
+            { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroupcompanies.com/projects' },
             { '@type': 'ListItem', 'position': 3, 'name': 'PK Ornate' },
           ],
         },
@@ -149,7 +149,7 @@ const PROJECTS = [
           'name': 'PK Ornate',
           'description': 'Premium 2 & 2.5 BHK residences from 775 sq. ft. in Pimple Saudagar, Pune. Surrounded by greenery with customizable interiors, yoga & meditation plaza, party lawn, gazebo, and senior citizen sitout.',
           'numberOfRooms': '2-2.5',
-          'image': 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.jpg',
+          'image': 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.png',
           'address': {
             '@type': 'PostalAddress',
             'addressLocality': 'Pimple Saudagar',
@@ -189,13 +189,13 @@ const PROJECTS = [
     heroBg: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.jpg',
     gallery: [
       { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(2).jpg',  caption: 'Overview'    },
-      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(6).png',  caption: 'Design'      },
-      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(7).png',  caption: 'Elevation'   },
-      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(8).png',  caption: 'Perspective' },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(6).jpg',  caption: 'Design'      },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(7).jpg',  caption: 'Elevation'   },
+      { src: 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(8).jpg',  caption: 'Perspective' },
     ],
     video: {
       ytId:    '',
-      thumb:   'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK Ornate Brochure (1).pdf (2).png',
+      thumb:   'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/PK%20Ornate%20Brochure%20(1).pdf%20(2).jpg',
       tagline: 'Prelude to an Unparalleled Life.',
       lines: [
         { text: 'Not every home',      indent: 0, italic: false },
@@ -217,13 +217,13 @@ const PROJECTS = [
     jsonLd: {
       '@context': 'https://schema.org',
       '@type': 'ItemPage',
-      'url': 'https://www.pkgroup.in/projects',
+      'url': 'https://www.pkgroupcompanies.com/projects',
       'name': 'PK Hillcrest | 3 & 4 BHK Premium Luxury Homes Pimple Saudagar Pune',
       'breadcrumb': {
         '@type': 'BreadcrumbList',
         'itemListElement': [
-          { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroup.in/' },
-          { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroup.in/projects' },
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroupcompanies.com/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroupcompanies.com/projects' },
           { '@type': 'ListItem', 'position': 3, 'name': 'PK Hillcrest' },
         ],
       },
@@ -232,7 +232,7 @@ const PROJECTS = [
         'name': 'PK Hillcrest',
         'description': '3 & 4 BHK premium lifestyle residences in South Pune with infinity swimming pool, sky-level fitness center, luxury clubhouse, retail boulevard, and 20+ curated amenities. Expected completion 2027.',
         'numberOfRooms': '3-4',
-        'image': 'https://www.pkgroup.in/carousel-hillcrest/hero.png',
+        'image': 'https://www.pkgroupcompanies.com/carousel-hillcrest/hero.png',
         'address': {
           '@type': 'PostalAddress',
           'addressLocality': 'Pimple Saudagar',
