@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 import VideoSection from '../components/VideoSection'
+import { useSEO } from '../hooks/useSEO'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -36,6 +37,51 @@ const PROJECTS = [
     year:     '2026',
     heroBg:   'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/hero.jpg',
     sub:      '3 & 4 BHK ultra-luxurious apartments rising above Wakad. Live close to everything — Hinjawadi, Phoenix Mall, top schools — and shine above all.',
+    seo: {
+      title:       'PK Canopus Wakad | 3 & 4 BHK Ultra-Luxury Apartments Pune',
+      description: 'PK Canopus — a landmark 24-floor mixed-use address in Wakad, Pune. 120 ultra-luxury 3 & 4 BHK residences, 5.7 km from Hinjawadi. Resort-style pool, fitness studio, padel court & more.',
+      image:       'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/building.jpg',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'ItemPage',
+        'url': 'https://www.pkgroup.in/projects',
+        'name': 'PK Canopus | 3 & 4 BHK Ultra-Luxury Apartments Wakad Pune',
+        'breadcrumb': {
+          '@type': 'BreadcrumbList',
+          'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroup.in/' },
+            { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroup.in/projects' },
+            { '@type': 'ListItem', 'position': 3, 'name': 'PK Canopus' },
+          ],
+        },
+        'mainEntity': {
+          '@type': 'Residence',
+          'name': 'PK Canopus',
+          'description': 'Ultra-luxury 3 & 4 BHK apartments across 24 floors in Wakad, Pimpri Chinchwad. 120 exclusive units with resort-style pool, professional fitness studio, padel court, home theatre, and curated retail.',
+          'numberOfRooms': '3-4',
+          'floorLevel': '24',
+          'image': 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/building.jpg',
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Wakad',
+            'addressRegion': 'Pimpri Chinchwad, Maharashtra',
+            'postalCode': '411057',
+            'addressCountry': 'IN',
+          },
+          'containsPlace': [
+            { '@type': 'ApartmentComplex', 'name': 'PK Canopus', 'numberOfAccommodationUnits': 120 },
+          ],
+          'amenityFeature': [
+            { '@type': 'LocationFeatureSpecification', 'name': 'Resort-style swimming pool', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'Professional-grade fitness studio', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'Padel & tennis court', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'In-house home theatre', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'Clubhouse & games lounge', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': "Dedicated kids' play zone", 'value': true },
+          ],
+        },
+      },
+    },
     stats: [
       { num: '24',   label: 'Floors'     },
       { num: '120',  label: 'Units'      },
@@ -81,6 +127,47 @@ const PROJECTS = [
     location: 'Pimple Saudagar · Pune',
     year:     '2025',
     sub:      '2 & 2.5 BHK premium residences in the heart of Pimple Saudagar. Surrounded by lush greenery — a private oasis designed for families who refuse to compromise.',
+    seo: {
+      title:       'PK Ornate Pimple Saudagar | 2 & 2.5 BHK Premium Homes Pune',
+      description: 'PK Ornate — premium 2 & 2.5 BHK residences from 775 sq. ft. in Pimple Saudagar, Pune. Customizable interiors, yoga plaza, party lawn, senior sitout. Designed for families who refuse to compromise.',
+      image:       'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.jpg',
+      jsonLd: {
+        '@context': 'https://schema.org',
+        '@type': 'ItemPage',
+        'url': 'https://www.pkgroup.in/projects',
+        'name': 'PK Ornate | 2 & 2.5 BHK Premium Residences Pimple Saudagar Pune',
+        'breadcrumb': {
+          '@type': 'BreadcrumbList',
+          'itemListElement': [
+            { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroup.in/' },
+            { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroup.in/projects' },
+            { '@type': 'ListItem', 'position': 3, 'name': 'PK Ornate' },
+          ],
+        },
+        'mainEntity': {
+          '@type': 'Residence',
+          'name': 'PK Ornate',
+          'description': 'Premium 2 & 2.5 BHK residences from 775 sq. ft. in Pimple Saudagar, Pune. Surrounded by greenery with customizable interiors, yoga & meditation plaza, party lawn, gazebo, and senior citizen sitout.',
+          'numberOfRooms': '2-2.5',
+          'image': 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.jpg',
+          'address': {
+            '@type': 'PostalAddress',
+            'addressLocality': 'Pimple Saudagar',
+            'addressRegion': 'Pune, Maharashtra',
+            'postalCode': '411027',
+            'addressCountry': 'IN',
+          },
+          'amenityFeature': [
+            { '@type': 'LocationFeatureSpecification', 'name': 'Yoga & meditation plaza', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'Party lawn', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'Gazebo', 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'Senior citizen sitout', 'value': true },
+            { '@type': 'LocationFeatureSpecification', "name": "Children's play area", 'value': true },
+            { '@type': 'LocationFeatureSpecification', 'name': 'Customizable modern interiors', 'value': true },
+          ],
+        },
+      },
+    },
     stats: [
       { num: '1',    label: 'Tower'      },
       { num: '775',  label: 'Sq. Ft. from' },
@@ -123,6 +210,46 @@ const PROJECTS = [
   location: 'Pimple Saudagar · Pune',
   year: '2027',
   sub: '3 & 4 BHK premium homes crafted for elevated urban living. A landmark lifestyle destination where South Pune comes to live, shop, and play.',
+  seo: {
+    title:       'PK Hillcrest Pimple Saudagar | 3 & 4 BHK Luxury Homes Pune',
+    description: 'PK Hillcrest — premium 3 & 4 BHK lifestyle residences in South Pune. Infinity pool, sky-level fitness, luxury clubhouse, retail boulevard, and 20+ world-class amenities. Completion 2027.',
+    image:       '/carousel-hillcrest/hero.png',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'ItemPage',
+      'url': 'https://www.pkgroup.in/projects',
+      'name': 'PK Hillcrest | 3 & 4 BHK Premium Luxury Homes Pimple Saudagar Pune',
+      'breadcrumb': {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroup.in/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroup.in/projects' },
+          { '@type': 'ListItem', 'position': 3, 'name': 'PK Hillcrest' },
+        ],
+      },
+      'mainEntity': {
+        '@type': 'Residence',
+        'name': 'PK Hillcrest',
+        'description': '3 & 4 BHK premium lifestyle residences in South Pune with infinity swimming pool, sky-level fitness center, luxury clubhouse, retail boulevard, and 20+ curated amenities. Expected completion 2027.',
+        'numberOfRooms': '3-4',
+        'image': 'https://www.pkgroup.in/carousel-hillcrest/hero.png',
+        'address': {
+          '@type': 'PostalAddress',
+          'addressLocality': 'Pimple Saudagar',
+          'addressRegion': 'Pune, Maharashtra',
+          'postalCode': '411027',
+          'addressCountry': 'IN',
+        },
+        'amenityFeature': [
+          { '@type': 'LocationFeatureSpecification', 'name': 'Infinity swimming pool', 'value': true },
+          { '@type': 'LocationFeatureSpecification', 'name': 'Sky-level fitness center', 'value': true },
+          { '@type': 'LocationFeatureSpecification', 'name': 'Luxury clubhouse', 'value': true },
+          { '@type': 'LocationFeatureSpecification', 'name': 'Retail boulevard', 'value': true },
+          { '@type': 'LocationFeatureSpecification', 'name': 'Premium rooftop amenities', 'value': true },
+        ],
+      },
+    },
+  },
   stats: [
     { num: '1', label: 'Tower' },
     { num: '3 & 4', label: 'BHK Homes' },
@@ -171,6 +298,14 @@ const PROJECTS = [
 export default function ProjectsPage() {
   const [active, setActive] = useState(0)
   const project = PROJECTS[active]
+
+  useSEO({
+    title:       project.seo.title,
+    description: project.seo.description,
+    image:       project.seo.image,
+    path:        '/projects',
+    jsonLd:      project.seo.jsonLd,
+  })
 
   const heroLine1  = useRef(null)
   const heroMeta   = useRef(null)

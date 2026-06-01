@@ -3,6 +3,7 @@ import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { useSEO } from '../hooks/useSEO'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -73,6 +74,28 @@ const CONTACT_DETAILS = [
 const BLANK = { name: '', email: '', phone: '', subject: '', message: '' }
 
 export default function ContactPage() {
+  useSEO({
+    title:       'Contact PK Group | Luxury Real Estate Pune',
+    description: 'Get in touch with PK Group Realty — Pimple Saudagar, Pune. Call +91 7631125125, write to pkgroup125@gmail.com. Office open Mon–Sat, 10 AM–7 PM.',
+    path:        '/contact',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'ContactPage',
+      '@id': 'https://www.pkgroup.in/contact#webpage',
+      'url': 'https://www.pkgroup.in/contact',
+      'name': 'Contact PK Group | Luxury Real Estate Pune',
+      'description': 'Reach out to PK Group Realty for project enquiries, site visits, or partnership opportunities.',
+      'isPartOf': { '@id': 'https://www.pkgroup.in/#website' },
+      'breadcrumb': {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home',    'item': 'https://www.pkgroup.in/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'Contact', 'item': 'https://www.pkgroup.in/contact' },
+        ],
+      },
+    },
+  })
+
   const [form,   setForm]   = useState(BLANK)
   const [status, setStatus] = useState('idle')
 

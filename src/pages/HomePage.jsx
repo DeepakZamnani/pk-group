@@ -7,6 +7,7 @@ import Project from '../components/Project'
 import VideoSection from '../components/VideoSection'
 import ProjectInfo from '../components/ProjectInfo'
 import Footer from '../components/Footer'
+import { useSEO } from '../hooks/useSEO'
 
 export default function HomePage() {
   const [heroComplete,      setHeroComplete]      = useState(false)
@@ -37,6 +38,29 @@ export default function HomePage() {
   }, [])
 
   const allReady = heroVideoReady && projectVideoReady
+
+  useSEO({
+    title:       'Luxury Real Estate Developer in Pune',
+    description: 'PK Group Realty — ultra-luxury residential developer in Pune. Explore PK Canopus (Wakad, 24 floors, 3 & 4 BHK), PK Ornate and PK Hillcrest (Pimple Saudagar). Homes built to outlast decades.',
+    image:       'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/hero.jpg',
+    path:        '/',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'WebPage',
+      '@id': 'https://www.pkgroup.in/#webpage',
+      'url': 'https://www.pkgroup.in/',
+      'name': 'PK Group | Luxury Real Estate Developer in Pune',
+      'description': 'Ultra-luxury residential developer in Pune — PK Canopus, PK Ornate, PK Hillcrest.',
+      'isPartOf': { '@id': 'https://www.pkgroup.in/#website' },
+      'about': { '@id': 'https://www.pkgroup.in/#organization' },
+      'breadcrumb': {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home', 'item': 'https://www.pkgroup.in/' },
+        ],
+      },
+    },
+  })
 
   return (
     <>

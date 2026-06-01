@@ -4,6 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import Navbar from '../components/Navbar'
 import About from '../components/About'
 import Footer from '../components/Footer'
+import { useSEO } from '../hooks/useSEO'
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -25,6 +26,50 @@ const FOUNDERS = [
 ]
 
 export default function AboutPage() {
+  useSEO({
+    title:       'About PK Group | Luxury Real Estate Developer Pune',
+    description: 'Meet the visionaries behind PK Group — Ar. Rohan J. Kate and Mr. Somnath Pandurang Kate. 15+ years, 12 projects delivered, 4L+ sq. ft. of premium residences across Pune.',
+    image:       'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/building.jpg',
+    path:        '/about',
+    jsonLd: {
+      '@context': 'https://schema.org',
+      '@type': 'AboutPage',
+      '@id': 'https://www.pkgroup.in/about#webpage',
+      'url': 'https://www.pkgroup.in/about',
+      'name': 'About PK Group | Luxury Real Estate Developer Pune',
+      'description': 'Ar. Rohan J. Kate and Mr. Somnath Pandurang Kate — founders of PK Group Realty, Pune.',
+      'isPartOf': { '@id': 'https://www.pkgroup.in/#website' },
+      'breadcrumb': {
+        '@type': 'BreadcrumbList',
+        'itemListElement': [
+          { '@type': 'ListItem', 'position': 1, 'name': 'Home',  'item': 'https://www.pkgroup.in/' },
+          { '@type': 'ListItem', 'position': 2, 'name': 'About', 'item': 'https://www.pkgroup.in/about' },
+        ],
+      },
+      'mainEntity': {
+        '@type': 'Organization',
+        'name': 'PK Group Realty',
+        'foundingDate': '2009',
+        'founders': [
+          {
+            '@type': 'Person',
+            'name': 'Ar. Rohan J. Kate',
+            'jobTitle': 'Architect & Director',
+            'worksFor': { '@type': 'Organization', 'name': 'PK Group Realty' },
+            'description': 'Visionary architect and director of PK Group with over 10 years of experience in premium real estate development in Pune.',
+          },
+          {
+            '@type': 'Person',
+            'name': 'Mr. Somnath Pandurang Kate',
+            'jobTitle': 'Founder & Visionary',
+            'worksFor': { '@type': 'Organization', 'name': 'PK Group Realty' },
+            'description': 'Founder of PK Group with a mission to revolutionize the construction industry through future-ready, premium residential spaces.',
+          },
+        ],
+      },
+    },
+  })
+
   const line1Ref    = useRef(null)
   const line2Ref    = useRef(null)
   const subRef      = useRef(null)

@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block crawling of assets that add no SEO value
+Disallow: /src/
+Disallow: /*.map$
+
+# Sitemap location
+Sitemap: https://www.pkgroupcompanies.com/sitemap.xml

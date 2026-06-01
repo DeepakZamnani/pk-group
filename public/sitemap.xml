@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Home -->
+  <url>
+    <loc>https://www.pkgroupcompanies.com/</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/hero.jpg</image:loc>
+      <image:title>PK Canopus — Ultra-Luxury Residences in Wakad, Pune</image:title>
+      <image:caption>PK Group flagship project — PK Canopus, Wakad</image:caption>
+    </image:image>
+  </url>
+
+  <!-- Projects -->
+  <url>
+    <loc>https://www.pkgroupcompanies.com/projects</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-canopus/building.jpg</image:loc>
+      <image:title>PK Canopus — 3 &amp; 4 BHK Luxury Apartments Wakad Pune</image:title>
+      <image:caption>24-floor landmark mixed-use development in Wakad, Pimpri Chinchwad</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/carousel-ornate/hero.jpg</image:loc>
+      <image:title>PK Ornate — Premium 2 &amp; 2.5 BHK Residences Pimple Saudagar</image:title>
+      <image:caption>PK Ornate — private oasis living in Pimple Saudagar, Pune</image:caption>
+    </image:image>
+  </url>
+
+  <!-- About -->
+  <url>
+    <loc>https://www.pkgroupcompanies.com/about</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact -->
+  <url>
+    <loc>https://www.pkgroupcompanies.com/contact</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Careers -->
+  <url>
+    <loc>https://www.pkgroupcompanies.com/careers</loc>
+    <lastmod>2026-06-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+
+</urlset>
