@@ -27,7 +27,7 @@ gsap.registerPlugin(ScrollTrigger)
   }
   ─────────────────────────────────────────────────────────
 */
-const SHEET_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'
+const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzOI8FOvjuqKZFky9eQsa0gLe15F6IbkKQSL5-kXFuhMG9GPTgQFdxuPr3z9Nc4ce07/exec'
 
 const CONTACT_DETAILS = [
   {

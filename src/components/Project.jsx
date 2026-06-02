@@ -16,7 +16,7 @@ const mobile = window.matchMedia('(max-width: 768px)').matches
 
 const DRONE_SRC = mobile
   ? 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/drone-mobile.mp4'
-  : 'drone-start-4k.mp4'
+  : 'https://pub-1deadda0e0574fd399f7bfe63a5e41d7.r2.dev/drone-start-4k.mp4'
 
 export default function Project({ onVideoReady, onLeave, onProgress }) {
   const navigate = useNavigate()

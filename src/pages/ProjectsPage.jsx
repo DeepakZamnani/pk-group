@@ -236,94 +236,96 @@ const PROJECTS = [
       ],
       cardMeta: { label: 'PK Ornate — Pimple Saudagar, Pune', year: '2027' },
     },
-  },{
-  id: 'hillcrest',
-  name: 'PK Hillcrest',
-  location: 'Pimple Saudagar · Pune',
-  year: '2027',
-  sub: '3 & 4 BHK premium homes crafted for elevated urban living. A landmark lifestyle destination where South Pune comes to live, shop, and play.',
-  seo: {
-    title:       'PK Hillcrest Pimple Saudagar | 3 & 4 BHK Luxury Homes Pune',
-    description: 'PK Hillcrest — premium 3 & 4 BHK lifestyle residences in South Pune. Infinity pool, sky-level fitness, luxury clubhouse, retail boulevard, and 20+ world-class amenities. Completion 2027.',
-    image:       '/carousel-hillcrest/hero.png',
-    jsonLd: {
-      '@context': 'https://schema.org',
-      '@type': 'ItemPage',
-      'url': 'https://www.pkgroupcompanies.com/projects',
-      'name': 'PK Hillcrest | 3 & 4 BHK Premium Luxury Homes Pimple Saudagar Pune',
-      'breadcrumb': {
-        '@type': 'BreadcrumbList',
-        'itemListElement': [
-          { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroupcompanies.com/' },
-          { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroupcompanies.com/projects' },
-          { '@type': 'ListItem', 'position': 3, 'name': 'PK Hillcrest' },
-        ],
-      },
-      'mainEntity': {
-        '@type': 'Residence',
-        'name': 'PK Hillcrest',
-        'description': '3 & 4 BHK premium lifestyle residences in South Pune with infinity swimming pool, sky-level fitness center, luxury clubhouse, retail boulevard, and 20+ curated amenities. Expected completion 2027.',
-        'numberOfRooms': '3-4',
-        'image': 'https://www.pkgroupcompanies.com/carousel-hillcrest/hero.png',
-        'address': {
-          '@type': 'PostalAddress',
-          'addressLocality': 'Pimple Saudagar',
-          'addressRegion': 'Pune, Maharashtra',
-          'postalCode': '411027',
-          'addressCountry': 'IN',
-        },
-        'amenityFeature': [
-          { '@type': 'LocationFeatureSpecification', 'name': 'Infinity swimming pool', 'value': true },
-          { '@type': 'LocationFeatureSpecification', 'name': 'Sky-level fitness center', 'value': true },
-          { '@type': 'LocationFeatureSpecification', 'name': 'Luxury clubhouse', 'value': true },
-          { '@type': 'LocationFeatureSpecification', 'name': 'Retail boulevard', 'value': true },
-          { '@type': 'LocationFeatureSpecification', 'name': 'Premium rooftop amenities', 'value': true },
-        ],
-      },
-    },
-  },
-  stats: [
-    { num: '1', label: 'Tower' },
-    { num: '3 & 4', label: 'BHK Homes' },
-    { num: '20+', label: 'Lifestyle Amenities' },
-    { num: '2027', label: 'Completion' }
-  ],
-  infoHeading: ['Where South Pune comes to', 'live, shop, and play.'],
-  infoBody: 'PK Hillcrest is a premium lifestyle development in South Pune offering expansive 3 & 4 BHK residences paired with curated retail and elevated luxury experiences. Designed to uplift every sense, Hillcrest blends landmark architecture, rooftop indulgence, world-class amenities, and thoughtfully planned living spaces to create a destination for those who expect more from life.',
-  amenities: [
-    'Infinity swimming pool',
-    'Sky-level fitness center',
-    'Premium rooftop amenities',
-    'Retail boulevard',
-    'Landscaped leisure zones',
-    'Luxury clubhouse',
-    'Children’s recreation spaces',
-    'Modern expansive interiors',
-    'High-street shopping access',
-    'Designer architectural elevation'
-  ],
-  heroBg: '/carousel-hillcrest/hero.png',
-  gallery: [
-    { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (1).png', caption: 'Overview' },
-    { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (2).png', caption: 'Elevation' },
-    { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (3).png', caption: 'Lifestyle' },
-    { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (4).png', caption: 'Amenities' }
-  ],
-  video: {
-    ytId: '',
-    thumb: '/carousel-hillcrest/PK Hill Crest Mini Brochure (1).png',
-    tagline: 'Uplifting in every sense.',
-    lines: [
-      { text: 'Not every address', indent: 0, italic: false },
-      { text: 'becomes a lifestyle', indent: 1, italic: false },
-      { text: 'destination.', indent: 2, italic: true }
-    ],
-    cardMeta: {
-      label: 'PK Hillcrest — Pimple Saudagar, Pune',
-      year: '2027'
-    }
   }
-}
+//   },{
+//   id: 'hillcrest',
+//   name: 'PK Hillcrest',
+//   location: 'Pimple Saudagar · Pune',
+//   year: '2027',
+//   sub: '3 & 4 BHK premium homes crafted for elevated urban living. A landmark lifestyle destination where South Pune comes to live, shop, and play.',
+//   seo: {
+//     title:       'PK Hillcrest Pimple Saudagar | 3 & 4 BHK Luxury Homes Pune',
+//     description: 'PK Hillcrest — premium 3 & 4 BHK lifestyle residences in South Pune. Infinity pool, sky-level fitness, luxury clubhouse, retail boulevard, and 20+ world-class amenities. Completion 2027.',
+//     image:       '/carousel-hillcrest/hero.png',
+//     jsonLd: {
+//       '@context': 'https://schema.org',
+//       '@type': 'ItemPage',
+//       'url': 'https://www.pkgroupcompanies.com/projects',
+//       'name': 'PK Hillcrest | 3 & 4 BHK Premium Luxury Homes Pimple Saudagar Pune',
+//       'breadcrumb': {
+//         '@type': 'BreadcrumbList',
+//         'itemListElement': [
+//           { '@type': 'ListItem', 'position': 1, 'name': 'Home',     'item': 'https://www.pkgroupcompanies.com/' },
+//           { '@type': 'ListItem', 'position': 2, 'name': 'Projects', 'item': 'https://www.pkgroupcompanies.com/projects' },
+//           { '@type': 'ListItem', 'position': 3, 'name': 'PK Hillcrest' },
+//         ],
+//       },
+//       'mainEntity': {
+//         '@type': 'Residence',
+//         'name': 'PK Hillcrest',
+//         'description': '3 & 4 BHK premium lifestyle residences in South Pune with infinity swimming pool, sky-level fitness center, luxury clubhouse, retail boulevard, and 20+ curated amenities. Expected completion 2027.',
+//         'numberOfRooms': '3-4',
+//         'image': 'https://www.pkgroupcompanies.com/carousel-hillcrest/hero.png',
+//         'address': {
+//           '@type': 'PostalAddress',
+//           'addressLocality': 'Pimple Saudagar',
+//           'addressRegion': 'Pune, Maharashtra',
+//           'postalCode': '411027',
+//           'addressCountry': 'IN',
+//         },
+//         'amenityFeature': [
+//           { '@type': 'LocationFeatureSpecification', 'name': 'Infinity swimming pool', 'value': true },
+//           { '@type': 'LocationFeatureSpecification', 'name': 'Sky-level fitness center', 'value': true },
+//           { '@type': 'LocationFeatureSpecification', 'name': 'Luxury clubhouse', 'value': true },
+//           { '@type': 'LocationFeatureSpecification', 'name': 'Retail boulevard', 'value': true },
+//           { '@type': 'LocationFeatureSpecification', 'name': 'Premium rooftop amenities', 'value': true },
+//         ],
+//       },
+//     },
+//   },
+//   stats: [
+//     { num: '1', label: 'Tower' },
+//     { num: '3 & 4', label: 'BHK Homes' },
+//     { num: '20+', label: 'Lifestyle Amenities' },
+//     { num: '2027', label: 'Completion' }
+//   ],
+//   infoHeading: ['Where South Pune comes to', 'live, shop, and play.'],
+//   infoBody: 'PK Hillcrest is a premium lifestyle development in South Pune offering expansive 3 & 4 BHK residences paired with curated retail and elevated luxury experiences. Designed to uplift every sense, Hillcrest blends landmark architecture, rooftop indulgence, world-class amenities, and thoughtfully planned living spaces to create a destination for those who expect more from life.',
+//   amenities: [
+//     'Infinity swimming pool',
+//     'Sky-level fitness center',
+//     'Premium rooftop amenities',
+//     'Retail boulevard',
+//     'Landscaped leisure zones',
+//     'Luxury clubhouse',
+//     'Children’s recreation spaces',
+//     'Modern expansive interiors',
+//     'High-street shopping access',
+//     'Designer architectural elevation'
+//   ],
+//   heroBg: '/carousel-hillcrest/hero.png',
+//   gallery: [
+//     { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (1).png', caption: 'Overview' },
+//     { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (2).png', caption: 'Elevation' },
+//     { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (3).png', caption: 'Lifestyle' },
+//     { src: '/carousel-hillcrest/PK Hill Crest Mini Brochure (4).png', caption: 'Amenities' }
+//   ],
+//   video: {
+//     ytId: '',
+//     thumb: '/carousel-hillcrest/PK Hill Crest Mini Brochure (1).png',
+//     tagline: 'Uplifting in every sense.',
+//     lines: [
+//       { text: 'Not every address', indent: 0, italic: false },
+//       { text: 'becomes a lifestyle', indent: 1, italic: false },
+//       { text: 'destination.', indent: 2, italic: true }
+//     ],
+//     cardMeta: {
+//       label: 'PK Hillcrest — Pimple Saudagar, Pune',
+//       year: '2027'
+//     }
+//   }
+// }
+
 
 ]
 
