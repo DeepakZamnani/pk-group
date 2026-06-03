@@ -6,7 +6,8 @@ import HomePage     from './pages/HomePage'
 import AboutPage    from './pages/AboutPage'
 import ProjectsPage from './pages/ProjectsPage'
 import CareersPage  from './pages/CareersPage'
-import ContactPage  from './pages/ContactPage'
+import ContactPage         from './pages/ContactPage'
+import ElloraEnclavePage  from './pages/ElloraEnclavePage'
 import './App.css'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -29,7 +30,8 @@ export default function App() {
         <Route path="/about"    element={<AboutPage />}    />
         <Route path="/projects" element={<ProjectsPage />} />
         <Route path="/careers"  element={<CareersPage />}  />
-        <Route path="/contact"  element={<ContactPage />}  />
+        <Route path="/contact"                       element={<ContactPage />}        />
+        <Route path="/redevelopment/ellora-enclave"  element={<ElloraEnclavePage />}  />
       </Routes>
     </BrowserRouter>
   )

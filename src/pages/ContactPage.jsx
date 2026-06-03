@@ -7,26 +7,7 @@ import { useSEO } from '../hooks/useSEO'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/*
-  Google Apps Script setup (same flow as Careers):
-  Sheet columns: Timestamp | Name | Email | Phone | Subject | Message
 
-  Apps Script:
-  ─────────────────────────────────────────────────────────
-  function doPost(e) {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    sheet.appendRow([
-      new Date(),
-      e.parameter.name,
-      e.parameter.email,
-      e.parameter.phone,
-      e.parameter.subject,
-      e.parameter.message,
-    ]);
-    return ContentService.createTextOutput('OK');
-  }
-  ─────────────────────────────────────────────────────────
-*/
 const SHEET_URL = 'https://script.google.com/macros/s/AKfycbzOI8FOvjuqKZFky9eQsa0gLe15F6IbkKQSL5-kXFuhMG9GPTgQFdxuPr3z9Nc4ce07/exec'
 
 const CONTACT_DETAILS = [
