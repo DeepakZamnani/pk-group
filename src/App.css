@@ -4206,3 +4206,217 @@
   .ee-cta-phone             { font-size: 20px; }
   .ee-cta-btn               { width: 100%; text-align: center; padding: 14px 24px; }
 }
+
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Redevelopment Page  (rd-)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+.rd-reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.65s ease, transform 0.65s ease; }
+.rd-reveal.rd-visible { opacity: 1; transform: translateY(0); }
+
+.rd-eyebrow, .rd-label {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+
+/* ── Header ── */
+.rd-header {
+  background: #0a0a0a;
+  padding: clamp(120px, 18vh, 180px) clamp(24px, 8vw, 96px) clamp(80px, 12vh, 120px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.rd-header-inner { max-width: 800px; }
+.rd-title {
+  font-family: 'Georgia', serif;
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.02em;
+  color: #fff;
+  margin: 0 0 24px;
+}
+.rd-subtitle {
+  font-family: 'Georgia', serif;
+  font-size: clamp(16px, 1.6vw, 22px);
+  font-style: italic;
+  color: rgba(255,255,255,0.4);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── About ── */
+.rd-about {
+  background: #0f0f0f;
+  padding: clamp(64px, 10vh, 112px) clamp(24px, 8vw, 96px);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+.rd-about-inner {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: clamp(48px, 6vw, 96px);
+  align-items: start;
+  max-width: 1200px;
+}
+.rd-about-text h2 {
+  font-family: 'Georgia', serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400;
+  line-height: 1.15;
+  color: #fff;
+  margin: 0 0 24px;
+}
+.rd-about-text h2 em { color: var(--gold); font-style: italic; }
+.rd-about-text p {
+  font-family: 'Georgia', serif;
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.85;
+  color: rgba(255,255,255,0.45);
+  margin: 0 0 16px;
+  max-width: 560px;
+}
+.rd-about-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding-top: 8px;
+  border-left: 1px solid rgba(255,255,255,0.07);
+  padding-left: clamp(32px, 4vw, 56px);
+}
+.rd-about-stat-num {
+  display: block;
+  font-family: 'Georgia', serif;
+  font-size: clamp(22px, 2.5vw, 32px);
+  color: var(--gold);
+  letter-spacing: -0.01em;
+  margin-bottom: 4px;
+}
+.rd-about-stat-label {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+}
+
+/* ── Projects ── */
+.rd-projects {
+  background: #0a0a0a;
+  padding: clamp(64px, 10vh, 112px) clamp(24px, 8vw, 96px);
+}
+.rd-projects-head {
+  margin-bottom: clamp(40px, 6vh, 64px);
+}
+.rd-projects-head h2 {
+  font-family: 'Georgia', serif;
+  font-size: clamp(28px, 3.5vw, 48px);
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+}
+.rd-projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 2px;
+}
+.rd-card {
+  background: #111;
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+.rd-card:hover { transform: translateY(-4px); }
+.rd-card-img {
+  position: relative;
+  height: 300px;
+  overflow: hidden;
+}
+.rd-card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+.rd-card:hover .rd-card-img img { transform: scale(1.05); }
+.rd-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+}
+.rd-card-status {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: 'Georgia', serif;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: rgba(0,0,0,0.55);
+  padding: 5px 12px;
+  border: 1px solid rgba(201,155,90,0.3);
+  border-radius: 2px;
+}
+.rd-card-body {
+  padding: 28px 28px 32px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+.rd-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.rd-card-type {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.rd-card-location {
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: rgba(255,255,255,0.3);
+}
+.rd-card-location::before { content: '·'; margin-right: 12px; color: rgba(255,255,255,0.2); }
+.rd-card-name {
+  font-family: 'Georgia', serif;
+  font-size: clamp(22px, 2.5vw, 30px);
+  font-weight: 400;
+  color: #fff;
+  margin: 0 0 20px;
+  letter-spacing: -0.01em;
+}
+.rd-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Georgia', serif;
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  padding-bottom: 3px;
+  border-bottom: 1px solid rgba(255,255,255,0.12);
+  transition: color 0.2s, border-color 0.2s;
+}
+.rd-card:hover .rd-card-cta { color: var(--gold); border-color: var(--gold); }
+
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  .rd-header          { padding: 100px 24px 60px; }
+  .rd-about           { padding: 48px 24px; }
+  .rd-about-inner     { grid-template-columns: 1fr; gap: 40px; }
+  .rd-about-stats     { border-left: none; border-top: 1px solid rgba(255,255,255,0.07); padding-left: 0; padding-top: 32px; flex-direction: row; flex-wrap: wrap; gap: 24px; }
+  .rd-projects        { padding: 48px 24px; }
+  .rd-projects-grid   { grid-template-columns: 1fr; }
+  .rd-card-img        { height: 56vw; }
+}
